@@ -15,7 +15,7 @@ OPENAI_API_KEY = [Sawyers API-key no brackets]
 ```
 
 ### IMPORTANT
-Create a .gitignore with this:
+Make sure your .gitignore has this:
 ```
 /node_modules/
 .env
