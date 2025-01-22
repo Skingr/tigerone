@@ -3,6 +3,9 @@
  * USER INPUT
  * Making requests to a server side endpoint (Next.js api route)
  * Display conversation between user and AI on webpage
+ * 
+ * if PAGE.tsx getting too large break logic out into 
+ * smaller client components in src/components
  */
 
 
@@ -14,15 +17,17 @@
 //useState<ChatMessage[]>(...) == makes sure type script knows its an arr of ChatMessage objects
 
 import { useState } from 'react' // useState hook from React for state management
+import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
+
 
 
 //define chat msg so that 'role' can onl be system user assistant
 
-type ChatMessage = {
-    role: 'system' | 'user' | 'assistant' //Typedef: role can be system' | 'user' | 'assistant'
-    content: string // message string "content"
+// type ChatMessage = {
+//     role: 'system' | 'user' | 'assistant' //Typedef: role can be system' | 'user' | 'assistant'
+//     content: string // message string "content"
 
-}
+// }
 
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
@@ -76,21 +81,24 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
-    <main className="flex flex-col items-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Tiger One</h1> 
-      <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2">
+    <main className="flex flex-col items-center p-4 bg-white min-h-screen bg-cc-gold-faint">  
+      <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
+      <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
-          .filter((m) => m.role !== 'system') // optional :::(hides system in the ui)
+          .filter((m) => m.role !== 'system') // optional :::(hides system in the ui)//bg-cc-gold/20
           .map((msg, index) => (
             <div key={index} className="p-2">
-              <strong>{msg.role === 'assistant' ? 'AI' : 'You'}:</strong> {msg.content}
+              <strong className="text-cc-charcoal">
+                {msg.role === 'assistant' ? 'AI' : 'You'}:
+                </strong>{' '}
+                {msg.content}
             </div>
           ))}
       </div>
 
       <form onSubmit={handleSubmit} className="w-full max-w-xl flex space-x-2">
         <input
-          className="flex-1 border p-2 rounded"
+          className="flex-1 border border-cc-charcoal p-2 rounded"
           type="text"
           placeholder="Type your message..."
           value={userInput}
@@ -98,7 +106,7 @@ export default function ChatPage(){
           disabled={loading}
         />
         <button
-          className="bg-blue-500 text-black px-4 py-2 rounded"
+          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
           type="submit"
           disabled={loading}
         >

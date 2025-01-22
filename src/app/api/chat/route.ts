@@ -1,5 +1,6 @@
 // app/api/chat/route.ts
 /**
+ * SERVER SIDE ROUTE HABNDLER
  * Expects json body with 'messages' array
  * content: Actual text
  * start conversation w/ system message eg;"You're a helpful assistant"
@@ -7,27 +8,19 @@
  * response returned as json
  */
 import { NextResponse } from 'next/server'
-// import { Configuration, OpenAIApi } from 'openai';
+import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
 import OpenAI from 'openai'
 
+// import { Configuration, OpenAIApi } from 'openai';
+
 // 1 : configure openai using openai key
-// const config = new Configuration({apiKey: process.env.OPENAI_API_KEY })
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
-  
-  // POST:Endpt for conversation ( expects json body like ): {"messages": [ { "role":"system,"content": "..."}]} 
-     // For example, body might look like:
-      // {
-      //   "messages": [
-      //     { "role": "system", "content": "You are an assistant." },
-      //     { "role": "user", "content": "Hello!" }
-      //   ]
-      // }
-  
+    
   export async function POST(req: Request) { // POST request: creating an HTTPS request of a special type
     try {
-      const body = await req.json() // body is payload of the request, i.e the users input in the req (ourcase)
+      const body = await req.json() as ChatRequest // body is payload of the request, i.e the users input in the req (ourcase)
       const { messages } = body // this line pulls messages from "body"
       console.log("***************************",body)
       if (!messages || !Array.isArray(messages)) {
