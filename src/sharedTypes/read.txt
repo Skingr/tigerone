@@ -1,0 +1,5 @@
+Shared TypeScript definitions for front-end and back-end.
+For EX: ChatMessage type, used on the server route (route.ts)
+and the front-end (page.tsx) 
+stay consistent. If something needs to change 
+will change for both 
