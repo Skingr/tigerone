@@ -46,3 +46,11 @@ node_modules/@next
 
 package-lock.json
 package.json
+
+/node_modules/
+.env
+*.log
+.vscode/
+.idea/
+.DS_Store
+package-lock.json
