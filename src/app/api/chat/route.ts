@@ -6,9 +6,14 @@
  * end pt calls createChatCompletion from official openai library
  * response returned as json
  */
+import { DevBundlerService } from 'next/dist/server/lib/dev-bundler-service'
 import { NextResponse } from 'next/server'
 // import { Configuration, OpenAIApi } from 'openai';
 import OpenAI from 'openai'
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { aidata } from '@/db/schema';
+import {Client} from 'pg';
+
 
 // 1 : configure openai using openai key
 // const config = new Configuration({apiKey: process.env.OPENAI_API_KEY })
@@ -36,12 +41,44 @@ const openai = new OpenAI({
           { status: 400 }
         )
       }
+    //get user query
+    const userquery = messages[messages.length - 1].content;
   
 // 3. make call to OPEN AI 
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',  // or 'gpt-4' if you have access
         messages: messages,
     })
+
+    // get response
+    const airesponse = response.choices[0].message.content;
+    //get database URL from env file
+    const client = new Client({
+      connectionString: process.env.DATABASE_URL
+    })
+
+    // make connection
+    await client.connect();
+    const db = drizzle(client);
+
+
+    //store user query and response in AWS database
+    const insertChat = await db
+      .insert(aidata)
+      .values({
+        //courseName,
+        //courseId,
+        userquery: userquery,
+        airesponse: airesponse,
+      })
+      
+      // debugging values of userquery and airesponse
+      //console.log('Data:', {
+      //  userquery,
+      //  airesponse,
+      //});
+
+
 //4. Return llm inference response
 return NextResponse.json(response)
   } catch (error: any) {
