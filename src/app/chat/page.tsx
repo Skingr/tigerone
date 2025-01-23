@@ -81,7 +81,7 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
-    <main className="flex flex-col items-center p-4 bg-white min-h-screen bg-cc-gold-faint">  
+    <main className="flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint">  
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
