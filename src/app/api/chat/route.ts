@@ -7,9 +7,8 @@
  * end pt calls createChatCompletion from official openai library
  * response returned as json
  */
-import { DevBundlerService } from 'next/dist/server/lib/dev-bundler-service'
 import { NextResponse } from 'next/server'
-import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
+import { ChatRequest } from '@/sharedTypes/types'
 import OpenAI from 'openai'
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { aidata } from '@/db/schema';
