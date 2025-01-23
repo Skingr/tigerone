@@ -43,3 +43,6 @@ git p
 .DS_store
 
 node_modules/@next
+
+package-lock.json
+package.json
