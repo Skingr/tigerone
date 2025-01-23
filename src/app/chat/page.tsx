@@ -47,7 +47,7 @@ export default function ChatPage(){
         const newMessages: ChatMessage[] = [ // creating a new constant called newMessages - colon is defining type of new constant as a Array:Chatmessage, this can be a shared type can move later
             ...messages,                    //{grab attribute from object} -- spread operator is similar. spreading all values in that array (chatMessage[]) out, not copying array itself but copying individual items in array ,
             //saving all msgs you send and adding to new array! 
-            { role: 'user', content: userInput }
+            {  role: 'user', content: userInput }
           ];
 
           setMessages(newMessages)
