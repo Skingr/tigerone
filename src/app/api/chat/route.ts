@@ -38,7 +38,8 @@ const openai = new OpenAI({
   
 // 3. make call to OPEN AI 
     const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',  // or 'gpt-4' if you have access
+        model: 'gpt-3.5-turbo',  // Will integrate different models in a dropdown box
+        
         messages: messages,
     })
 

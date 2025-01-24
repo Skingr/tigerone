@@ -12,6 +12,7 @@ Create a .env.local file at the root directory. The variable within should be:
 
 ```
 OPENAI_API_KEY = [Sawyers API-key no brackets]
+DATABASE_URL= [Contact Isaac for the key]
 ```
 
 ### IMPORTANT
