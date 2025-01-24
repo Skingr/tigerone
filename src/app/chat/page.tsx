@@ -82,6 +82,21 @@ export default function ChatPage(){
 //RETURN HTLM (X) 
   return (
     <main className="flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint">  
+    <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Choose your class</h1>
+      <form onSubmit={handleSubmit} className=" max-w-xl space-x-2">
+        <select className= "items-center border border-4 border-double border-cc-gold w-60">
+          <option value="Linear Algebra">Linear Algebra</option>
+          <option value="Cultural Anthropology">Cultural Anthropology</option>
+          <option value="meat">Meat</option>
+        </select>
+        <button
+          className="bg-cc-gold text-white px-4 py-2 mb-40 rounded hover:opacity-80"
+          type="submit"
+          disabled={loading}
+        >   
+          {loading ? 'Thinking...' : 'Submit'}
+        </button>
+        </form>
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
