@@ -1,33 +1,9 @@
-//first front end file
-/**
- * USER INPUT
- * Making requests to a server side endpoint (Next.js api route)
- * Display conversation between user and AI on webpage
- * 
- * if PAGE.tsx getting too large break logic out into 
- * smaller client components in src/components
- */
 
 
-
-'use client'//Next.js : tell nextjs that this file is client component (front end)
-
-
-
-//useState<ChatMessage[]>(...) == makes sure type script knows its an arr of ChatMessage objects
-
-import { useState } from 'react' // useState hook from React for state management
+'use client'
+import { useState } from 'react'
 import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
 
-
-
-//define chat msg so that 'role' can onl be system user assistant
-
-// type ChatMessage = {
-//     role: 'system' | 'user' | 'assistant' //Typedef: role can be system' | 'user' | 'assistant'
-//     content: string // message string "content"
-
-// }
 
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
@@ -94,13 +70,13 @@ export default function ChatPage(){
           type="submit"
           disabled={loading}
         >   
-          {loading ? 'Thinking...' : 'Submit'}
+          {loading ? 'Purring...' : 'Submit'}
         </button>
         </form>
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
-          .filter((m) => m.role !== 'system') // optional :::(hides system in the ui)//bg-cc-gold/20
+          .filter((m) => m.role !== 'system')
           .map((msg, index) => (
             <div key={index} className="p-2">
               <strong className="text-cc-charcoal">
@@ -115,17 +91,17 @@ export default function ChatPage(){
         <input
           className="flex-1 border border-cc-charcoal p-2 rounded"
           type="text"
-          placeholder="Type your message..."
+          placeholder="Message Tiger One"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           disabled={loading}
         />
         <button
-          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
+          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80"
           type="submit"
           disabled={loading}
         >
-          {loading ? 'Thinking...' : 'Send'}
+          {loading ? 'Purring...' : 'Send'}
         </button>
       </form>
     </main>
