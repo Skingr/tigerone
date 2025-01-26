@@ -7,12 +7,18 @@ import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
 
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
-        { role : 'system', content: 'You are a helpful assistant'}, 
+        { role : 'system', content: 'You are a helpful assistant', class: 'n/a'}, 
 
     ])
 
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
+    const[userClass, setUserClass] = useState<string>('N/A')
+
+    const selectClass = async(e:React.FormEvent) =>{
+      e.preventDefault(); 
+      setUserClass((e.currentTarget.querySelector('select') as HTMLSelectElement)?.value)
+    }
 
     const handleSubmit = async(e: React.FormEvent) => { // what runs when you click button 
         e.preventDefault() //if you remove and you click send page will refresh 
@@ -23,7 +29,7 @@ export default function ChatPage(){
         const newMessages: ChatMessage[] = [ // creating a new constant called newMessages - colon is defining type of new constant as a Array:Chatmessage, this can be a shared type can move later
             ...messages,                    //{grab attribute from object} -- spread operator is similar. spreading all values in that array (chatMessage[]) out, not copying array itself but copying individual items in array ,
             //saving all msgs you send and adding to new array! 
-            {  role: 'user', content: userInput }
+            {  role: 'user', content: userInput, class:userClass }
           ];
 
           setMessages(newMessages)
@@ -46,7 +52,7 @@ export default function ChatPage(){
       const assistantResponse = data.choices?.[0]?.message?.content || ''
       const updatedMessages: ChatMessage[] = [
         ...newMessages, // SPREAD OPERATOR 
-        { role: 'assistant', content: assistantResponse },
+        { role: 'assistant', content: assistantResponse, class: 'n/a' },
       ]
       setMessages(updatedMessages)
     } catch (err: any) {
@@ -59,7 +65,7 @@ export default function ChatPage(){
   return (
     <main className="flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint">  
     <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Choose your class</h1>
-      <form onSubmit={handleSubmit} className=" max-w-xl space-x-2">
+      <form onSubmit={selectClass} className=" max-w-xl space-x-2">
         <select className= "items-center border border-4 border-double border-cc-gold w-60">
           <option value="Linear Algebra">Linear Algebra</option>
           <option value="Cultural Anthropology">Cultural Anthropology</option>

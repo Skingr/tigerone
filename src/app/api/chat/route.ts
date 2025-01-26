@@ -35,7 +35,7 @@ const openai = new OpenAI({
       }
     //get user query
     const userquery = messages[messages.length - 1].content;
-  
+    const userclass = messages[messages.length - 1].class;
 // 3. make call to OPEN AI 
     const response = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',  // Will integrate different models in a dropdown box
@@ -63,6 +63,7 @@ const openai = new OpenAI({
         //courseId,
         userquery: userquery,
         airesponse: airesponse,
+        userclass: userclass
       })
       
       // debugging values of userquery and airesponse
