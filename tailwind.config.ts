@@ -3,6 +3,7 @@
 // tailwind.config.ts
 import type { Config } from 'tailwindcss'
 
+
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,6 +12,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        crimsonPro: ['Crimson Pro', 'serif'],
+      },
       colors: {
         'cc-gold': '#BD9B1B',
         'cc-gold-light': '#D9BF5C',

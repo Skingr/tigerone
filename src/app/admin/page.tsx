@@ -1,6 +1,14 @@
+// TODO: Change font to Funnel Display: https://fonts.google.com/selection/embed. https://developers.google.com/fonts/docs/css2 
+// Make less cramped. Move title and everything down. Maybe make grpah section just one graph that you can 
+// scroll to different ones
 'use client'; // This is a client-side component
 
 import React, { useState } from 'react';
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 300 to 800
+
+
 
 type Box = {
   title: string;
@@ -23,10 +31,14 @@ export default function AdminDash() {
   let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
   let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
   let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
-  
+    
 
   return (
-    <main className="min-h-screen bg-cc-gold-faint p-4 ">
+    <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap');
+      </style>
+      
       {/* Header */}
       <header className="mb-6 text-center">
         <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-double border-cc-gold">Student AI Use Information</h1>

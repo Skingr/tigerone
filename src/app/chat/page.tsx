@@ -63,7 +63,10 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
-    <main className="flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint">  
+    <main className="font-crimsonPro flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint"> 
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap');
+      </style> 
     <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Choose your class</h1>
       <form onSubmit={selectClass} className=" max-w-xl space-x-2">
         <select className= "items-center border border-4 border-double border-cc-gold w-60">
