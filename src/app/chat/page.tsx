@@ -23,20 +23,20 @@ import MarkdownWithSyntaxHighlighter from '@/components/MarkdownWithSyntaxHighli
 
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
-<<<<<<< HEAD
-        { role : 'system', content: 'You are a helpful assistant', class: 'n/a'}, 
-=======
-        { role : 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
-        'PLEASE format all code answers in markdown using triple backticks, like:\n' +
-        '```python\nprint("HelloWorld!!!")\n```' 
-        // 'For math use inline LaTeX with $ ... $ or blocks $$ ... $$\(x^2 + y^2 \)' + 
-        // 'For all math please us LaTeX for example:' +'$$\n' +
-        // 'x^2 + y^2 = z^2\n ' +
-        // '$$'
- 
 
+        { role : 'system', content: 'You are a helpful assistant', class: 'n/a'}, 
+
+        {
+          role: 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
+            'PLEASE format all code answers in markdown using triple backticks, like:\n' +
+            '```python\nprint("HelloWorld!!!")\n```'
+          // 'For math use inline LaTeX with $ ... $ or blocks $$ ... $$\(x^2 + y^2 \)' + 
+          // 'For all math please us LaTeX for example:' +'$$\n' +
+          // 'x^2 + y^2 = z^2\n ' +
+          // '$$'
+          ,
+          class: ''
         }, 
->>>>>>> 25431b9 (basic code blocks and math fonts working now)
 
     ])
 
@@ -58,11 +58,9 @@ export default function ChatPage(){
         const newMessages: ChatMessage[] = [ // creating a new constant called newMessages - colon is defining type of new constant as a Array:Chatmessage, this can be a shared type can move later
             ...messages,                    //{grab attribute from object} -- spread operator is similar. spreading all values in that array (chatMessage[]) out, not copying array itself but copying individual items in array ,
             //saving all msgs you send and adding to new array! 
-<<<<<<< HEAD
+
             {  role: 'user', content: userInput, class:userClass }
-=======
-            { role: 'user', content: userInput }
->>>>>>> 25431b9 (basic code blocks and math fonts working now)
+
           ];
 
           setMessages(newMessages)
@@ -96,7 +94,7 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
-<<<<<<< HEAD
+
     <main className="font-crimsonPro flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint"> 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap');
@@ -116,9 +114,7 @@ export default function ChatPage(){
           {loading ? 'Purring...' : 'Submit'}
         </button>
         </form>
-=======
-    <main className="flex flex-col items-center p-4 bg-white min-h-screen bg-cc-gold-faint">  
->>>>>>> 25431b9 (basic code blocks and math fonts working now)
+
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
