@@ -5,7 +5,6 @@
 const API_URL = "https://coloradocollege.instructure.com/api/v1/courses"
 const COURSE_ID = 45070
 // my access token
-const ACCESS_TOKEN = '1771~68Rke29fBtXan7ZAfz7XWFJaem7ntXF3eZ4NfMhQc2eQmHv3ByZMCGa3F4uVPyWn'
 
 
 // require("dotenv").config({ path: ".env.local" });
@@ -13,7 +12,8 @@ const ACCESS_TOKEN = '1771~68Rke29fBtXan7ZAfz7XWFJaem7ntXF3eZ4NfMhQc2eQmHv3ByZMC
 // console.log(CANVAS_API_KEY)
 
 require("dotenv").config({ path: ".env.local" });
-console.log("TEST_VAR:", process.env.TEST_VAR);
+CANVAS_API_KEY = process.env.CANVAS_API_KEY;
+
 // To get syllabus of CP499
 const url = `${API_URL}/${COURSE_ID}?include[]=syllabus_body`;
 

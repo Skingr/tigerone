@@ -13,8 +13,11 @@ Create a .env.local file at the root directory. The variable within should be:
 ```
 OPENAI_API_KEY = [Sawyers API-key no brackets]
 DATABASE_URL= [Contact Isaac for the key]
+CANVAS_API_KEY=[follow below directions]
 ```
 
+For the canvas api key, go to canvas->account->settings->approved integrations->new access token.
+Copy this into the .env, make sure there is a ' ' surround the key
 ### IMPORTANT
 Make sure your .gitignore has this:
 ```
