@@ -1,13 +1,42 @@
+//first front end file
+/**
+ * USER INPUT
+ * Making requests to a server side endpoint (Next.js api route)
+ * Display conversation between user and AI on webpage
+ * 
+ * if PAGE.tsx getting too large break logic out into 
+ * smaller client components in src/components
+ */
 
 
-'use client'
-import { useState } from 'react'
+
+'use client'//Next.js : tell nextjs that this file is client component (front end)
+
+
+
+//useState<ChatMessage[]>(...) == makes sure type script knows its an arr of ChatMessage objects
+
+import { useState } from 'react' // useState hook from React for state management
 import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
+import MarkdownWithSyntaxHighlighter from '@/components/MarkdownWithSyntaxHighliter'
 
 
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
+<<<<<<< HEAD
         { role : 'system', content: 'You are a helpful assistant', class: 'n/a'}, 
+=======
+        { role : 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
+        'PLEASE format all code answers in markdown using triple backticks, like:\n' +
+        '```python\nprint("HelloWorld!!!")\n```' 
+        // 'For math use inline LaTeX with $ ... $ or blocks $$ ... $$\(x^2 + y^2 \)' + 
+        // 'For all math please us LaTeX for example:' +'$$\n' +
+        // 'x^2 + y^2 = z^2\n ' +
+        // '$$'
+ 
+
+        }, 
+>>>>>>> 25431b9 (basic code blocks and math fonts working now)
 
     ])
 
@@ -29,7 +58,11 @@ export default function ChatPage(){
         const newMessages: ChatMessage[] = [ // creating a new constant called newMessages - colon is defining type of new constant as a Array:Chatmessage, this can be a shared type can move later
             ...messages,                    //{grab attribute from object} -- spread operator is similar. spreading all values in that array (chatMessage[]) out, not copying array itself but copying individual items in array ,
             //saving all msgs you send and adding to new array! 
+<<<<<<< HEAD
             {  role: 'user', content: userInput, class:userClass }
+=======
+            { role: 'user', content: userInput }
+>>>>>>> 25431b9 (basic code blocks and math fonts working now)
           ];
 
           setMessages(newMessages)
@@ -63,6 +96,7 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
+<<<<<<< HEAD
     <main className="font-crimsonPro flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint"> 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap');
@@ -82,16 +116,19 @@ export default function ChatPage(){
           {loading ? 'Purring...' : 'Submit'}
         </button>
         </form>
+=======
+    <main className="flex flex-col items-center p-4 bg-white min-h-screen bg-cc-gold-faint">  
+>>>>>>> 25431b9 (basic code blocks and math fonts working now)
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
-          .filter((m) => m.role !== 'system')
+          .filter((m) => m.role !== 'system') // optional :::(hides system in the ui)//bg-cc-gold/20
           .map((msg, index) => (
             <div key={index} className="p-2">
               <strong className="text-cc-charcoal">
-                {msg.role === 'assistant' ? 'AI' : 'You'}:
+                {msg.role === 'assistant' ? 'Tiger' : 'You'}:
                 </strong>{' '}
-                {msg.content}
+                <MarkdownWithSyntaxHighlighter content = {msg.content}/>
             </div>
           ))}
       </div>
@@ -100,17 +137,17 @@ export default function ChatPage(){
         <input
           className="flex-1 border border-cc-charcoal p-2 rounded"
           type="text"
-          placeholder="Message Tiger One"
+          placeholder="Type your message..."
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           disabled={loading}
         />
         <button
-          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80"
+          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
           type="submit"
           disabled={loading}
         >
-          {loading ? 'Purring...' : 'Send'}
+          {loading ? 'Thinking...' : 'Send'}
         </button>
       </form>
     </main>
