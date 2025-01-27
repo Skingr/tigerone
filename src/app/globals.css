@@ -19,3 +19,85 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.math-block {
+
+  overflow-x: auto; /* scroll function , for long math equations */
+  
+  padding: 1rem 0; /*margin puts space outside box--padding puts space inside box, padding with math shown: https://gyazo.com/3ab81ff7de2ea62c2261096f746e69f2 */
+  
+  display: flex; /*flex very powerful css--allows you to position things on the screen, lets you display things in a row or column*/
+  
+  justify-content: center; /*centers math, can justify left or right | justify around*/
+  
+  }
+  
+    
+  
+  .katex-display {
+  
+  margin: 1em 0; /*margin is space outside box, between math elements*/
+  
+  overflow-x: auto;
+  
+  overflow-y: hidden; /*no y scroll*/
+  
+  padding: 0.5em 0;
+  
+  display: flex !important; /*important is used to override display inline, for centering math , v pretty*/
+  
+  justify-content: center;
+  
+  }
+  
+    
+  
+  .katex {
+  
+  font-size: 1.1em; /*110%=1.1em*/
+  
+  text-rendering: auto;
+  
+  }
+  
+    
+  
+  
+  .katex-inline {
+  
+  display: inline-flex;
+  
+  align-items: center;
+  
+  vertical-align: middle;
+  
+  }
+  
+    
+  
+  
+  .katex-display > .katex {
+  
+  display: inline-block; /* want all math inline w. eachother*/
+  
+  text-align: center; /* centers math*/
+  
+  max-width: 100%;
+  
+  }
+  
+    
+  
+  
+  .katex-html {
+  
+  overflow-x: auto;
+  
+  overflow-y: hidden;
+  
+  max-width: 100%;
+  
+  padding: 0.25em 0;
+  
+  }

@@ -26,18 +26,49 @@ export default function ChatPage(){
 
 
         {
-          role: 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
-            'PLEASE format all code answers in markdown using triple backticks, like:\n' +
-            '```python\nprint("HelloWorld!!!")\n```' +
-            'write all MATH problems and math tables etc in MARKDOWN format'
+          role: 'system',
 
-          // 'For math use inline LaTeX with $ ... $ or blocks $$ ... $$\(x^2 + y^2 \)' + 
-          // 'For all math please us LaTeX for example:' +'$$\n' +
-          // 'x^2 + y^2 = z^2\n ' +
-          // '$$'
-          ,
-        class:"N/A"
-        }, 
+          //perfect context to set math and code rules
+
+          content: 'You are a helpful assistant specializing in mathematics and education. Always format your responses following these rules:\n\n' +
+          
+          '1. ALL mathematical expressions MUST be written in LaTeX notation\n' +
+          
+          '2. For inline math, use single dollar signs: $x^2$\n' +
+          
+          '3. For display/block math, use double dollar signs:\n' +
+          
+          '$$\n' +
+          
+          'y = mx + b\n' +
+          
+          '$$\n' +
+          
+          '4. For vectors, always use proper LaTeX notation: $\\vec{v}$ or $\\mathbf{v}$\n' +
+          
+          '5. For matrices, always use proper LaTeX environments:\n' +
+          
+          '$$\n' +
+          
+          '\\begin{bmatrix}\n' +
+          
+          'a & b \\\\\n' +
+          
+          'c & d\n' +
+          
+          '\\end{bmatrix}\n' +
+          
+          '$$\n' +
+          
+          '6. NEVER, EVER, use plain text for mathematical expressions\n' +
+          
+          '7. Format code using triple backticks with language specification\n' +
+          
+          '8. Use proper LaTeX commands for all mathematical symbols (×, ·, ≠, ≥, etc.)',
+          
+          class: "N/A"
+          
+          }, 
 
     ])
 
