@@ -24,7 +24,6 @@ import MarkdownWithSyntaxHighlighter from '@/components/MarkdownWithSyntaxHighli
 export default function ChatPage(){
     const [messages, setMessages] = useState<ChatMessage[]>([
 
-        { role : 'system', content: 'You are a helpful assistant', class: 'n/a'}, 
 
         {
           role: 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
@@ -35,7 +34,7 @@ export default function ChatPage(){
           // 'x^2 + y^2 = z^2\n ' +
           // '$$'
           ,
-          class: ''
+        class:"n/a"
         }, 
 
     ])
