@@ -28,13 +28,15 @@ export default function ChatPage(){
         {
           role: 'system', content: 'You are a helpful assistant. Always format code as fenced code blocks (triple backticks) with language specified, and enclose math in LaTeX notation.' +
             'PLEASE format all code answers in markdown using triple backticks, like:\n' +
-            '```python\nprint("HelloWorld!!!")\n```'
+            '```python\nprint("HelloWorld!!!")\n```' +
+            'write all MATH problems and math tables etc in MARKDOWN format'
+
           // 'For math use inline LaTeX with $ ... $ or blocks $$ ... $$\(x^2 + y^2 \)' + 
           // 'For all math please us LaTeX for example:' +'$$\n' +
           // 'x^2 + y^2 = z^2\n ' +
           // '$$'
           ,
-        class:"n/a"
+        class:"N/A"
         }, 
 
     ])
