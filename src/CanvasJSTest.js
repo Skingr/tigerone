@@ -3,19 +3,13 @@
 
 
 const API_URL = "https://coloradocollege.instructure.com/api/v1/courses"
-const COURSE_ID = 45070
-// my access token
 
-
-// require("dotenv").config({ path: ".env.local" });
-// const CANVAS_API_KEY = process.env.CANVAS_API_KEY;
-// console.log(CANVAS_API_KEY)
 
 require("dotenv").config({ path: ".env.local" });
 CANVAS_API_KEY = process.env.CANVAS_API_KEY;
 
 // To get syllabus of CP499
-const url = `${API_URL}/${COURSE_ID}?include[]=syllabus_body`;
+const url = "https://coloradocollege.instructure.com/api/v1/users/self/enrollments"
 
 
 fetch(url, {
@@ -23,10 +17,35 @@ fetch(url, {
     'Authorization': `Bearer ${CANVAS_API_KEY}`,
   },
 }).then(response => response.json())
-    .then(data => console.log(data));
+    .then(data => {
+        // find most recent course
+        current_max = 0;
+        current_course = null;
+        for (let i = 0; i < data.length; i++){
+            const course = data[i]
+            // don't include null
+            
+            last_activity = course.last_activity_at
+            if (last_activity == null){
+                last_activity = "0"
+            }
+            
+            last_activity = last_activity.replaceAll("-", " ")
+            last_activity = last_activity.replaceAll(" ", "")
+            if (parseInt(last_activity) > current_max){
+                currentMax = last_activity
+                current_course = course
+            }
+        }
+        // current_course is ya current course
+        console.log(current_course.user.name, ": ", current_course.course_id)
+        
+    });
 
-/**
-Source: Medium.com
+    
+/** 
+// Source: Medium.com
+// AUTH FLOW: 
  1. Request URL: http://<canvas-instance-url>/login/oauth2/auth
 HTTP Method: GET
 Parameters:
