@@ -21,16 +21,22 @@ const MarkdownWithSyntaxHighlighter: FC<MarkdownWithSyntaxHighlighterProps> = ({
       // Markdown text (content) --> react elemeents to render on react page
       children={content} // render markdown on content string 
 
-      remarkPlugins={[remarkGfm, remarkMath]}
-      rehypePlugins={[rehypeKatex]}
+      remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]}
+      rehypePlugins={[[rehypeKatex, { strict: false, output: 'html', throwOnError: false }]]}
 
       components={{ // prop components -- access code component and inject custom logic into 
-        code({ inline, className, children, ...props }:any) { // inside react mkdn componenet accessing code component which has node, inline,CN, children
+        code({ node, inline, className, children, ...props }:any) { // inside react mkdn componenet accessing code component which has node, inline,CN, children
             //injecting custom logic--match with langauge
           // react-markdown uses className like "language-ts" or "language-js"   
           const match = /language-(\w+)/.exec(className || ''); // regeex see if codeblock has language specified
-          //render conditionally : 
-          return !inline && match ? ( // if its not inline (codeblock) and its a match (IE className == LanguageThatExists) then  inject syntax highjlighter component
+          const isCodeBlock = !inline && match;
+          
+          const isMathBlock = !inline && /^\$\$[\s\S]*\$\$/.test(String(children));
+          if (isMathBlock) {
+            return <div className="math-block">{children}</div>;
+          }
+          
+          return isCodeBlock ? ( // if its not inline (codeblock) and its a match (IE className == LanguageThatExists) then  inject syntax highjlighter component
             <SyntaxHighlighter
               language={match[1]} // sets langug
               style={vscDarkPlus} // dark theme
