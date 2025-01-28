@@ -3,7 +3,19 @@
 // scroll to different ones
 'use client'; // This is a client-side component
 
+import { Page } from 'openai/pagination';
 import React, { useState } from 'react';
+
+import { Bar, Line } from 'react-chartjs-2';
+
+import { BarElement, CategoryScale, Chart, LinearScale, LineElement, PointElement} from "chart.js";
+import { point } from 'drizzle-orm/pg-core';
+
+Chart.register(CategoryScale);
+Chart.register(BarElement);
+Chart.register(LinearScale);
+Chart.register(PointElement);
+Chart.register(LineElement);
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 300 to 800
@@ -19,7 +31,23 @@ type GraphBox = {
   src: string;
   description: string;
 }
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
+const data = {
+  labels,
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: [1,2,3,4],
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    },
+    {
+      label: 'Dataset 2',
+      data: [1,2,3,4],
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+  ],
+};
 
 export default function AdminDash() {
 
@@ -55,6 +83,7 @@ export default function AdminDash() {
             >
               <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph1.title}</h2>
               <p className='text-gray-600'>{graph1.content}</p>
+              <Bar data={data}></Bar>
               
             </div>
             {/*Graph2*/}
@@ -63,6 +92,7 @@ export default function AdminDash() {
             >
               <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph2.title}</h2>
               <p className='text-gray-600'>{graph2.content}</p>
+              <Line data={data} />
 
               </div>
               {/*Graph3*/}
