@@ -30,7 +30,7 @@ export default function ChatPage(){
 
           //perfect context to set math and code rules
 
-          content: 'You are a helpful assistant specializing in mathematics and education. Always format your responses following these rules:\n\n' +
+          content: 'You are a helpful assistant. Always format your responses following these rules:\n\n' +
           
           '1. ALL mathematical expressions MUST be written in LaTeX notation\n' +
           
@@ -126,58 +126,82 @@ export default function ChatPage(){
   }
 //RETURN HTLM (X) 
   return (
-
-    <main className="font-crimsonPro flex flex-col items-center p-4 bg-cc-gold-faint min-h-screen bg-cc-gold-faint"> 
-    <style>
+    <main className="font-crimsonPro flex flex-col items-center p-4 bg-white min-h-screen">
+      {/* <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap');
-      </style> 
+      </style>  */}
     <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Choose your class</h1>
       <form onSubmit={selectClass} className=" max-w-xl space-x-2">
-        <select className= "items-center border border-4 border-double border-cc-gold w-60">
-          <option value="Linear Algebra">Linear Algebra</option>
-          <option value="Cultural Anthropology">Cultural Anthropology</option>
-          <option value="meat">Meat</option>
-        </select>
-        <button
-          className="bg-cc-gold text-white px-4 py-2 mb-40 rounded hover:opacity-80"
-          type="submit"
-          disabled={loading}
-        >   
-          {loading ? 'Purring...' : 'Submit'}
-        </button>
+      <select className="items-center border border-cc-gold rounded-md p-2 w-60">
+
+              <option value="Linear Algebra">Linear Algebra</option>
+              <option value="Cultural Anthropology">Cultural Anthropology</option>
+              <option value="meat">Meat</option>
+            </select>
+            <button
+              className="bg-cc-gold text-white px-4 py-2 rounded-md hover:opacity-80"
+              type="submit"
+              disabled={loading}
+            >   
+              {loading ? 'Purring...' : 'Submit'}
+            </button>
         </form>
 
-      <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
-      <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
-        {messages
+        <h1 className="text-4xl font-bold text-center my-4">Tiger One Chat</h1>
+        <div className="flex-1 overflow-auto">
+          <div className="max-w-[48rem] mx-auto"> 
+            {messages 
           .filter((m) => m.role !== 'system') // optional :::(hides system in the ui)//bg-cc-gold/20
-          .map((msg, index) => (
-            <div key={index} className="p-2">
-              <strong className="text-cc-charcoal">
-                {msg.role === 'assistant' ? 'Tiger' : 'You'}:
-                </strong>{' '}
-                <MarkdownWithSyntaxHighlighter content = {msg.content}/>
-            </div>
-          ))}
-      </div>
-
-      <form onSubmit={handleSubmit} className="w-full max-w-xl flex space-x-2">
-        <input
-          className="flex-1 border border-cc-charcoal p-2 rounded"
-          type="text"
-          placeholder="Type your message..."
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          disabled={loading}
-        />
-        <button
-          className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? 'Thinking...' : 'Send'}
-        </button>
-      </form>
+              .map((msg, index) => (
+              //#/*justify-start moves chat buble left , justify end justifys to the right*/
+            //justify-start moves chat buble left , justify end justifys to the right*/
+           // user query chat bubble, justify right, clean gray bg, rounded like proffesional llms
+                <div key={index} className="px-4 py-2"> {msg.role === 'user' ? (
+                    <div className="flex justify-end mb-4">
+                      <div className="bg-gray-100 rounded-lg px-4 py-2 max-w-[85%]">
+                        <div className="font-medium text-gray-800 mb-1"></div>
+                        <div className="text-gray-800">
+                          <MarkdownWithSyntaxHighlighter content={msg.content} />
+                        </div>
+                      </div>
+                    </div>
+                  ) : ( // else: 
+                    // Assistant message : = msg.role === 'TIGER' ?
+                    <div className="mb-4 flex gap-4 items-start">
+                      <div className="w-8 h-8 flex items-center justify-center rounded-full bg-cc-gold text-white flex-shrink-0">
+                        🐯
+                      </div>
+                      <div className="bg-white flex-1">
+                        <div className="text-gray-800">
+                          <MarkdownWithSyntaxHighlighter content={msg.content} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+            ))}
+          </div>
+        </div>
+            {/*user chat box */}
+        <div className="border-t p-4 w-full max-w-[48rem] mx-auto">
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <input
+              className="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cc-gold"
+              type="text"
+              placeholder="Type your message..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              disabled={loading}
+            />
+            <button
+          className=" bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? 'Thinking...' : 'Send'}
+            </button>
+          </form>
+        </div>
     </main>
   )
 }
