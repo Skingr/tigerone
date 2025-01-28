@@ -6,6 +6,12 @@ export type ChatMessage = {
     content: string
     class: string
 }
+
+export type User = {
+    username: string
+    currTime: string
+}
+
 export interface ChatRequest {
     messages: ChatMessage[]
   }

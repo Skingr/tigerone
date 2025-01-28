@@ -31,7 +31,7 @@ export default function AdminDash() {
   let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
   let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
   let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
-    
+    //isaac was here
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">

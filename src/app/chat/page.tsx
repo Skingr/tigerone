@@ -17,7 +17,7 @@
 //useState<ChatMessage[]>(...) == makes sure type script knows its an arr of ChatMessage objects
 
 import { useState } from 'react' // useState hook from React for state management
-import { ChatMessage, ChatRequest } from '@/sharedTypes/types'
+import { ChatMessage, User } from '@/sharedTypes/types'
 import MarkdownWithSyntaxHighlighter from '@/components/MarkdownWithSyntaxHighliter'
 
 
@@ -44,6 +44,37 @@ export default function ChatPage(){
     const [userInput, setUserInput] = useState('')
     const [loading, setLoading] = useState(false)
     const[userClass, setUserClass] = useState<string>('N/A')
+    const[username, setUsername] = useState<string>('')
+
+
+    const handleUsernameSubmit = async(e:React.FormEvent) =>{
+      const[currTime, setCurrTime] = useState('')
+      e.preventDefault();
+      const now = new Date();
+      setCurrTime(now.toLocaleDateString() + now.toLocaleTimeString())
+      setUsername(username)
+      setUsername('')
+      const newUser: User[] = [
+        {username: username, currTime: currTime}
+      ];
+      try{
+        const res = await fetch('api/chat', {
+          method: 'POST',
+          headers: {'Content-Type' : 'Application/json'},
+          body: JSON.stringify({newUser}),
+        })
+        if (!res.ok){
+          throw new Error (`Req failed with statu ${res.status}`)
+      }
+      const data = await res.json()
+      }catch (err: any) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+
+    }
+    
 
     const selectClass = async(e:React.FormEvent) =>{
       e.preventDefault(); 
@@ -115,7 +146,21 @@ export default function ChatPage(){
           {loading ? 'Purring...' : 'Submit'}
         </button>
         </form>
-
+        <form onSubmit={handleUsernameSubmit} className="max-w-xl space-x-2 mb-8">
+          <input
+            className="items-center border border-4 border-double border-cc-gold w-60 p-2"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+    />
+        <button
+            className="bg-cc-gold text-white px-4 py-2 rounded hover:opacity-80"
+            type="submit"
+        >
+            Save
+        </button>
+        </form>
       <h1 className="text-3xl font-bold mb-4 text-cc-charcoal">Tiger One Chat</h1> 
       <div className="w-full max-w-xl border rounded p-4 mb-4 space-y-2 border-cc-charcoal">
         {messages
