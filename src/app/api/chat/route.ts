@@ -7,7 +7,7 @@
  * end pt calls createChatCompletion from official openai library
  * response returned as json
  */
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server.js'
 import { ChatRequest } from '@/sharedTypes/types'
 import OpenAI from 'openai'
 import { drizzle } from 'drizzle-orm/node-postgres';
