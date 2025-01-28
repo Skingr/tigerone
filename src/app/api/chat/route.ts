@@ -22,6 +22,15 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
     
+
+  export async function ACC (req: Request){
+    try{
+      console.log("WORK")
+    }
+  catch (error:any){
+    console.error('account error')
+  }
+}
   export async function POST(req: Request) { // POST request: creating an HTTPS request of a special type
     try {
       const body = await req.json() as ChatRequest // body is payload of the request, i.e the users input in the req (ourcase)

@@ -45,24 +45,25 @@ export default function ChatPage(){
     const [loading, setLoading] = useState(false)
     const[userClass, setUserClass] = useState<string>('N/A')
     const[username, setUsername] = useState<string>('')
+    const[currTime, setCurrTime] = useState<string>('')
 
 
     const handleUsernameSubmit = async(e:React.FormEvent) =>{
-      const[currTime, setCurrTime] = useState('')
       e.preventDefault();
       const now = new Date();
       setCurrTime(now.toLocaleDateString() + now.toLocaleTimeString())
       setUsername(username)
-      setUsername('')
       const newUser: User[] = [
         {username: username, currTime: currTime}
       ];
+
       try{
         const res = await fetch('api/chat', {
-          method: 'POST',
+          method: 'ACC',
           headers: {'Content-Type' : 'Application/json'},
-          body: JSON.stringify({newUser}),
+          body: JSON.stringify({newUser: newUser}),
         })
+
         if (!res.ok){
           throw new Error (`Req failed with statu ${res.status}`)
       }
@@ -71,11 +72,7 @@ export default function ChatPage(){
         console.error(err)
       } finally {
         setLoading(false)
-      }
-
-    }
-    
-
+      }}
     const selectClass = async(e:React.FormEvent) =>{
       e.preventDefault(); 
       setUserClass((e.currentTarget.querySelector('select') as HTMLSelectElement)?.value)
