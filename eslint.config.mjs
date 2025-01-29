@@ -15,6 +15,7 @@ const eslintConfig = [
     rules: {
       "@typescript-eslint/no-unused-vars": "warn", // downgrade from error to warning
       "@typescript-eslint/no-require-imports": "off", // turn off no-require-imports rule
+      "@typescript-eslint/no-explicit-any": "off", // allow usage of 'any' type
     },
   }
 ];

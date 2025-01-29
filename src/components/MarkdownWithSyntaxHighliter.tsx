@@ -19,7 +19,7 @@ const MarkdownWithSyntaxHighlighter: FC<MarkdownWithSyntaxHighlighterProps> = ({
   return (
     <ReactMarkdown 
       // Markdown text (content) --> react elemeents to render on react page
-      children={content} // render markdown on content string 
+      // children={content} // render markdown on content string 
 
       remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: true }]]}
       rehypePlugins={[[rehypeKatex, { strict: false, output: 'html', throwOnError: false }]]}
@@ -54,7 +54,8 @@ const MarkdownWithSyntaxHighlighter: FC<MarkdownWithSyntaxHighlighterProps> = ({
           );
         },
       }}
-    />
+    >
+      {content}</ReactMarkdown>
   );
 };
 
