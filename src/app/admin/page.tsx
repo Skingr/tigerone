@@ -74,38 +74,16 @@ export default function AdminDash() {
   
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  const queryBox: Box = {title: 'Query box', content: ''}
+  let queryBox: Box = {title: 'Query box', content: 'Query data... Query data... Query data... Query data... \
+    Query data... Query data... Query data... Query data... Query data... Query data... Query data... '}
 
-  const graph1: Box = {title: 'Graph 1', content: ''}
-  const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
-  const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
-  const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+  let graph1: Box = {title: 'Graph 1', content: ''}
+  let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
+  let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
+  let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
     
-  const [db, setdb] = useState(null);
 
-  const fetchData = async() => {
-    try {
-      const response = await fetch('/api/admin', {
-        method: 'GET',
-      })
-
-      if (!response.ok){
-        throw new Error ('Failed');
-      }
-    
-    const db = await response.json();
-    setdb(db)
-    console.log(db) 
-    }catch(err: any) {
-      console.error(err)
-    }
-  
-  }
-  useEffect(() => {
-    fetchData(); // fetch data on page load
-  }, []);
-
-
+ 
 
  
 
