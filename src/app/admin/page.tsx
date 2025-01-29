@@ -8,9 +8,11 @@ import React, { useEffect, useState } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
 
-import { BarElement, CategoryScale, Chart, LinearScale, LineElement, PointElement} from "chart.js";
+import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
 import { point } from 'drizzle-orm/pg-core';
 import moment from 'moment';
+import { Doughnut } from 'react-chartjs-2';
+
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -20,6 +22,35 @@ Chart.register(LineElement);
 
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 300 to 800
+
+Chart.register(ArcElement, Tooltip, Legend);
+
+const donData = {
+  labels: [  'Purple', 'Orange'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
 
 type Box = {
   title: string;
@@ -32,7 +63,7 @@ type GraphBox = {
 }
 const labels = [moment().format('dddd') , moment().format('dddd')];
 
-const data = {
+const lindata = {
   labels,
   datasets: [
     {
@@ -113,24 +144,24 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
 
-        <div className="flex-1 grid grid-cols-2 gap-4">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center">
             {/*Graph1*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10"
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center"
             >
               <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph1.title}</h2>
               <p className='text-gray-600'>{graph1.content}</p>
               {/* <Bar data={data}></Bar> */}
-              <Line data={data} options={options}/>
+              <Line data={lindata} options={options}/>
               
             </div>
             {/*Graph2*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 "
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph2.title}</h2>
-              <p className='text-gray-600'>{graph2.content}</p>
-              
+             
+                <Doughnut data={donData} className="mx-auto" style={{width: 100, height:100}}/>
+
 
               </div>
               {/*Graph3*/}
