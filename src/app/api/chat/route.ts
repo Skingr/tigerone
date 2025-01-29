@@ -39,6 +39,7 @@ const openai = new OpenAI({
       const userclass = messages[messages.length - 1].class;
 
       //n3ed to figure out correct params for each model, add claude w.; claude api key and deep seek w deep seek api key , o1 preview is expensive 
+      //
       const modelChoices = {
         'gpt-4o': {
           model: 'gpt-4o',
@@ -50,12 +51,12 @@ const openai = new OpenAI({
         },
         'o1-preview': {
           model: 'o1-preview',
-          max_completion_tokens: 100000 // very expensive use wisely
+          max_completion_tokens: 5000 // very expensive use wisely
         },
         'o1-mini': {
           model: 'o1-mini',
-          max_completion_tokens: 10000 // need to test price 
-      }
+          max_completion_tokens: 5000 // need to test price 
+        }
       }
 
       // || defaults to gpt-4o , curModelChoice is the user selected model
