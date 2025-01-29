@@ -76,13 +76,12 @@ export default function AdminDash() {
     
     const db = await response.json();
     setdb(db)
-    //console.log(data) 
+    console.log(db) 
     }catch(err: any) {
       console.error(err)
     }
   
   }
-
   useEffect(() => {
     fetchData(); // fetch data on page load
   }, []);
