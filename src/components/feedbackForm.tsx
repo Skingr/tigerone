@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
+
 
 
 export default function SubmitFeedback() {
     const [userInput, setUserInput] = useState('')
     const [emojiSelected, setEmojiSelected] = useState(false) // tracks if an emoji is pressed
-    const [emoji, setEmoji] = useState<string>('')
     
-    const EmojiClicked = (selectedEmoji: string) => {
+    const EmojiClicked = () => {
         setEmojiSelected(true); // Set to true when an emoji is clicked
-        setEmoji(selectedEmoji)
         
     }
 
     const handleSubmit = async(e: React.FormEvent) => { // what runs when you click button 
         e.preventDefault() //if you remove and you click send page will refresh 
         if (!userInput.trim()) return; // Prevent empty submissions
-        const output = `${emoji} ${userInput}`
         
         setUserInput('')
         
@@ -24,7 +23,7 @@ export default function SubmitFeedback() {
             const res = await fetch('api/feedback', {
                 method: 'POST',
                 headers: {'Content-Type' : 'Application/json'},
-                body: JSON.stringify({feedback: output}),
+                body: JSON.stringify({feedback: userInput}),
 
             })
             if (res.ok){
@@ -42,32 +41,21 @@ export default function SubmitFeedback() {
         return (
             
         <div className=" border-t p-4 w-full max-w-[48rem] mx-auto">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2 fixed top-12 left-2">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-2 fixed top-4 right-4">
             <div>
             
             <button
           className="text-5xl px-2 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
               type="button"
-              onClick={() => EmojiClicked('🥳')}
-              
-
-              
+              onClick={() => EmojiClicked()}
             >
-              🥳
-            </button>
-            <button
-          className="text-5xl px-2 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
-              type="button"
-              onClick={() => EmojiClicked('😐')}
-            >
-              😐
-            </button>
-            <button
-          className="text-5xl px-2 py-2 rounded hover:opacity-80" // text-black px-4 py-2 rounded"
-              type="button"
-              onClick={() => EmojiClicked('😭')}
-            >
-              😭
+              <Image
+                    src='/feedback.png'
+                    alt="feedback"
+                    width={50}
+                    height={50}
+                    className="hover:opacity-80"
+                    />
             </button>
             </div>
             <div>
