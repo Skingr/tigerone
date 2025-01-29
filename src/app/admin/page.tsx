@@ -19,8 +19,6 @@ Chart.register(LineElement);
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 300 to 800
 
-
-
 type Box = {
   title: string;
   content: string;
@@ -52,41 +50,40 @@ const data = {
 
 
 export default function AdminDash() {
-
-// TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  let queryBox: Box = {title: 'Query box', content: 'Query data... Query data... Query data... Query data... \
-    Query data... Query data... Query data... Query data... Query data... Query data... Query data... '}
-
-  let graph1: Box = {title: 'Graph 1', content: 'graph here?'}
-  let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
-  let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
-  let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
-    
   const [db, setdb] = useState(null);
-
   const fetchData = async() => {
     try {
       const response = await fetch('/api/admin', {
         method: 'GET',
       })
-
       if (!response.ok){
         throw new Error ('Failed');
       }
-    
     const db = await response.json();
     setdb(db)
+    console.log(typeof db)
     console.log(db) 
+    console.log(db[0].userquery)
     }catch(err: any) {
       console.error(err)
     }
-  
   }
   useEffect(() => {
-    fetchData(); // fetch data on page load
-  }, []);
+    fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+  }, [])
+  
 
+// TODO: How do I make this mutable? And formatted right? Want an \n after every query
+  let queryBox: Box = {title: 'Query box', content: 'Query data... Query data... Query data... Query data... \
+    Query data... Query data... Query data... Query data... Query data... Query data... Query data... '}
 
+  let graph1: Box = {title: 'Graph 1', content: ''}
+  let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
+  let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
+  let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+    
+
+ 
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
@@ -138,9 +135,7 @@ export default function AdminDash() {
               <p className='text-gray-600'>{graph4.content}</p>
               
             </div>
-            
-           
-          
+  
         </div>
 
         {/* Right Side: Data Box */}
