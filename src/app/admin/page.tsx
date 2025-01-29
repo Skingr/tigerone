@@ -26,11 +26,11 @@ Chart.register(LineElement);
 Chart.register(ArcElement, Tooltip, Legend);
 
 const donData = {
-  labels: [  'Purple', 'Orange'],
+  labels: [  'Linear Algebra', 'Cultural Anthropology', 'General Chemistry'],
   datasets: [
     {
       label: '# of Votes',
-      data: [12, 19],
+      data: [12, 19,22],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
@@ -157,12 +157,10 @@ export default function AdminDash() {
             </div>
             {/*Graph2*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 flex items-center justify-center"
+              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-                <Doughnut data={donData} className="mx-auto" style={{width: 100, height:100}}/>
-
-
+                <Doughnut data={donData} className="mx-auto p-3"/>
               </div>
               {/*Graph3*/}
             <div
