@@ -74,7 +74,7 @@ const openai = new OpenAI({
 
 
 //4. Return llm inference response
-return NextResponse.json(response)
+    return NextResponse.json(response)
   } catch (error: any) {
     console.error('Error calling OpenAI API:', error)
     return NextResponse.json(
