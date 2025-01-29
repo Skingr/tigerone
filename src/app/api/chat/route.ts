@@ -25,8 +25,9 @@ const openai = new OpenAI({
   export async function POST(req: Request) { // POST request: creating an HTTPS request of a special type
     try {
       const body = await req.json() as ChatRequest // body is payload of the request, i.e the users input in the req (ourcase)
-      const { messages } = body // this line pulls messages from "body"
+      const { messages, model } = body // this line pulls messages from "body"
       console.log("***************************",body)
+      console.log("Selected model:", model)
       if (!messages || !Array.isArray(messages)) {
         return NextResponse.json(
           { error: 'No valid messages array in request body.' },
@@ -34,47 +35,73 @@ const openai = new OpenAI({
         )
       }
     //get user query
-    const userquery = messages[messages.length - 1].content;
-    const userclass = messages[messages.length - 1].class;
-// 3. make call to OPEN AI 
-    const response = await openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',  // Will integrate different models in a dropdown box
-        
-        messages: messages,
-    })
+      const userquery = messages[messages.length - 1].content;
+      const userclass = messages[messages.length - 1].class;
 
-    // get response
-    const airesponse = response.choices[0].message.content;
-    //get database URL from env file
-    const client = new Client({
-      connectionString: process.env.DATABASE_URL
-    })
+      //n3ed to figure out correct params for each model, add claude w.; claude api key and deep seek w deep seek api key , o1 preview is expensive 
+      const modelChoices = {
+        'gpt-4o': {
+          model: 'gpt-4o',
+          max_tokens: 3000
+        },
+        'gpt-4o-turbo': {
+          model: 'gpt-4o-turbo',
+          max_tokens: 3000
+        },
+        'o1-preview': {
+          model: 'o1-preview',
+          max_completion_tokens: 100000 // very expensive use wisely
+        },
+        'o1-mini': {
+          model: 'o1-mini',
+          max_completion_tokens: 10000 // need to test price 
+      }
+      }
 
-    // make connection
-    await client.connect();
-    const db = drizzle(client);
+      // || defaults to gpt-4o , curModelChoice is the user selected model
+      const curModelChoice = modelChoices[model as keyof typeof modelChoices] || modelChoices['gpt-4o']
 
-
-    //store user query and response in AWS database
-    const insertChat = await db
-      .insert(aidata)
-      .values({
-        //courseName,
-        //courseId,
-        userquery: userquery,
-        airesponse: airesponse,
-        userclass: userclass
+      //3. make call to OPEN AI APII 
+      const response = await openai.chat.completions.create({
+        ...curModelChoice, // spread operator to include all properties from curModelChoice (model , max_completion_tokens and?max_tokens)
+        messages: messages.map(msg => ({ // messages.map is neccesary to convert messages arr (all user messages) to an arr with properties (role and content) api req role and content obj 
+          role: msg.role, // user or assistant
+          content: msg.content // userInput
+        }))
       })
-      
-      // debugging values of userquery and airesponse
-      //console.log('Data:', {
-      //  userquery,
-      //  airesponse,
-      //});
+
+      // get response
+      const airesponse = response.choices[0].message.content;
+      //get database URL from env file
+      const client = new Client({
+        connectionString: process.env.DATABASE_URL
+      })
+
+      // make connection
+      await client.connect();
+      const db = drizzle(client);
+
+
+      //store user query and response in AWS database
+    const insertChat = await db
+        .insert(aidata)
+        .values({
+          //courseName,
+          //courseId,
+          userquery: userquery,
+          airesponse: airesponse,
+          userclass: userclass
+        })
+        
+        // debugging values of userquery and airesponse
+        //console.log('Data:', {
+        //  userquery,
+        //  airesponse,
+        //});
 
 
 //4. Return llm inference response
-return NextResponse.json(response)
+      return NextResponse.json(response)
   } catch (error: any) {
     console.error('Error calling OpenAI API:', error)
     return NextResponse.json(
