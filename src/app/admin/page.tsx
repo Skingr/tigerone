@@ -4,12 +4,11 @@
 'use client'; // This is a client-side component
 
 import { Page } from 'openai/pagination';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
 
 import { BarElement, CategoryScale, Chart, LinearScale, LineElement, PointElement} from "chart.js";
-import { point } from 'drizzle-orm/pg-core';
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -49,6 +48,9 @@ const data = {
   ],
 };
 
+
+
+
 export default function AdminDash() {
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
@@ -60,6 +62,32 @@ export default function AdminDash() {
   const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
   const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
     
+  const [db, setdb] = useState(null);
+
+  const fetchData = async() => {
+    try {
+      const response = await fetch('/api/admin', {
+        method: 'GET',
+      })
+
+      if (!response.ok){
+        throw new Error ('Failed');
+      }
+    
+    const db = await response.json();
+    setdb(db)
+    //console.log(data) 
+    }catch(err: any) {
+      console.error(err)
+    }
+  
+  }
+
+  useEffect(() => {
+    fetchData(); // fetch data on page load
+  }, []);
+
+
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
