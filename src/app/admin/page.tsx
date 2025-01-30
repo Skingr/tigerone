@@ -121,7 +121,7 @@ export default function AdminDash() {
     title: 'Query box',
     content: db ? (
     <ul>
-       <div className="overflow-y-auto max-h-96 border rounded-lg p-2">
+       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
           {db.map((msg,index) => 
           <li key={index} className="border-b py-1">
           <b>Student Question:</b> {msg.userquery} <br></br>
