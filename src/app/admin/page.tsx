@@ -83,34 +83,60 @@ const lindata = {
 
 
 export default function AdminDash() {
-  const [db, setdb] = useState(null);
-//TODO: wull fix this
+    const [db, setdb] = useState<{ 
+      userquery: string;
+      airesponse: string; 
+      userclass: string }[]>();
+  
+  //TODO: wull fix this
 
 
   const fetchData = async() => {
-    try {
-      const response = await fetch('/api/admin', {
-        method: 'GET',
-      })
-      if (!response.ok){
-        throw new Error ('Failed');
+      try {
+        const response = await fetch('/api/admin', {
+          method: 'GET',
+        })
+        if (!response.ok){
+          throw new Error ('Failed');
+        }
+      const db = await response.json();
+      setdb(db)
+      console.log(typeof db)
+      console.log(db) 
+      console.log(db[0].userquery)
+      }catch(err: any) {
+        console.error(err)
       }
-    const db = await response.json();
-    setdb(db)
-    console.log(typeof db)
-    console.log(db) 
-    console.log(db[0].userquery)
-    }catch(err: any) {
-      console.error(err)
     }
-  }
-  useEffect(() => {
-    fetchData(); // gathers data from database when page is loaded, so will update on each refresh
-  }, [])
+    useEffect(() => {
+      fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+    }, [])
+    
+    let Sdata = String(db)
+  
   
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  const queryBox: Box = {title: 'Query box', content: ''}
+  const queryBox= {
+    title: 'Query box',
+    content: db ? (
+    <ul>
+       <div className="overflow-y-auto max-h-96 border rounded-lg p-2">
+          {db.map((msg,index) => 
+          <li key={index} className="border-b py-1">
+          <b>Student Question:</b> {msg.userquery} <br></br>
+          <b>AI Response:</b> {msg.airesponse}<br></br>
+          <b>User Class:</b>{msg.userclass}<br></br>
+        </li>
+           )}
+
+       </div>
+
+    </ul>
+  ):(
+    <p>Loading...</p>
+
+  )}
 
   let graph1: Box = {title: 'Usage', content: 'Students usage over time'}
   let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
@@ -185,7 +211,7 @@ export default function AdminDash() {
         <div className="w-1/2 ml-4 mr-10 ml-10 ">
           <div className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
-            <p className='text-gray-600'>{queryBox.content}</p>
+            <div>{queryBox.content}</div>
           </div>
         </div>
       </div>
