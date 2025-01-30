@@ -74,13 +74,12 @@ export default function AdminDash() {
   
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  let queryBox: Box = {title: 'Query box', content: 'Query data... Query data... Query data... Query data... \
-    Query data... Query data... Query data... Query data... Query data... Query data... Query data... '}
+  const queryBox: Box = {title: 'Query box', content: ''}
 
-  let graph1: Box = {title: 'Graph 1', content: ''}
-  let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
-  let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
-  let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+  const graph1: Box = {title: 'Graph 1', content: ''}
+  const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
+  const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
+  const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
     
 
  
