@@ -84,9 +84,9 @@ const lindata = {
 
 export default function AdminDash() {
     const [db, setdb] = useState<{ 
-      userquery: string;
-      airesponse: string; 
-      userclass: string }[]>();
+      role: string;
+      content: string; 
+      created_at: string }[]>();
   
   //TODO: wull fix this
 
@@ -101,9 +101,9 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
-      console.log(typeof db)
-      console.log(db) 
-      console.log(db[0].userquery)
+      //console.log(typeof db)
+      //console.log(db) 
+      //console.log(db[0].userquery)
       }catch(err: any) {
         console.error(err)
       }
@@ -111,8 +111,7 @@ export default function AdminDash() {
     useEffect(() => {
       fetchData(); // gathers data from database when page is loaded, so will update on each refresh
     }, [])
-    
-    let Sdata = String(db)
+    console.log(db)
   
   
 
@@ -124,9 +123,9 @@ export default function AdminDash() {
        <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
           {db.map((msg,index) => 
           <li key={index} className="border-b py-1">
-          <b>Student Question:</b> {msg.userquery} <br></br>
-          <b>AI Response:</b> {msg.airesponse}<br></br>
-          <b>User Class:</b>{msg.userclass}<br></br>
+          <b>Role:</b> {msg.role} <br></br>
+          <b>Content:</b> {msg.content}<br></br>
+          <b>Timestamp:</b>{msg.created_at}<br></br>
         </li>
            )}
 
@@ -157,9 +156,6 @@ export default function AdminDash() {
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
-      <style>
-        @import url(`https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap`);
-      </style>
       
       {/* Header */}
       <header className="mb-6 text-center">
