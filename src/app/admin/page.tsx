@@ -137,10 +137,10 @@ export default function AdminDash() {
 
   )}
 
-  let graph1: Box = {title: 'Usage', content: 'Students usage over time'}
-  let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
-  let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
-  let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+  // let graph1: Box = {title: 'Usage', content: 'Students usage over time'}
+  // let graph2: Box = {title: 'Graph 2', content: 'graph here?'}
+  // let graph3: Box = {title: 'Graph 3', content: 'graph here?'}
+  // let graph4: Box = {title: 'Graph 4', content: 'graph here?'}
   const options = {
     responsive: true,
     plugins: {
