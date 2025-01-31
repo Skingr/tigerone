@@ -8,7 +8,11 @@ import React, { useEffect, useState } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
 
-import { BarElement, CategoryScale, Chart, LinearScale, LineElement, PointElement} from "chart.js";
+import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
+import { point } from 'drizzle-orm/pg-core';
+import moment from 'moment';
+import { Doughnut } from 'react-chartjs-2';
+
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -19,6 +23,35 @@ Chart.register(LineElement);
 // <uniquifier>: Use a unique and descriptive class name
 // <weight>: Use a value from 300 to 800
 
+Chart.register(ArcElement, Tooltip, Legend);
+
+const donData = {
+  labels: [  'Linear Algebra', 'Cultural Anthropology', 'General Chemistry'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19,22],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
 type Box = {
   title: string;
   content: string;
@@ -28,9 +61,9 @@ type GraphBox = {
   src: string;
   description: string;
 }
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = [moment().format('dddd') , moment().format('dddd')];
 
-const data = {
+const lindata = {
   labels,
   datasets: [
     {
@@ -50,50 +83,79 @@ const data = {
 
 
 export default function AdminDash() {
-  const [db, setdb] = useState(null);
-//TODO: wull fix this
+    const [db, setdb] = useState<{ 
+      role: string;
+      content: string; 
+      created_at: string }[]>();
+  
+  //TODO: wull fix this
 
 
   const fetchData = async() => {
-    try {
-      const response = await fetch('/api/admin', {
-        method: 'GET',
-      })
-      if (!response.ok){
-        throw new Error ('Failed');
+      try {
+        const response = await fetch('/api/admin', {
+          method: 'GET',
+        })
+        if (!response.ok){
+          throw new Error ('Failed');
+        }
+      const db = await response.json();
+      setdb(db)
+      //console.log(typeof db)
+      //console.log(db) 
+      //console.log(db[0].userquery)
+      }catch(err: any) {
+        console.error(err)
       }
-    const db = await response.json();
-    setdb(db)
-    console.log(typeof db)
-    console.log(db) 
-    console.log(db[0].userquery)
-    }catch(err: any) {
-      console.error(err)
     }
-  }
-  useEffect(() => {
-    fetchData(); // gathers data from database when page is loaded, so will update on each refresh
-  }, [])
+    useEffect(() => {
+      fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+    }, [])
+    console.log(db)
+  
   
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  const queryBox: Box = {title: 'Query box', content: ''}
+  const queryBox= {
+    title: 'Query box',
+    content: db ? (
+    <ul>
+       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
+          {db.map((msg,index) => 
+          <li key={index} className="border-b py-1">
+          <b>Role:</b> {msg.role} <br></br>
+          <b>Content:</b> {msg.content}<br></br>
+          <b>Timestamp:</b>{msg.created_at}<br></br>
+        </li>
+           )}
 
-  const graph1: Box = {title: 'Graph 1', content: ''}
-  const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
-  const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
-  const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
-    
+       </div>
 
- 
+    </ul>
+  ):(
+    <p>Loading...</p>
 
- 
+  )}
+
+   const graph1: Box = {title: 'Usage', content: 'Students usage over time'}
+   const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
+   const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
+   const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart',
+      },
+    },
+  };
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
-      <style>
-        @import url(`https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,200..900;1,200..900&family=Funnel+Display:wght@300..800&display=swap`);
-      </style>
       
       {/* Header */}
       <header className="mb-6 text-center">
@@ -104,24 +166,23 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
 
-        <div className="flex-1 grid grid-cols-2 gap-4">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center">
             {/*Graph1*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10"
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center"
             >
               <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph1.title}</h2>
               <p className='text-gray-600'>{graph1.content}</p>
-              <Bar data={data}></Bar>
+              {/* <Bar data={data}></Bar> */}
+              <Line data={lindata} options={options}/>
               
             </div>
             {/*Graph2*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 "
+              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph2.title}</h2>
-              <p className='text-gray-600'>{graph2.content}</p>
-              <Line data={data} />
-
+             
+                <Doughnut data={donData} className="mx-auto p-3"/>
               </div>
               {/*Graph3*/}
             <div
@@ -146,7 +207,7 @@ export default function AdminDash() {
         <div className="w-1/2 ml-4 mr-10 ml-10 ">
           <div className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
-            <p className='text-gray-600'>{queryBox.content}</p>
+            <div>{queryBox.content}</div>
           </div>
         </div>
       </div>

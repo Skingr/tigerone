@@ -2,7 +2,7 @@
 import { Client } from 'pg'
 import { NextResponse } from 'next/server'
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { conversations } from '@/db/schema';
+import { messages } from '@/db/schema';
 
 
 
@@ -16,7 +16,8 @@ export async function GET(req: Request){
   try {
     await client.connect();
     const db = drizzle(client);
-    const allData = await db.select().from(conversations).execute();
+    const allData = await db.select().from(messages).execute();
+    //console.log(allData)
     return NextResponse.json(allData)
   }catch(error){
     console.error('error');
