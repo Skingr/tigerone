@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "drizzle-kit generate && drizzle-kit up && drizzle-kit pull && next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "drizzle-kit generate && drizzle-kit up && drizzle-kit pull && next start",
     "lint": "next lint"
   },
   "dependencies": {
