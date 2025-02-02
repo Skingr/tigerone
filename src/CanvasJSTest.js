@@ -5,42 +5,45 @@
 const API_URL = "https://coloradocollege.instructure.com/api/v1/courses"
 
 
-require("dotenv").config({ path: ".env.local" });
+require("dotenv").config({ path: ".env" });
 CANVAS_API_KEY = process.env.CANVAS_API_KEY;
 
-// To get syllabus of CP499
-const url = "https://coloradocollege.instructure.com/api/v1/users/self/enrollments"
 
-
-fetch(url, {
-  headers: {
-    'Authorization': `Bearer ${CANVAS_API_KEY}`,
-  },
-}).then(response => response.json())
-    .then(data => {
-        // find most recent course
-        current_max = 0;
-        current_course = null;
-        for (let i = 0; i < data.length; i++){
-            const course = data[i]
-            // don't include null
-            
-            last_activity = course.last_activity_at
-            if (last_activity == null){
-                last_activity = "0"
+function getCurrentCourse(){
+    const url = "https://coloradocollege.instructure.com/api/v1/users/self/enrollments"
+    fetch(url, {
+    headers: {
+        'Authorization': `Bearer ${CANVAS_API_KEY}`,
+    },
+    }).then(response => response.json())
+        .then(data => {
+            // find most recent course
+            current_max = 0;
+            current_course = null;
+            for (let i = 0; i < data.length; i++){
+                const course = data[i]
+                // don't include null
+                
+                last_activity = course.last_activity_at
+                if (last_activity == null){
+                    last_activity = "0"
+                }
+                
+                last_activity = last_activity.replaceAll("-", " ")
+                last_activity = last_activity.replaceAll(" ", "")
+                if (parseInt(last_activity) > current_max){
+                    currentMax = last_activity
+                    current_course = course
+                }
             }
+            // current_course is ya current course. This needs to be tweaked somehow, maybe crosscheck possible
+            // classes
+            console.log(current_course.user.name, ", ", current_course.user.login_id, ",", current_course.course_id)
             
-            last_activity = last_activity.replaceAll("-", " ")
-            last_activity = last_activity.replaceAll(" ", "")
-            if (parseInt(last_activity) > current_max){
-                currentMax = last_activity
-                current_course = course
-            }
-        }
-        // current_course is ya current course
-        console.log(current_course.user.name, ": ", current_course.course_id)
-        
-    });
+            
+        });
+}
+getCurrentCourse()
 
     
 /** 
