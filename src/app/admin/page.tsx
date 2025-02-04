@@ -131,7 +131,7 @@ export default function AdminDash() {
 
     const getHighlightedText = (text: string, highlight: string) => {
       if (!highlight.trim()){
-        return <span>{text}</span>
+        return text
       }  
       const regex = new RegExp(`(${_.escapeRegExp(highlight)})`, 'gi')
       const parts = text.split(regex)
@@ -146,24 +146,36 @@ export default function AdminDash() {
     )};
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
-  const queryBox= {
-    title: 'Query box',
-    content: filteredDb ? (
+const queryBox = {
+  title: 'Query box',
+  content: filteredDb ? (
     <ul>
-       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-          {filteredDb.map((msg,index) => 
-          <li key={index} className="border-b py-1">
-          <b>Role:</b> {msg.role} <br></br>
-          <b>Content:</b> {getHighlightedText(msg.content, userInput)}<br></br>
-          <b>Timestamp:</b>{msg.created_at}<br></br>
-        </li>
-           )}
-       </div>
+      <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
+        {filteredDb.map((msg, index) => {
+          if (index % 2 === 0) {
+            const userMsg = msg;
+            const aiResponse = filteredDb[index + 1];
+            return (
+              <div key={index} className="border-b py-1">
+                <b>Student Query:</b> {getHighlightedText(userMsg.content, userInput)}<br />
+                {aiResponse && (
+                  <>
+                    <b>AI Response: </b>{getHighlightedText(aiResponse.content, userInput)}<br />
+                    <b>Timestamp:</b>{userMsg.created_at}<br />
+                  </>
+                )}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
     </ul>
-  ):(
+  ) : (
     <p>Loading...</p>
+  )
+};
 
-  )}
 
    const graph1: Box = {title: 'Usage', content: 'Students usage over time'}
    const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
