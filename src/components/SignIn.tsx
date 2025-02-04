@@ -1,7 +1,5 @@
 
-//import { signIn } from "@/app/auth"
 import { signIn } from "next-auth/react";
-import {firstGetRequest} from "@/app/auth"
  
 export default function SignIn() {
   return (

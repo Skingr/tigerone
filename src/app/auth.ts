@@ -1,17 +1,16 @@
 import NextAuth from "next-auth";
  
-export function firstGetRequest(){
-  require("dotenv").config({ path: ".env" });
 
-  const CLIENT_ID = process.env.NEXT_PUBLIC_CANVAS_CLIENT_ID
-  const SECRET_ID = process.env.CANVAS_CLIENT_SECRET
-  const STATE = "RANDOMSTATE"
-  const REDIRECT = encodeURIComponent("https://tiger-1.com/api/auth/callback/canvas")
-  const url = `https://coloradocollege.instructure.com/login/oauth2/auth?client_id=${CLIENT_ID}&response_type=code&state=${STATE}&redirect_uri=${REDIRECT}`
-  return url
-}
 
 export const { handlers, auth, signIn } = NextAuth({
+    pages: {
+      signIn: '/',  // Use home page as sign in page
+    },
+    callbacks: {
+      authorized({ auth, request: { nextUrl } }) {
+        return !!auth?.user
+      }
+    },
   providers: [
     {
       id: "canvas",
