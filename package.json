@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-rds-data": "^3.731.1",
+    "@visx/visx": "^3.12.0",
     "chart.js": "^4.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -33,7 +34,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/lodash": "^4.17.15",
+    "@types/hast": "^3.0.4",
     "@types/node": "^20",
     "@types/pg": "^8.11.10",
     "@types/react": "^19",
