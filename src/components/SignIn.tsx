@@ -10,8 +10,8 @@ export default function SignIn() {
       action={async () => {
         
         //await signIn("canvas")
-        await(firstGetRequest())
-        alert("TEST")
+        window.location.href = firstGetRequest()
+        //alert("TEST")
       }}
     >
       <button type="submit">Signin with canvas</button>

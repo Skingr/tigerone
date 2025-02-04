@@ -4,16 +4,9 @@ export function firstGetRequest(){
   const CLIENT_ID = process.env.CANVAS_CLIENT_ID
   const SECRET_ID = process.env.CANVAS_CLIENT_SECRET
   const STATE = "RANDOMSTATE"
-  const REDIRECT = encodeURIComponent("http://localhost:3000/api/auth/callback/canvas")
-  const url = `https://coloradocollege.instructure.com/login/oauth2/auth?client_id=${CLIENT_ID}&response_type=code&state=${STATE}&redirect_uri=http://localhost:3000/api/auth/callback/canvas`
-  fetch(url, {
-    method: 'GET',
-    redirect: 'follow'
-  }).then(response => console.log(response)
-
-  ).catch(function(err) {
-    console.info(err + " url: " + url);
-});
+  const REDIRECT = encodeURIComponent("https://tiger-1.com/api/auth/callback/canvas")
+  const url = `https://coloradocollege.instructure.com/login/oauth2/auth?client_id=${CLIENT_ID}&response_type=code&state=${STATE}&redirect_uri=${REDIRECT}`
+  return url
 }
 
 export const { handlers, auth, signIn } = NextAuth({
