@@ -1,6 +1,8 @@
 import NextAuth from "next-auth";
  
 export function firstGetRequest(){
+  require("dotenv").config({ path: ".env" });
+
   const CLIENT_ID = process.env.NEXT_PUBLIC_CANVAS_CLIENT_ID
   const SECRET_ID = process.env.CANVAS_CLIENT_SECRET
   const STATE = "RANDOMSTATE"
