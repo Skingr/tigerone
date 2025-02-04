@@ -11,7 +11,7 @@ export default function SignIn() {
         
         //await signIn("canvas")
         window.location.href = firstGetRequest()
-        //alert("TEST")
+        alert(firstGetRequest())
       }}
     >
       <button type="submit">Signin with canvas</button>
