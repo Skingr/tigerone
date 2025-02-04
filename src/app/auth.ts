@@ -3,14 +3,7 @@ import NextAuth from "next-auth";
 
 
 export const { handlers, auth, signIn } = NextAuth({
-    pages: {
-      signIn: '/',  // Use home page as sign in page
-    },
-    callbacks: {
-      authorized({ auth, request: { nextUrl } }) {
-        return !!auth?.user
-      }
-    },
+  
   providers: [
     {
       id: "canvas",
@@ -38,5 +31,6 @@ export const { handlers, auth, signIn } = NextAuth({
         };
       },  
     }
-  ]
+  ],
+  secret: process.env.AUTH_SECRET
 });
