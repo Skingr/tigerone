@@ -7,11 +7,14 @@ import { Page } from 'openai/pagination';
 import React, { useEffect, useState } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
+import _ from 'lodash';
 
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
 import { point } from 'drizzle-orm/pg-core';
 import moment from 'moment';
 import { Doughnut } from 'react-chartjs-2';
+import AdminSearch from '@/components/AdminSearch';
+import { User } from '@/sharedTypes/types';
 
 
 Chart.register(CategoryScale);
@@ -83,13 +86,17 @@ const lindata = {
 
 
 export default function AdminDash() {
-    const [db, setdb] = useState<{ 
-      role: string;
-      content: string; 
-      created_at: string }[]>();
-  
-  //TODO: wull fix this
-
+  const [userInput, setUserInput] = useState("");
+  const [filter, setFilter] = useState<string>("");
+  const [filteredDb, setFilteredDb] = useState<{
+    role: string;
+    content: string;
+    created_at: string }[]>();
+  const [loading, setLoading] = useState(false);
+  const [db, setdb] = useState<{ 
+    role: string;
+    content: string; 
+    created_at: string }[]>();
 
   const fetchData = async() => {
       try {
@@ -101,9 +108,7 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
-      //console.log(typeof db)
-      //console.log(db) 
-      //console.log(db[0].userquery)
+      
       }catch(err: any) {
         console.error(err)
       }
@@ -111,26 +116,49 @@ export default function AdminDash() {
     useEffect(() => {
       fetchData(); // gathers data from database when page is loaded, so will update on each refresh
     }, [])
-    console.log(db)
   
-  
+    useEffect(() => {
+      if (userInput.trim() == ""){ // no user input 
+        setFilteredDb(db) // everything
+      } else if (db){
+        const filteredResults = db.filter (item => 
+          item.content.toLowerCase().includes(userInput.toLowerCase()) // filter based on what ueser types
+        );
+        setFilteredDb(filteredResults)
+      }
+
+    }, [userInput])
+
+    const getHighlightedText = (text: string, highlight: string) => {
+      if (!highlight.trim()){
+        return <span>{text}</span>
+      }  
+      const regex = new RegExp(`(${_.escapeRegExp(highlight)})`, 'gi')
+      const parts = text.split(regex)
+      return (
+        <span>
+           {parts.map((part, i) => 
+              part.toLowerCase() == highlight.toLowerCase() ? (
+                <mark key = {i} className = "bg-yellow-300 font-bold">{part}</mark>
+              ) : ( <span key={i}>{part}</span>)
+      )}
+      </span>
+    )};
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
   const queryBox= {
     title: 'Query box',
-    content: db ? (
+    content: filteredDb ? (
     <ul>
        <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-          {db.map((msg,index) => 
+          {filteredDb.map((msg,index) => 
           <li key={index} className="border-b py-1">
           <b>Role:</b> {msg.role} <br></br>
-          <b>Content:</b> {msg.content}<br></br>
+          <b>Content:</b> {getHighlightedText(msg.content, userInput)}<br></br>
           <b>Timestamp:</b>{msg.created_at}<br></br>
         </li>
            )}
-
        </div>
-
     </ul>
   ):(
     <p>Loading...</p>
@@ -204,9 +232,14 @@ export default function AdminDash() {
         </div>
 
         {/* Right Side: Data Box */}
-        <div className="w-1/2 ml-4 mr-10 ml-10 ">
+        <div className="w-1/2  mr-10 ml-10 ">
           <div className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
+            <AdminSearch
+                    userInput={userInput} 
+                    setUserInput={setUserInput}
+                    loading={loading}
+                  />
             <div>{queryBox.content}</div>
           </div>
         </div>
