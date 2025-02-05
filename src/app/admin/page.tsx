@@ -16,6 +16,8 @@ import { Doughnut } from 'react-chartjs-2';
 import AdminSearch from '@/components/AdminSearch';
 import { User } from '@/sharedTypes/types';
 
+import { Sora } from 'next/font/google';
+import LinChart from './linChart';
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -64,23 +66,6 @@ type GraphBox = {
   src: string;
   description: string;
 }
-const labels = [moment().format('dddd') , moment().format('dddd')];
-
-const lindata = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: [1,2,3,4],
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: [1,2,3,4],
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
 
 
 
@@ -98,6 +83,8 @@ export default function AdminDash() {
     content: string; 
     created_at: string }[]>();
 
+
+
   const fetchData = async() => {
       try {
         const response = await fetch('/api/admin', {
@@ -108,7 +95,15 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
+
+      const timestamps = db.map((entry: { created_at: string}) => entry.created_at);
+
+      //console.log(typeof db)
+      //console.log(db) 
+      //console.log(db[0].userquery)
       
+    
+    
       }catch(err: any) {
         console.error(err)
       }
@@ -144,6 +139,25 @@ export default function AdminDash() {
       )}
       </span>
     )};
+    console.log(db)
+  
+
+
+  function formatDate(date: string){
+    const calendarDate = date.split('T')[0];
+    const time = date.split('T')[1].split('.')[0]
+    const [yy,mm,dd] = calendarDate.split('-')
+    let modifiedTime = Math.abs((parseInt(time.slice(0, 2)) -7) %12)
+    let amPm = "AM"
+    if(modifiedTime>12){
+      amPm = "PM"
+    }
+    if(modifiedTime == 0){
+      modifiedTime = 12;
+    }
+
+    return `${modifiedTime} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
+  }
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
   const queryBox= {
@@ -153,9 +167,9 @@ export default function AdminDash() {
        <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
           {filteredDb.map((msg,index) => 
           <li key={index} className="border-b py-1">
-          <b>Role:</b> {msg.role} <br></br>
-          <b>Content:</b> {getHighlightedText(msg.content, userInput)}<br></br>
-          <b>Timestamp:</b>{msg.created_at}<br></br>
+          <b>Role: </b> {msg.role} <br></br>
+          <b>Content: </b> {msg.content}<br></br>
+          <b>Time: </b>{formatDate(msg.created_at)}<br></br>
         </li>
            )}
        </div>
@@ -169,18 +183,6 @@ export default function AdminDash() {
    const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
    const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
    const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart',
-      },
-    },
-  };
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
@@ -194,41 +196,34 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
 
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
             {/*Graph1*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center"
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph1.title}</h2>
-              <p className='text-gray-600'>{graph1.content}</p>
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center">{graph1.title}</h2>
+              {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
-              <Line data={lindata} options={options}/>
+  
+              <LinChart />
+
               
             </div>
-            {/*Graph2*/}
+        
+            
+            {/*Graph4*/}
             <div
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-                <Doughnut data={donData} className="mx-auto p-3"/>
+             <Doughnut data={donData} className="mx-auto p-3"/>
               </div>
-              {/*Graph3*/}
-            <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10"
+              <div
+              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph3.title}</h2>
-              <p className='text-gray-600'>{graph3.content}</p>
-              
-            </div>
-            {/*Graph4*/}
-            <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 "
-            >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph4.title}</h2>
-              <p className='text-gray-600'>{graph4.content}</p>
-              
-            </div>
-  
+             
+             <Doughnut data={donData} className="mx-auto p-3"/>
+              </div>
         </div>
 
         {/* Right Side: Data Box */}
@@ -247,3 +242,5 @@ export default function AdminDash() {
     </main>
   );
 }
+
+
