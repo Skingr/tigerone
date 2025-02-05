@@ -108,6 +108,7 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
+      setFilteredDb(db)
       
       }catch(err: any) {
         console.error(err)
@@ -148,7 +149,7 @@ export default function AdminDash() {
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
 const queryBox = {
   title: 'Query box',
-  content: filteredDb ? (
+  content: filteredDb && filteredDb.length > 0? (
     <ul>
       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
         {filteredDb.map((msg, index) => {
@@ -167,12 +168,13 @@ const queryBox = {
               </div>
             );
           }
+          
           return null;
         })}
       </div>
     </ul>
   ) : (
-    <p>Loading...</p>
+    <p>{filteredDb ? "No results found." : "Loading..."}</p>
   )
 };
 
