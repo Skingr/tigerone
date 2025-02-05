@@ -3,18 +3,16 @@
 // scroll to different ones
 'use client'; // This is a client-side component
 
-import { Page } from 'openai/pagination';
 import React, { useEffect, useState } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
 import _ from 'lodash';
 
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
-import { point } from 'drizzle-orm/pg-core';
 import moment from 'moment';
 import { Doughnut } from 'react-chartjs-2';
 import AdminSearch from '@/components/AdminSearch';
-import { User } from '@/sharedTypes/types';
+import { getHighlightedText } from '@/components/HighlightText';
 
 
 Chart.register(CategoryScale);
@@ -87,17 +85,19 @@ const lindata = {
 
 export default function AdminDash() {
   const [userInput, setUserInput] = useState("");
-  const [filter, setFilter] = useState<string>("");
   const [filteredDb, setFilteredDb] = useState<{
     role: string;
-    content: string;
-    created_at: string }[]>();
-  const [loading, setLoading] = useState(false);
+    messageContent: string;
+    userClass: string;
+    createdAt: string }[]>();
+  const [loading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
-    content: string; 
-    created_at: string }[]>();
+    messageContent: string;
+    userClass: string;
+    createdAt: string }[]>();
 
+    // get data from db
   const fetchData = async() => {
       try {
         const response = await fetch('/api/admin', {
@@ -108,63 +108,55 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
+      //console.log(db)
       setFilteredDb(db)
       
       }catch(err: any) {
         console.error(err)
       }
     }
+
+    // gathers data from database when page is loaded, so will update on each refresh
     useEffect(() => {
-      fetchData(); // gathers data from database when page is loaded, so will update on each refresh
-    }, [])
+      fetchData(); 
+    }, []) 
   
+    // filter based on user typing
     useEffect(() => {
       if (userInput.trim() == ""){ // no user input 
         setFilteredDb(db) // everything
       } else if (db){
         const filteredResults = db.filter (item => 
-          item.content.toLowerCase().includes(userInput.toLowerCase()) // filter based on what ueser types
+          item.messageContent.toLowerCase().includes(userInput.toLowerCase()) // filter based on what user types non case senestive
         );
         setFilteredDb(filteredResults)
       }
 
-    }, [userInput])
+    }, [userInput]) 
 
-    const getHighlightedText = (text: string, highlight: string) => {
-      if (!highlight.trim()){
-        return text
-      }  
-      const regex = new RegExp(`(${_.escapeRegExp(highlight)})`, 'gi')
-      const parts = text.split(regex)
-      return (
-        <span>
-           {parts.map((part, i) => 
-              part.toLowerCase() == highlight.toLowerCase() ? (
-                <mark key = {i} className = "bg-yellow-300 font-bold">{part}</mark>
-              ) : ( <span key={i}>{part}</span>)
-      )}
-      </span>
-    )};
+ 
 
 // TODO: How do I make this mutable? And formatted right? Want an \n after every query
 const queryBox = {
   title: 'Query box',
   content: filteredDb && filteredDb.length > 0? (
-    <ul>
       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
         {filteredDb.map((msg, index) => {
           if (index % 2 === 0) {
             const userMsg = msg;
             const aiResponse = filteredDb[index + 1];
+            
             return (
               <div key={index} className="border-b py-1">
-                <b>Student Query:</b> {getHighlightedText(userMsg.content, userInput)}<br />
+                <b>Student Query:</b> {getHighlightedText(userMsg.messageContent, userInput)}<br />
                 {aiResponse && (
                   <>
-                    <b>AI Response: </b>{getHighlightedText(aiResponse.content, userInput)}<br />
-                    <b>Timestamp:</b>{userMsg.created_at}<br />
+                    <b>AI Response: </b>{getHighlightedText(aiResponse.messageContent, userInput)}<br />
                   </>
                 )}
+                <b>Student Course: </b>{userMsg.userClass}<br />
+                <b>Timestamp:</b>{userMsg.createdAt}<br />
+
               </div>
             );
           }
@@ -172,7 +164,6 @@ const queryBox = {
           return null;
         })}
       </div>
-    </ul>
   ) : (
     <p>{filteredDb ? "No results found." : "Loading..."}</p>
   )
