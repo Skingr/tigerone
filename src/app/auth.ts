@@ -1,19 +1,19 @@
+
 import NextAuth from "next-auth";
-const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
 
 export const { handlers, auth, signIn } = NextAuth({
   secret: process.env.NEXTAUTH_SECRET, // explicit set scret
   providers: [
     {
       id: "canvas",
-      name: "Canvas",
+      name: "canvas",
       type: "oauth",
       authorization: {
         url: "https://coloradocollege.instructure.com/login/oauth2/auth",
         params: {
           response_type: "code", // canvas docs say this needs to be code
           scope: "url:GET|/api/v1/courses", // canvas docs say this is important?
-          redirect_uri: `${baseUrl}/api/auth/callback/canvas`
+          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/canvas`
         }
       },
       token: {
@@ -23,8 +23,8 @@ export const { handlers, auth, signIn } = NextAuth({
         url: "https://coloradocollege.instructure.com/api/v1/users/self/profile"
       },
       // These will be provided by the route handler
-      clientId: process.env.NEXT_PUBLIC_CANVAS_CLIENT_ID ?? "",
-      clientSecret: process.env.CANVAS_CLIENT_SECRET ?? "",
+      clientId: process.env.NEXT_PUBLIC_DEV_CLIENT_ID,
+      clientSecret: process.env.DEV_CLIENT_SECRET,
       async profile(profile) {
         return {
           id: profile.login_id,
@@ -34,3 +34,4 @@ export const { handlers, auth, signIn } = NextAuth({
     }
   ],
 });
+
