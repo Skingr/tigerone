@@ -23,8 +23,8 @@ export const { handlers, auth, signIn } = NextAuth({
         url: "https://coloradocollege.instructure.com/api/v1/users/self/profile"
       },
       // These will be provided by the route handler
-      clientId: process.env.NEXT_PUBLIC_DEV_CLIENT_ID,
-      clientSecret: process.env.DEV_CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_CANVAS_CLIENT_ID,
+      clientSecret: process.env.CANVAS_CLIENT_SECRET,
       async profile(profile) {
         return {
           id: profile.login_id,
