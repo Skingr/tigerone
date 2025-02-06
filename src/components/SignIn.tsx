@@ -1,19 +1,23 @@
+"use client"; 
 
-//import { signIn } from "@/app/auth"
 import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 
- 
+//import { signIn } from "@/app/auth";
+
 export default function SignIn() {
+  const handleSignIn = async () => {
+    const result = await signIn("canvas", {redirect: true})
+  };
+
   return (
     <div>
-    <form
-      action={async () => {
-        
-        await signIn("canvas")
-      }}
-    >
-      <button type="submit">Signin with canvas</button>
-    </form>
+      <button
+        onClick={handleSignIn}
+        className="bg-cc-gold text-white px-4 py-2 rounded-md hover:opacity-80"
+      >
+        Sign in with Canvas
+      </button>
     </div>
-  )
-} 
+  );
+}
