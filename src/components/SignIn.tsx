@@ -7,9 +7,7 @@ import { redirect } from "next/dist/server/api-utils";
 
 export default function SignIn() {
   const handleSignIn = async () => {
-    const result = await signIn("canvas", {redirect: false})
-    console.log("TEST:")
-    console.log(result)
+    const result = await signIn("canvas", {redirect: true})
   };
 
   return (

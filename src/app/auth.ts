@@ -33,5 +33,9 @@ export const { handlers, auth, signIn } = NextAuth({
       },  
     }
   ],
-});
+  callbacks: { async redirect({ url, baseUrl }) { return baseUrl }, }, // maybe would work?
 
+
+
+
+});
