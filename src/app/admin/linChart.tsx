@@ -11,8 +11,10 @@ Chart.register(LineElement);
 const LinChart = () => {
     const [db, setdb] = useState<{ 
           role: string;
-          content: string; 
-          created_at: string }[]>();
+          messageContent: string; 
+          userClass: string;
+          createdAt: string 
+        }[]>();
     const [linData, setLinData] = useState({
         labels: [] as string[],
         datasets: [
@@ -42,7 +44,7 @@ const LinChart = () => {
               const db = await response.json();
               setdb(db)
         
-              const timestamps = db.map((entry: { created_at: string}) => entry.created_at);
+              const timestamps = db.map((entry: { createdAt: string}) => entry.createdAt);
         
               const {labels, data} = groupedData(timestamps);
               //console.log(typeof db)
@@ -118,8 +120,6 @@ const LinChart = () => {
       };
 
       return<Line data={linData} options = {options}></Line>
-
-
 }
 
 export default LinChart;

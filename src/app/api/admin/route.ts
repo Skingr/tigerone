@@ -27,7 +27,7 @@ export async function GET(req: Request){
     //console.log(allData)
     return NextResponse.json(allData)
   }catch(error){
-    console.error('error');
+    console.error('error pulling data');
   } finally {
     await client.end();
   }
