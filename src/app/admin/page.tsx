@@ -99,21 +99,15 @@ export default function AdminDash() {
     }, [userInput, organizedDb]) 
 
 
-  function formatDate(date: string){
-    const calendarDate = date.split('T')[0];
-    const time = date.split('T')[1].split('.')[0]
-    const [yy,mm,dd] = calendarDate.split('-')
-    let modifiedTime = Math.abs((parseInt(time.slice(0, 2)) -7) %12)
-    let amPm = "AM"
-    if(modifiedTime>12){
-      amPm = "PM"
-    }
-    if(modifiedTime == 0){
-      modifiedTime = 12;
-    }
+    function formatDate(date: string){
+      const hour = new Date(date).getHours();
+      const amPm = hour >= 12 ? "PM" : "AM";
+      
+      const formatHour = ((hour %12)||12);// hour now works in AM/PM form, no issues
 
-    return `${modifiedTime} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
-  }
+  
+      return `${formatHour} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
+    }
 
   const queryBox = {
     title: "Query box",
