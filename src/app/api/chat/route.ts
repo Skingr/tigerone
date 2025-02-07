@@ -10,10 +10,7 @@
 import { NextResponse } from 'next/server'
 import { ChatRequest } from '@/sharedTypes/types'
 import OpenAI from 'openai'
-import { drizzle } from 'drizzle-orm/node-postgres';
 // import { aidata } from '@/db/schema';
-import {Client} from 'pg';
-import { createMessages } from "@/db/queries";
 
 
 

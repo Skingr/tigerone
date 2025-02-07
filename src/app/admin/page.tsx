@@ -4,17 +4,13 @@
 'use client'; // This is a client-side component
 
 import React, { useEffect, useState } from 'react';
-
-import { Bar, Line } from 'react-chartjs-2';
 import _ from 'lodash';
 
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
-import moment from 'moment';
 import { Doughnut } from 'react-chartjs-2';
 import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
-
-import { Sora } from 'next/font/google';
+import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
 
 Chart.register(CategoryScale);
@@ -41,11 +37,16 @@ type GraphBox = {
 
 export default function AdminDash() {
   const [userInput, setUserInput] = useState("");
-  const [filteredDb, setFilteredDb] = useState<{
-    role: string;
-    messageContent: string;
+  const [organizedDb, setOrganizedDb] = useState<{
+    userQuery: string;
+    aiResponse: string;
     userClass: string;
-    createdAt: string }[]>();
+    createdAt: string; }[]>();
+  const [filteredDb, setFilteredDb] = useState<{
+    userQuery: string;
+    aiResponse: string;
+    userClass: string;
+    createdAt: string; }[]>();
   const [loading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
@@ -67,16 +68,8 @@ export default function AdminDash() {
       const db = await response.json();
       setdb(db)
       //console.log(db)
-      setFilteredDb(db)
 
       const timestamps = db.map((entry: { created_at: string}) => entry.created_at);
-
-      //console.log(typeof db)
-      //console.log(db) 
-      //console.log(db[0].userquery)
-      
-    
-    
       }catch(err: any) {
         console.error(err)
       }
@@ -86,19 +79,24 @@ export default function AdminDash() {
     useEffect(() => {
       fetchData(); 
     }, []) 
-  
+    useEffect(() => {
+      if(db){
+        setOrganizedDb(organizeData(db));
+      }
+    }, [db])
     // filter based on user typing
     useEffect(() => {
       if (userInput.trim() == ""){ // no user input 
-        setFilteredDb(db) // everything
+        setFilteredDb(organizedDb) // everything
       } else if (db){
-        const filteredResults = db.filter (item => 
-          item.messageContent.toLowerCase().includes(userInput.toLowerCase()) // filter based on what user types non case senestive
+        const filteredResults = organizedDb?.filter (item => 
+          item.userQuery.toLowerCase().includes(userInput.toLowerCase()) || 
+          item.aiResponse.toLowerCase().includes(userInput.toLowerCase()) 
         );
         setFilteredDb(filteredResults)
       }
 
-    }, [userInput]) 
+    }, [userInput, organizedDb]) 
 
 
   function formatDate(date: string){
@@ -118,36 +116,27 @@ export default function AdminDash() {
   }
 
   const queryBox = {
-    title: 'Query box',
-    content: filteredDb && filteredDb.length > 0? (
-        <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-          {filteredDb.map((msg, index) => {
-            if (index % 2 === 0) {
-              const userMsg = msg;
-              const aiResponse = filteredDb[index + 1];
-              
-              return (
-                <div key={index} className="border-b py-1">
-                  <b>Student Query:</b> {getHighlightedText(userMsg.messageContent, userInput)}<br />
-                  {aiResponse && (
-                    <>
-                      <b>AI Response: </b>{getHighlightedText(aiResponse.messageContent, userInput)}<br />
-                    </>
-                  )}
-                  <b>Student Course: </b>{userMsg.userClass}<br />
-                  <b>Timestamp:</b>{formatDate(userMsg.createdAt)}<br />
-  
-                </div>
-              );
-            }
-            
-            return null;
-          })}
-        </div>
+    title: "Query box",
+    content: filteredDb && filteredDb.length > 0 ? (
+      <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
+        {filteredDb.map((msg, index) => (
+          <div key={index} className="border-b py-1">
+            <b>Student Query:</b> {getHighlightedText(msg.userQuery, userInput)}
+            <br />
+            <b>AI Response:</b> {getHighlightedText(msg.aiResponse, userInput)}
+            <br />
+            <b>Student Course:</b> {msg.userClass}
+            <br />
+            <b>Timestamp:</b> {formatDate(msg.createdAt)}
+            <br />
+          </div>
+        ))}
+      </div>
     ) : (
       <p>{filteredDb ? "No results found." : "Loading..."}</p>
-    )
+    ),
   };
+  
  
   const donData = {
     labels: filteredDb ? [...new Set(filteredDb.map(item => item.userClass))] : [],

@@ -22,7 +22,10 @@ export async function GET(req: Request){
       messageContent: messages.content,
       userClass: users.class_name,
       createdAt: messages.created_at,
-    }).from(messages).innerJoin(users, eq(messages.user_id, users.user_id)).execute();
+    }).from(messages)
+    .innerJoin(users, eq(messages.user_id, users.user_id))
+    .orderBy(messages.created_at) 
+    .execute();
 
     //console.log(allData)
     return NextResponse.json(allData)

@@ -30,7 +30,6 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>(DEFAULT_MESSAGES);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userClass, setUserClass] = useState<string>("N/A");
   const [modelDropdown, setModelDropdown] = useState("gpt-4o"); // default to 4o when website loads
   //TODO: move state to context (global state)
   const [user, setUser] = useState<User | null>(null);
@@ -71,8 +70,6 @@ export default function ChatPage() {
       console.error(err);
     }
   };
-
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     // what runs when you click button
