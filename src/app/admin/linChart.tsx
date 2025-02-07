@@ -75,35 +75,44 @@ const LinChart = () => {
 
     const groupedData = (timestamps: string[]) => {
         const count: {[key: string]: number} = {};
+        const timeWindowInt = [3600000]; // multiplier to have 12 hours be the interval, can change
+        const currentTime = new Date();
+        const timeWindow = new Date(currentTime.getTime() - 12 * timeWindowInt[0])
     
         timestamps.forEach((timestamp) => {
-          const date = formatDate(timestamp);
-          count[date] = (count[date] || 0) + 1;
+          const date = new Date(timestamp);
+          if (date >= timeWindow && date <= currentTime){
+            const formattedHour = formatDate(timestamp);
+            count[formattedHour] = (count[formattedHour] ||0) +1;
+          }
+    
         });
     
-        const sortedDates = Object.keys(count).sort();
+        const labels: string[] = [];
+        for (let i = 11; i>= 0; i--){
+            const hourLabel = new Date(currentTime.getTime() - i * timeWindowInt[0]);
+            const formattedHour = formatDate(hourLabel.toISOString());
+
+            labels.push(formattedHour);
+        }
+
         return {
-          labels: sortedDates,
-          data: sortedDates.map((date) => count[date]),
+          labels,
+          data: labels.map((label) => count[label]/2 || 0),
     
         };
       };
 
       function formatDate(date: string){
-        const calendarDate = date.split('T')[0];
-        const time = date.split('T')[1].split('.')[0]
-        const [yy,mm,dd] = calendarDate.split('-')
-        let modifiedTime = Math.abs((parseInt(time.slice(0, 2)) -7) %12)
-        let amPm = "AM"
-        if(modifiedTime>12){
-          amPm = "PM"
-        }
-        if(modifiedTime == 0){
-          modifiedTime = 12;
-        }
+        const hour = new Date(date).getHours();
+        const amPm = hour >= 12 ? "PM" : "AM";
+        const formatHour = ((hour %12)||12);
+
     
-        return `${modifiedTime} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
+        return `${formatHour} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
       }
+
+   
 
       const options = {
         responsive: true,
