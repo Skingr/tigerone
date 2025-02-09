@@ -6,8 +6,6 @@ import { messages, users } from '@/db/schema';
 import { eq } from "drizzle-orm";
 
 
-
-
 export async function GET(req: Request){
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -22,6 +20,7 @@ export async function GET(req: Request){
       messageContent: messages.content,
       userClass: users.class_name,
       createdAt: messages.created_at,
+      conversationId: messages.conversation_id,
     }).from(messages)
     .innerJoin(users, eq(messages.user_id, users.user_id))
     .orderBy(messages.created_at) 

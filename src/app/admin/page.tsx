@@ -180,7 +180,7 @@ export default function AdminDash() {
       </header>
 
       {/* Content */}
-      <div className="flex">
+      <div className="flex min-w-screen">
         {/* Left Side: Graphs */}
 
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
@@ -193,8 +193,6 @@ export default function AdminDash() {
               {/* <Bar data={data}></Bar> */}
   
               <LinChart />
-
-              
             </div>
         
             
@@ -203,19 +201,19 @@ export default function AdminDash() {
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3"/>
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
               <div
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3"/>
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
         </div>
 
         {/* Right Side: Data Box */}
         <div className="w-1/2  mr-10 ml-10 ">
-          <div className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
+          <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
             <AdminSearch
                     userInput={userInput} 
