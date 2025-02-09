@@ -22,6 +22,13 @@
       "when": 1738347230973,
       "tag": "0002_outgoing_mephistopheles",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1739061942738,
+      "tag": "0003_orange_thaddeus_ross",
+      "breakpoints": true
     }
   ]
 }

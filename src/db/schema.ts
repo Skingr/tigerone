@@ -1,17 +1,18 @@
 // import { pgTable, varchar } from "drizzle-orm/pg-core"
 // import { sql } from "drizzle-orm"
 import {
-	pgTable,
-	varchar,
-	bigserial,
-	timestamp,
-	text,
-	inet,
-	index,
-	integer,
-	uuid,
-  } from "drizzle-orm/pg-core";
-  import { sql } from "drizzle-orm";
+  pgTable,
+  varchar,
+  bigserial,
+  timestamp,
+  text,
+  inet,
+  index,
+  integer,
+  uuid,
+} from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { Models } from "@/sharedTypes/types";
 
 /*want conversations, messages, user_sessions schema
 conv: user_id (aut req), conversation_id (aut + history page) , time stamp(CREATED_AT,UPDATED_AT), title of conversation
@@ -24,82 +25,83 @@ messages-msg_id , conversation id, user id, role: user, assistant, content = tex
 
 //USERS table
 export const users = pgTable("users", {
-	user_id: bigserial("user_id", { mode: "number" }).primaryKey(),
-	email: varchar({ length: 255 }).unique().notNull(),
-	class_name: varchar({ length: 255 }),
-	major: varchar({ length: 255 }),
-	year: varchar({ length: 255 }),
-	sex: varchar({ length: 255 }),
-	age: integer(),
-	username: varchar({ length: 50 }).unique().notNull(),
-	hashed_password: varchar({ length: 255 }).notNull(),
-	role: varchar({ length: 20 }).notNull().default("USER"),
-	created_at: timestamp({ precision: 6 })
-	  .notNull()
-	  .default(sql`NOW()`),
-	updated_at: timestamp()
-	  .notNull()
-	  .default(sql`NOW()`),
-  });
+  user_id: bigserial("user_id", { mode: "number" }).primaryKey(),
+  email: varchar({ length: 255 }).unique().notNull(),
+  class_name: varchar({ length: 255 }),
+  major: varchar({ length: 255 }),
+  year: varchar({ length: 255 }),
+  sex: varchar({ length: 255 }),
+  age: integer(),
+  username: varchar({ length: 50 }).unique().notNull(),
+  hashed_password: varchar({ length: 255 }).notNull(),
+  role: varchar({ length: 20 }).notNull().default("USER"),
+  created_at: timestamp({ precision: 6 })
+    .notNull()
+    .default(sql`NOW()`),
+  updated_at: timestamp()
+    .notNull()
+    .default(sql`NOW()`),
+});
 
-  //CONVERSATIONS
-  export const conversations = pgTable("conversations", {
-	conversation_id: uuid("conversation_id").primaryKey().defaultRandom(),
-	user_id: bigserial("user_id", { mode: "number" })
-	  .notNull()
-	  .references(() => users.user_id, { onDelete: "cascade" }),
-	title: varchar({ length: 255 }),
-	created_at: timestamp()
-	  .notNull()
-	  .default(sql`NOW()`),
-	updated_at: timestamp()
-	  .notNull()
-	  .default(sql`NOW()`),
-  });
-  //MESSAGES
-  export const messages = pgTable(
-	"messages",
-	{
-	  message_id: uuid("message_id").primaryKey().defaultRandom(),
-	  conversation_id: uuid("conversation_id")
-		.notNull()
-		.references(() => conversations.conversation_id, { onDelete: "cascade" }),
-	  user_id: bigserial("user_id", { mode: "number" }).references(
-		() => users.user_id,
-		{ onDelete: "set null" }
-	  ),
-	  role: varchar("role", { length: 20 }).notNull(),
-	  content: text("content").notNull(),
-	  created_at: timestamp("created_at", { withTimezone: true })
-		.notNull()
-		.defaultNow(),
-	  updated_at: timestamp("updated_at", { withTimezone: true })
-		.notNull()
-		.defaultNow(),
-	},
-	(table) => {
-	  return {
-		conversation_id_idx: index("idx_messages_conversation_id").on(
-		  table.conversation_id
-		),
-	  };
-	}
-  );
+//CONVERSATIONS
+export const conversations = pgTable("conversations", {
+  conversation_id: uuid("conversation_id").primaryKey().defaultRandom(),
+  user_id: bigserial("user_id", { mode: "number" })
+    .notNull()
+    .references(() => users.user_id, { onDelete: "cascade" }),
+  title: varchar({ length: 255 }),
+  created_at: timestamp()
+    .notNull()
+    .default(sql`NOW()`),
+  updated_at: timestamp()
+    .notNull()
+    .default(sql`NOW()`),
+});
+//MESSAGES
+export const messages = pgTable(
+  "messages",
+  {
+    message_id: uuid("message_id").primaryKey().defaultRandom(),
+    conversation_id: uuid("conversation_id")
+      .notNull()
+      .references(() => conversations.conversation_id, { onDelete: "cascade" }),
+    user_id: bigserial("user_id", { mode: "number" }).references(
+      () => users.user_id,
+      { onDelete: "set null" }
+    ),
+    role: varchar("role", { length: 20 }).notNull(),
+    content: text("content").notNull(),
+    model: varchar("model", { length: 20 }).notNull().default(Models.GPT_4O),
+    created_at: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updated_at: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => {
+    return {
+      conversation_id_idx: index("idx_messages_conversation_id").on(
+        table.conversation_id
+      ),
+    };
+  }
+);
 //USER SESSIONS
 export const user_sessions = pgTable("user_sessions", {
-	session_id: bigserial("session_id", { mode: "number" }).primaryKey(),
-	user_id: bigserial("user_id", { mode: "number" })
-	  .notNull()
-	  .references(() => users.user_id, { onDelete: "cascade" }),
-	refresh_token: text(),
-	ip_address: inet(),
-	user_agent: text(),
-	device_info: text(),
-	created_at: timestamp()
-	  .notNull()
-	  .default(sql`NOW()`),
-	expires_at: timestamp(),
-  });
+  session_id: bigserial("session_id", { mode: "number" }).primaryKey(),
+  user_id: bigserial("user_id", { mode: "number" })
+    .notNull()
+    .references(() => users.user_id, { onDelete: "cascade" }),
+  refresh_token: text(),
+  ip_address: inet(),
+  user_agent: text(),
+  device_info: text(),
+  created_at: timestamp()
+    .notNull()
+    .default(sql`NOW()`),
+  expires_at: timestamp(),
+});
 // export const aidata = pgTable("aidata", {
 // 	userquery: varchar({ length: 1000 }),
 // 	airesponse: varchar({ length: 8000 }),

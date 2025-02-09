@@ -1,6 +1,6 @@
 import { getUser } from "@/db/queries";
 import { NextResponse } from "next/server";
-
+// route to get user from db 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

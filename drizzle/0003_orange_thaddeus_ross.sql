@@ -1,0 +1,1 @@
+ALTER TABLE "messages" ADD COLUMN "model" varchar(20) DEFAULT 'gpt-4o' NOT NULL;

@@ -1,8 +1,8 @@
 import { db } from "@/db/config";
 import { conversations } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { NextResponse } from "next/server";
-
+// route file to getConversations of users from db
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -15,11 +15,12 @@ export async function GET(request: Request) {
       );
     }
 
-    // Get all conversations for the user
+    //get all conversations for the user
     const userConversations = await db
       .select()
       .from(conversations)
-      .where(eq(conversations.user_id, Number(userId)));
+      .where(eq(conversations.user_id, Number(userId)))
+      .orderBy(desc(conversations.created_at));
 
     return NextResponse.json(userConversations);
   } catch (error) {
