@@ -178,17 +178,229 @@ export default function Start() {
                       handleInputChange("major", value)
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white text-black border-gray-200">
                       <SelectValue placeholder="Select your major" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="computer_science">
+                    <SelectContent className="bg-white border border-gray-200 max-h-[300px] overflow-y-auto">
+                      <SelectItem
+                        value="anthropology"
+                        className="hover:bg-gray-100"
+                      >
+                        Anthropology
+                      </SelectItem>
+                      <SelectItem value="art" className="hover:bg-gray-100">
+                        Art
+                      </SelectItem>
+                      <SelectItem
+                        value="asian_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Asian Studies
+                      </SelectItem>
+                      <SelectItem value="besoc" className="hover:bg-gray-100">
+                        Business, Economics, and Society (BESoc)
+                      </SelectItem>
+                      <SelectItem
+                        value="chemistry_biochemistry"
+                        className="hover:bg-gray-100"
+                      >
+                        Chemistry and Biochemistry
+                      </SelectItem>
+                      <SelectItem
+                        value="classics"
+                        className="hover:bg-gray-100"
+                      >
+                        Classics
+                      </SelectItem>
+                      <SelectItem
+                        value="classics_english"
+                        className="hover:bg-gray-100"
+                      >
+                        Classics-English
+                      </SelectItem>
+                      <SelectItem
+                        value="classics_history_politics"
+                        className="hover:bg-gray-100"
+                      >
+                        Classics-History-Politics
+                      </SelectItem>
+                      <SelectItem
+                        value="comparative_literature"
+                        className="hover:bg-gray-100"
+                      >
+                        Comparative Literature
+                      </SelectItem>
+                      <SelectItem
+                        value="computer_science"
+                        className="hover:bg-gray-100"
+                      >
                         Computer Science
                       </SelectItem>
-                      <SelectItem value="engineering">Engineering</SelectItem>
-                      <SelectItem value="business">Business</SelectItem>
-                      <SelectItem value="arts">Arts</SelectItem>
-                      <SelectItem value="sciences">Sciences</SelectItem>
+                      <SelectItem
+                        value="economics"
+                        className="hover:bg-gray-100"
+                      >
+                        Economics
+                      </SelectItem>
+                      <SelectItem
+                        value="education"
+                        className="hover:bg-gray-100"
+                      >
+                        Education
+                      </SelectItem>
+                      <SelectItem value="english" className="hover:bg-gray-100">
+                        English
+                      </SelectItem>
+                      <SelectItem
+                        value="environmental_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Environmental Studies and Science
+                      </SelectItem>
+                      <SelectItem
+                        value="feminist_gender_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Feminist and Gender Studies
+                      </SelectItem>
+                      <SelectItem
+                        value="film_media_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Film and Media Studies
+                      </SelectItem>
+                      <SelectItem value="french" className="hover:bg-gray-100">
+                        French
+                      </SelectItem>
+                      <SelectItem value="geology" className="hover:bg-gray-100">
+                        Geology
+                      </SelectItem>
+                      <SelectItem value="german" className="hover:bg-gray-100">
+                        German
+                      </SelectItem>
+                      <SelectItem
+                        value="hispanic_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Hispanic Studies
+                      </SelectItem>
+                      <SelectItem value="history" className="hover:bg-gray-100">
+                        History
+                      </SelectItem>
+                      <SelectItem
+                        value="history_philosophy"
+                        className="hover:bg-gray-100"
+                      >
+                        History-Philosophy
+                      </SelectItem>
+                      <SelectItem
+                        value="history_political_science"
+                        className="hover:bg-gray-100"
+                      >
+                        History-Political Science
+                      </SelectItem>
+                      <SelectItem value="idm" className="hover:bg-gray-100">
+                        Independently Designed Major/IDM
+                      </SelectItem>
+                      <SelectItem
+                        value="international_political_economy"
+                        className="hover:bg-gray-100"
+                      >
+                        International Political Economy
+                      </SelectItem>
+                      <SelectItem value="italian" className="hover:bg-gray-100">
+                        Italian
+                      </SelectItem>
+                      <SelectItem
+                        value="mathematical_economics"
+                        className="hover:bg-gray-100"
+                      >
+                        Mathematical Economics
+                      </SelectItem>
+                      <SelectItem
+                        value="mathematics"
+                        className="hover:bg-gray-100"
+                      >
+                        Mathematics
+                      </SelectItem>
+                      <SelectItem
+                        value="molecular_biology"
+                        className="hover:bg-gray-100"
+                      >
+                        Molecular Biology
+                      </SelectItem>
+                      <SelectItem value="music" className="hover:bg-gray-100">
+                        Music
+                      </SelectItem>
+                      <SelectItem
+                        value="neuroscience"
+                        className="hover:bg-gray-100"
+                      >
+                        Neuroscience
+                      </SelectItem>
+                      <SelectItem
+                        value="organismal_biology_ecology"
+                        className="hover:bg-gray-100"
+                      >
+                        Organismal Biology and Ecology
+                      </SelectItem>
+                      <SelectItem
+                        value="philosophy"
+                        className="hover:bg-gray-100"
+                      >
+                        Philosophy
+                      </SelectItem>
+                      <SelectItem value="physics" className="hover:bg-gray-100">
+                        Physics
+                      </SelectItem>
+                      <SelectItem
+                        value="political_science"
+                        className="hover:bg-gray-100"
+                      >
+                        Political Science
+                      </SelectItem>
+                      <SelectItem
+                        value="psychology"
+                        className="hover:bg-gray-100"
+                      >
+                        Psychology
+                      </SelectItem>
+                      <SelectItem
+                        value="race_ethnicity_migration"
+                        className="hover:bg-gray-100"
+                      >
+                        Race, Ethnicity, and Migration Studies
+                      </SelectItem>
+                      <SelectItem
+                        value="religion"
+                        className="hover:bg-gray-100"
+                      >
+                        Religion
+                      </SelectItem>
+                      <SelectItem
+                        value="russian_eurasian_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Russian and Eurasian Studies
+                      </SelectItem>
+                      <SelectItem
+                        value="sociology"
+                        className="hover:bg-gray-100"
+                      >
+                        Sociology
+                      </SelectItem>
+                      <SelectItem
+                        value="southwest_studies"
+                        className="hover:bg-gray-100"
+                      >
+                        Southwest Studies
+                      </SelectItem>
+                      <SelectItem
+                        value="theatre_dance"
+                        className="hover:bg-gray-100"
+                      >
+                        Theatre and Dance
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -201,27 +413,41 @@ export default function Start() {
                       handleInputChange("year", value)
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white text-black border-gray-200">
                       <SelectValue placeholder="Select your year" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="freshman">Freshman</SelectItem>
-                      <SelectItem value="sophomore">Sophomore</SelectItem>
-                      <SelectItem value="junior">Junior</SelectItem>
-                      <SelectItem value="senior">Senior</SelectItem>
+                    <SelectContent className="bg-white border border-gray-200">
+                      <SelectItem
+                        value="freshman"
+                        className="hover:bg-gray-100"
+                      >
+                        Freshman
+                      </SelectItem>
+                      <SelectItem
+                        value="sophomore"
+                        className="hover:bg-gray-100"
+                      >
+                        Sophomore
+                      </SelectItem>
+                      <SelectItem value="junior" className="hover:bg-gray-100">
+                        Junior
+                      </SelectItem>
+                      <SelectItem value="senior" className="hover:bg-gray-100">
+                        Senior
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="class_name">Class Name (Optional)</Label>
+                  <Label htmlFor="class_name">Current Class Name</Label>
                   <Input
                     id="class_name"
                     value={formData.class_name}
                     onChange={(e) =>
                       handleInputChange("class_name", e.target.value)
                     }
-                    placeholder="Enter your class name"
+                    placeholder="Enter your current class"
                   />
                 </div>
               </>
@@ -237,14 +463,23 @@ export default function Start() {
                       handleInputChange("sex", value)
                     }
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white text-black border-gray-200">
                       <SelectValue placeholder="Select your sex" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                      <SelectItem value="prefer_not_to_say">
+                    <SelectContent className="bg-white border border-gray-200">
+                      <SelectItem value="male" className="hover:bg-gray-100">
+                        Male
+                      </SelectItem>
+                      <SelectItem value="female" className="hover:bg-gray-100">
+                        Female
+                      </SelectItem>
+                      <SelectItem value="other" className="hover:bg-gray-100">
+                        Other
+                      </SelectItem>
+                      <SelectItem
+                        value="prefer_not_to_say"
+                        className="hover:bg-gray-100"
+                      >
                         Prefer not to say
                       </SelectItem>
                     </SelectContent>
