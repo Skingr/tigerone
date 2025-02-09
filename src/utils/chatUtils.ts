@@ -1,4 +1,4 @@
-import { ChatMessage, Message } from "@/sharedTypes/types";
+import { ChatMessage, Message, Models } from "@/sharedTypes/types";
 
 export const DEFAULT_MESSAGES: ChatMessage[] = [
   {
@@ -26,7 +26,7 @@ export const DEFAULT_MESSAGES: ChatMessage[] = [
 ];
 
 export const MODELS = [
-  { value: "gpt-4o", label: "GPT-4o" },
-  { value: "o1-preview", label: "o1 Preview" },
-  { value: "o1-mini", label: "o1 Mini" },
+  { value: Models.GPT_4O, label: "GPT-4o" },
+  { value: Models.O1_PREVIEW, label: "o1 Preview" },
+  { value: Models.O1_MINI, label: "o1 Mini" },
 ];

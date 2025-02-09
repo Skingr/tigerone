@@ -5,7 +5,6 @@ import { Message } from "@/sharedTypes/types";
 export async function POST(request: Request) {
   try {
     const messageData: Message[] = await request.json();
-    console.log("databbbbb", messageData);
 
     if (!Array.isArray(messageData)) {
       return NextResponse.json(
