@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       );
     }
 
-    //get all messages for the conversation
+    //get all messages for the conversation history, sorted in ascending order by created_at(time)
     const conversationMessages = await db
       .select()
       .from(messages)
