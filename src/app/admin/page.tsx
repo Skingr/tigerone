@@ -12,6 +12,8 @@ import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
+import CourseDropdown from '@/components/CourseDrop';
+
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -36,7 +38,13 @@ type GraphBox = {
 }
 
 export default function AdminDash() {
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [userInput, setUserInput] = useState("");
+  const [classDb, setClassDb] = useState<{
+    userQuery: string;
+    aiResponse: string;
+    userClass: string;
+    createdAt: string; }[]>();
   const [organizedDb, setOrganizedDb] = useState<{
     userQuery: string;
     aiResponse: string;
@@ -79,25 +87,27 @@ export default function AdminDash() {
     useEffect(() => {
       fetchData(); 
     }, []) 
+    // organize data
     useEffect(() => {
       if(db){
         setOrganizedDb(organizeData(db));
       }
     }, [db])
-    // filter based on user typing
+
     useEffect(() => {
-      if (userInput.trim() == ""){ // no user input 
-        setFilteredDb(organizedDb) // everything
-      } else if (db){
-        const filteredResults = organizedDb?.filter (item => 
-          item.userQuery.toLowerCase().includes(userInput.toLowerCase()) || 
-          item.aiResponse.toLowerCase().includes(userInput.toLowerCase()) 
-        );
-        setFilteredDb(filteredResults)
-      }
+      if (!organizedDb) return; 
+      const courseFilteredDb = selectedCourse 
+        ? organizedDb.filter(item => item.userClass == selectedCourse) : organizedDb;
+    
+      const finalFilteredDb = userInput.trim() == "" 
+        ? courseFilteredDb : courseFilteredDb.filter(item => item.userQuery.toLowerCase().includes(userInput.toLowerCase()) ||
+            item.aiResponse.toLowerCase().includes(userInput.toLowerCase())
+          );
+    
+      setFilteredDb(finalFilteredDb);
+    }, [userInput, selectedCourse, organizedDb]);
 
-    }, [userInput, organizedDb]) 
-
+   
 
     function formatDate(date: string){
       const hour = new Date(date).getHours();
@@ -176,6 +186,8 @@ export default function AdminDash() {
       
       {/* Header */}
       <header className="mb-6 text-center">
+        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-double border-cc-gold">Student AI Use Information</h1>
+        <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse}/>
         <h1 className="text-4xl font-bold text-gray-800 border-b-8  border-cc-gold font-bebas text-cc-gold">Admin Dashboard</h1>
       </header>
 
@@ -193,8 +205,6 @@ export default function AdminDash() {
               {/* <Bar data={data}></Bar> */}
   
               <LinChart />
-
-              
             </div>
         
             
@@ -203,20 +213,20 @@ export default function AdminDash() {
               className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3 w-full h-full min-w-3xs"/>
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
               <div
               className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3 min-w-3xs"/>
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
         </div>
 
         {/* Right Side: Data Box */}
         <div className="w-1/2  mr-10 ml-10 ">
-          <div className="border border-4 border-cc-gold rounded p-4 shadow-lg min-h-full">
-            <h2 className="font-bold text-xl mb-2 text-cc-charcoal font-bebas">{queryBox.title}</h2>
+          <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
             <AdminSearch
                     userInput={userInput} 
                     setUserInput={setUserInput}
