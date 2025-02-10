@@ -1,7 +1,5 @@
-import { int } from "drizzle-orm/mysql-core";
 import React, { useEffect, useState } from "react";
 import { Bar } from 'react-chartjs-2';
-import { Chart } from 'chart.js/auto'; // Ensure all features are imported
 
 
 
@@ -98,15 +96,27 @@ const MessageTheme = () => {
                 datasets: [
                   {
                     data: valArray,
-                    backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
+                    backgroundColor: [ 'rgba(0, 0, 255, 0.3)', 
+                      'rgba(28, 0, 227, 0.3)', 
+                      'rgba(56, 0, 199, 0.3)', 
+                      'rgba(85, 0, 170, 0.3)', 
+                      'rgba(113, 0, 142, 0.3)', 
+                      'rgba(142, 0, 113, 0.3)', 
+                      'rgba(170, 0, 85, 0.3)', 
+                      'rgba(199, 0, 56, 0.3)', 
+                      'rgba(227, 0, 28, 0.3)', 
+                      'rgba(255, 0, 0, 0.3)'
                     ],
-                    borderColor: [
-                      'rgba(255, 99, 132, 1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
+                    borderColor: [ 'rgba(0, 0, 255, 1)', 
+                      'rgba(28, 0, 227, 1)', 
+                      'rgba(56, 0, 199, 1)', 
+                      'rgba(85, 0, 170, 1)', 
+                      'rgba(113, 0, 142, 1)', 
+                      'rgba(142, 0, 113, 1)', 
+                      'rgba(170, 0, 85, 1)', 
+                      'rgba(199, 0, 56, 1)', 
+                      'rgba(227, 0, 28, 1)', 
+                      'rgba(255, 0, 0, 1)'
                     ],
                     borderWidth: 1,
                   },
