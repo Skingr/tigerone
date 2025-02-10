@@ -79,10 +79,12 @@ export default function AdminDash() {
       }
     }
 
-    // gathers data from database when page is loaded, so will update on each refresh
+    // gathers data from database when class is selected
     useEffect(() => {
-      fetchData(); 
-    }, [selectedCourse]) 
+      if (selectedCourse){
+        fetchData(); 
+      }
+    }, []) 
     // organize data
     useEffect(() => {
       if(db){
