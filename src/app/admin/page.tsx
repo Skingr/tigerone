@@ -13,6 +13,7 @@ import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
 import CourseDropdown from '@/components/CourseDrop';
+import MessageTheme from './MessageThemes';
 
 
 Chart.register(CategoryScale);
@@ -215,7 +216,10 @@ export default function AdminDash() {
               className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
+             
+             <MessageTheme>
+              
+             </MessageTheme>
               </div>
         </div>
 
