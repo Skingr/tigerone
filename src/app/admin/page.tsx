@@ -218,7 +218,7 @@ export default function AdminDash() {
         </div>
   
         {/* Right Side: Data Box */}
-        <div className="w-1/2  mr-10 ml-10 ">
+        <div className="w-1/2 mr-10 ml-10">
           <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
               {queryBox.title}
