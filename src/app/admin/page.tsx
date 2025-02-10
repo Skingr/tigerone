@@ -12,6 +12,8 @@ import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
+import CourseDropdown from '@/components/CourseDrop';
+
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -36,7 +38,13 @@ type GraphBox = {
 }
 
 export default function AdminDash() {
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [userInput, setUserInput] = useState("");
+  const [classDb, setClassDb] = useState<{
+    userQuery: string;
+    aiResponse: string;
+    userClass: string;
+    createdAt: string; }[]>();
   const [organizedDb, setOrganizedDb] = useState<{
     userQuery: string;
     aiResponse: string;
@@ -79,11 +87,36 @@ export default function AdminDash() {
     useEffect(() => {
       fetchData(); 
     }, []) 
+    // organize data
     useEffect(() => {
       if(db){
         setOrganizedDb(organizeData(db));
       }
     }, [db])
+
+    useEffect(() => {
+      if (!organizedDb) return; 
+      const courseFilteredDb = selectedCourse 
+        ? organizedDb.filter(item => item.userClass == selectedCourse) : organizedDb;
+    
+      const finalFilteredDb = userInput.trim() == "" 
+        ? courseFilteredDb : courseFilteredDb.filter(item => item.userQuery.toLowerCase().includes(userInput.toLowerCase()) ||
+            item.aiResponse.toLowerCase().includes(userInput.toLowerCase())
+          );
+    
+      setFilteredDb(finalFilteredDb);
+    }, [userInput, selectedCourse, organizedDb]);
+
+    // get class specific data
+    /*
+    useEffect(() => {
+      if (selectedCourse && organizedDb) {
+        setFilteredDb(organizedDb.filter(item => item.userClass == selectedCourse));
+      } else {
+        setFilteredDb(organizedDb);
+      }
+    }, [selectedCourse]);
+    
     // filter based on user typing
     useEffect(() => {
       if (userInput.trim() == ""){ // no user input 
@@ -95,9 +128,10 @@ export default function AdminDash() {
         );
         setFilteredDb(filteredResults)
       }
+      
+    }, [userInput]); 
 
-    }, [userInput, organizedDb]) 
-
+    */
 
     function formatDate(date: string){
       const hour = new Date(date).getHours();
@@ -177,10 +211,11 @@ export default function AdminDash() {
       {/* Header */}
       <header className="mb-6 text-center">
         <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-double border-cc-gold">Student AI Use Information</h1>
+        <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse}/>
       </header>
 
       {/* Content */}
-      <div className="flex min-w-screen">
+      <div className="flex">
         {/* Left Side: Graphs */}
 
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
