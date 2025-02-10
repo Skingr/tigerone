@@ -40,11 +40,7 @@ type GraphBox = {
 export default function AdminDash() {
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [userInput, setUserInput] = useState("");
-  const [classDb, setClassDb] = useState<{
-    userQuery: string;
-    aiResponse: string;
-    userClass: string;
-    createdAt: string; }[]>();
+
   const [organizedDb, setOrganizedDb] = useState<{
     userQuery: string;
     aiResponse: string;
@@ -186,7 +182,7 @@ export default function AdminDash() {
       
       {/* Header */}
       <header className="mb-6 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-double border-cc-gold">Student AI Use Information</h1>
+        
         <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse}/>
         <h1 className="text-4xl font-bold text-gray-800 border-b-8  border-cc-gold font-bebas text-cc-gold">Admin Dashboard</h1>
       </header>
