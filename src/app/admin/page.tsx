@@ -3,16 +3,19 @@
 // scroll to different ones
 'use client'; // This is a client-side component
 
+import { Page } from 'openai/pagination';
 import React, { useEffect, useState } from 'react';
+
+import { Bar, Line } from 'react-chartjs-2';
 import _ from 'lodash';
 
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
+import { point } from 'drizzle-orm/pg-core';
+import moment from 'moment';
 import { Doughnut } from 'react-chartjs-2';
 import AdminSearch from '@/components/AdminSearch';
-import { getHighlightedText } from '@/components/HighlightText';
-import { organizeData } from './organizeData'; 
-import LinChart from './linChart';
-import MessageTheme from './MessageThemes';
+import { User } from '@/sharedTypes/types';
+
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -25,6 +28,32 @@ Chart.register(LineElement);
 
 Chart.register(ArcElement, Tooltip, Legend);
 
+const donData = {
+  labels: [  'Linear Algebra', 'Cultural Anthropology', 'General Chemistry'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19,22],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
 
 type Box = {
   title: string;
@@ -35,28 +64,39 @@ type GraphBox = {
   src: string;
   description: string;
 }
+const labels = [moment().format('dddd') , moment().format('dddd')];
+
+const lindata = {
+  labels,
+  datasets: [
+    {
+      label: 'Dataset 1',
+      data: [1,2,3,4],
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    },
+    {
+      label: 'Dataset 2',
+      data: [1,2,3,4],
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+  ],
+};
+
+
+
 
 export default function AdminDash() {
   const [userInput, setUserInput] = useState("");
-  const [organizedDb, setOrganizedDb] = useState<{
-    userQuery: string;
-    aiResponse: string;
-    userClass: string;
-    createdAt: string; }[]>();
+  const [filter, setFilter] = useState<string>("");
   const [filteredDb, setFilteredDb] = useState<{
-    userQuery: string;
-    aiResponse: string;
-    userClass: string;
-    createdAt: string; }[]>();
-  const [loading] = useState(false);
+    role: string;
+    content: string;
+    created_at: string }[]>();
+  const [loading, setLoading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
-    messageContent: string;
-    userClass: string;
-    createdAt: string }[]>();
-
-    // get data from db
-
+    content: string; 
+    created_at: string }[]>();
 
   const fetchData = async() => {
       try {
@@ -68,109 +108,79 @@ export default function AdminDash() {
         }
       const db = await response.json();
       setdb(db)
-      //console.log(db)
-
-      const timestamps = db.map((entry: { created_at: string}) => entry.created_at);
+      
       }catch(err: any) {
         console.error(err)
       }
     }
-
-    // gathers data from database when page is loaded, so will update on each refresh
     useEffect(() => {
-      fetchData(); 
-    }, []) 
-    useEffect(() => {
-      if(db){
-        setOrganizedDb(organizeData(db));
-      }
-    }, [db])
-    // filter based on user typing
+      fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+    }, [])
+  
     useEffect(() => {
       if (userInput.trim() == ""){ // no user input 
-        setFilteredDb(organizedDb) // everything
+        setFilteredDb(db) // everything
       } else if (db){
-        const filteredResults = organizedDb?.filter (item => 
-          item.userQuery.toLowerCase().includes(userInput.toLowerCase()) || 
-          item.aiResponse.toLowerCase().includes(userInput.toLowerCase()) 
+        const filteredResults = db.filter (item => 
+          item.content.toLowerCase().includes(userInput.toLowerCase()) // filter based on what ueser types
         );
         setFilteredDb(filteredResults)
       }
 
-    }, [userInput, organizedDb]) 
+    }, [userInput])
 
+    const getHighlightedText = (text: string, highlight: string) => {
+      if (!highlight.trim()){
+        return <span>{text}</span>
+      }  
+      const regex = new RegExp(`(${_.escapeRegExp(highlight)})`, 'gi')
+      const parts = text.split(regex)
+      return (
+        <span>
+           {parts.map((part, i) => 
+              part.toLowerCase() == highlight.toLowerCase() ? (
+                <mark key = {i} className = "bg-yellow-300 font-bold">{part}</mark>
+              ) : ( <span key={i}>{part}</span>)
+      )}
+      </span>
+    )};
 
-    function formatDate(date: string){
-      const hour = new Date(date).getHours();
-      const amPm = hour >= 12 ? "PM" : "AM";
-      
-      const formatHour = ((hour %12)||12);// hour now works in AM/PM form, no issues
+// TODO: How do I make this mutable? And formatted right? Want an \n after every query
+  const queryBox= {
+    title: 'Query box',
+    content: filteredDb ? (
+    <ul>
+       <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
+          {filteredDb.map((msg,index) => 
+          <li key={index} className="border-b py-1">
+          <b>Role:</b> {msg.role} <br></br>
+          <b>Content:</b> {getHighlightedText(msg.content, userInput)}<br></br>
+          <b>Timestamp:</b>{msg.created_at}<br></br>
+        </li>
+           )}
+       </div>
+    </ul>
+  ):(
+    <p>Loading...</p>
 
-  
-      return `${formatHour} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
-    }
-
-  const queryBox = {
-    title: "Query box",
-    content: filteredDb && filteredDb.length > 0 ? (
-      <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-        {filteredDb.map((msg, index) => (
-          <div key={index} className="border-b py-1">
-            <b>Student Query:</b> {getHighlightedText(msg.userQuery, userInput)}
-            <br />
-            <b>AI Response:</b> {getHighlightedText(msg.aiResponse, userInput)}
-            <br />
-            <b>Student Course:</b> {msg.userClass}
-            <br />
-            <b>Timestamp:</b> {formatDate(msg.createdAt)}
-            <br />
-          </div>
-        ))}
-      </div>
-    ) : (
-      <p>{filteredDb ? "No results found." : "Loading..."}</p>
-    ),
-  };
-  
- 
-  const donData = {
-    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userClass))] : [],
-    datasets: [
-      {
-        label: '# of Queries',
-        data: [] as number[],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-    if (filteredDb) {
-    const countMap: Record<string, number> = {};
-  
-    for (const item of filteredDb) {
-      if (countMap[item.userClass]) {
-        countMap[item.userClass] += 1;
-      } else {
-        countMap[item.userClass] = 1;
-      }
-    }
-  
-    donData.datasets[0].data = Object.values(countMap);
-  }
+  )}
 
    const graph1: Box = {title: 'Usage', content: 'Students usage over time'}
    const graph2: Box = {title: 'Graph 2', content: 'graph here?'}
    const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
    const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Chart.js Line Chart',
+      },
+    },
+  };
 
   return (
     <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
@@ -184,36 +194,41 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
 
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center">
             {/*Graph1*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center"
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center">{graph1.title}</h2>
-              {/* <p className='text-gray-600'>{graph1.content}</p> */}
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph1.title}</h2>
+              <p className='text-gray-600'>{graph1.content}</p>
               {/* <Bar data={data}></Bar> */}
-  
-              <LinChart />
-
+              <Line data={lindata} options={options}/>
               
             </div>
-        
-            
-            {/*Graph4*/}
+            {/*Graph2*/}
             <div
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-            <MessageTheme>
-              
-            </MessageTheme>
+                <Doughnut data={donData} className="mx-auto p-3"/>
               </div>
-              <div
-              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+              {/*Graph3*/}
+            <div
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10"
             >
-             
-             <Doughnut data={donData} className="mx-auto p-3"/>
-              </div>
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph3.title}</h2>
+              <p className='text-gray-600'>{graph3.content}</p>
+              
+            </div>
+            {/*Graph4*/}
+            <div
+              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 "
+            >
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{graph4.title}</h2>
+              <p className='text-gray-600'>{graph4.content}</p>
+              
+            </div>
+  
         </div>
 
         {/* Right Side: Data Box */}
@@ -232,5 +247,3 @@ export default function AdminDash() {
     </main>
   );
 }
-
-
