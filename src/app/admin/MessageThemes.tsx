@@ -1,6 +1,7 @@
 import { int } from "drizzle-orm/mysql-core";
 import React, { useEffect, useState } from "react";
-import { Doughnut } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+
 
 
 
@@ -11,16 +12,16 @@ const MessageTheme = () => {
     }[]>([]);
     const [sentiments, setSentiments] = useState<{ message: string; score: number; sentiment: string }[]>([]);
     const [donData, setDonData] = useState<{
-        labels: string[];  // ✅ Change from `string` to `string[]`
+        labels: string[];  
         datasets: {
           label: string;
-          data: number[];   // ✅ Ensure `data` is number[]
+          data: number[];  
           backgroundColor: string[];
           borderColor: string[];
           borderWidth: number;
         }[];
       }>({
-        labels: [],  // ✅ Correct initial state
+        labels: [],  
         datasets: [],
       });
         
@@ -131,7 +132,7 @@ const MessageTheme = () => {
 
     return (
         
-            <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
+            <Bar data={donData} style={{width:"100%", height:"100%"}} />
         
     );
 };
