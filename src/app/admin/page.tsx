@@ -184,6 +184,7 @@ export default function AdminDash() {
       {/* Header */}
       <header className="mb-6 text-center">
         
+        
         <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse}/>
         <h1 className="text-4xl font-bold text-gray-800 border-b-8  border-cc-gold font-bebas text-cc-gold">Admin Dashboard</h1>
       </header>
@@ -195,7 +196,7 @@ export default function AdminDash() {
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
             {/*Graph1*/}
             <div
-              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
+              className="border border-4 border-double  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-2 justify-center col-span-2 flex flex-col items-center "
             >
               <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">{graph1.title}</h2>
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
@@ -203,24 +204,24 @@ export default function AdminDash() {
   
               <LinChart />
             </div>
+            <div
+              className="border border-4 border-double  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-2 justify-center col-span-2 flex flex-col items-center "
+              >
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">Top Nouns and Verbs in User Messages</h2>
+
+             <MessageTheme/>
+              
+              </div>
         
             
             {/*Graph4*/}
             <div
-              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+              className="border border-4 border-double  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
              <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
-              <div
-              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
-            >
-             
-             
-             <MessageTheme>
               
-             </MessageTheme>
-              </div>
         </div>
 
         {/* Right Side: Data Box */}

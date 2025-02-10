@@ -1,6 +1,8 @@
 import { int } from "drizzle-orm/mysql-core";
 import React, { useEffect, useState } from "react";
 import { Bar } from 'react-chartjs-2';
+import { Chart } from 'chart.js/auto'; // Ensure all features are imported
+
 
 
 
@@ -14,7 +16,6 @@ const MessageTheme = () => {
     const [donData, setDonData] = useState<{
         labels: string[];  
         datasets: {
-          label: string;
           data: number[];  
           backgroundColor: string[];
           borderColor: string[];
@@ -96,7 +97,6 @@ const MessageTheme = () => {
                 labels: keyArray,
                 datasets: [
                   {
-                    label: '# of Queries',
                     data: valArray,
                     backgroundColor: [
                       'rgba(255, 99, 132, 0.2)',
@@ -129,10 +129,26 @@ const MessageTheme = () => {
         
 
       }, []);
+      const options = {
+        plugins: { 
+            legend: {
+                display: false
+            },
+            
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'Frequency',
+            },
+          },
+        },
+      };
 
     return (
         
-            <Bar data={donData} style={{width:"100%", height:"100%"}} />
+            <Bar data={donData} options={options} style={{width:"100%", height:"100%"}} />
         
     );
 };
