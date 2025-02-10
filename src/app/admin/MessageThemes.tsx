@@ -1,3 +1,4 @@
+import { int } from "drizzle-orm/mysql-core";
 import React, { useEffect, useState } from "react";
 
 
@@ -32,16 +33,46 @@ const MessageTheme = () => {
             var sentiment = require( 'wink-sentiment' );
 
             // set sentiment analysis and ner. negation helps accuracy and sbd detects sentences. 
-            const nlp = winkNLP( model, [ 'sbd', 'negation', 'sentiment', 'ner'] );
+            const nlp = winkNLP( model, [ 'sbd', 'pos', 'negation', 'sentiment', 'ner'] );
+            const its = nlp.its
             //const messagesString: string = messageContents.join('')
             const doc = nlp.readDoc(messageContents);
+            // gives a score for the sentiment. This would be cool to tie into the time thing!
             const sentimentScore = sentiment(messageContents)
+            // above 0 is positive, below 0 is negative
             console.log("score:", sentimentScore)
             //const sentimentLabel = sentimentScore > 0 ? "Positive" : sentimentScore < 0 ? "Negative" : "Neutral";
             
+            // sort by # of occurence
+            const tokens:string[] = doc.tokens().out()
+            const partofspeech:string[] = doc.tokens().out(its.pos)
+            //console.log("thangs", tokens, partofspeech)
+            const wordPos: Record<string, string> = {}
+            for (let i = 0; i < tokens.length; i++) {
+                wordPos[tokens[i]]=partofspeech[i]
+            }
+
+            console.log("words and pos", wordPos)
+            const wordFrequency: Record<string, number> = {};
             
-            const tokens = doc.tokens().out();
-            console.log("entities:", tokens);
+            // iterate thru and add 1
+            tokens.forEach((token)=> {
+                if(token.length > 3 && (wordPos[token]== "NOUN" || wordPos[token]== "VERB") ){
+                    wordFrequency[token] = (wordFrequency[token] ||0) +1
+                }
+            }
+            )
+
+                
+            
+            
+            const sortedTokens = Object.entries(wordFrequency)
+            .sort(([, a], [, b]) => b - a) 
+            .slice(0, 8) 
+            
+            // Gets the top 8 nouns
+            console.log("Top nouns and verbs:", sortedTokens);
+
             //setner(doc.tokens().out())
 
 
