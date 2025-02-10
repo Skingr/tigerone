@@ -192,7 +192,7 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
 
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
             {/*Graph1*/}
             <div
               className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
@@ -224,7 +224,7 @@ export default function AdminDash() {
         </div>
 
         {/* Right Side: Data Box */}
-        <div className="w-1/2  mr-10 ml-10 ">
+        <div className="w-1/2  mr-10 ml-10 min-w-[42.4vw]">
           <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
             <AdminSearch
