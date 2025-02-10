@@ -12,6 +12,7 @@ import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
+import MessageTheme from './MessageThemes';
 
 Chart.register(CategoryScale);
 Chart.register(BarElement);
@@ -203,7 +204,9 @@ export default function AdminDash() {
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3"/>
+            <MessageTheme>
+              
+            </MessageTheme>
               </div>
               <div
               className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
