@@ -1,5 +1,6 @@
 import { int } from "drizzle-orm/mysql-core";
 import React, { useEffect, useState } from "react";
+import { Doughnut } from 'react-chartjs-2';
 
 
 
@@ -8,9 +9,20 @@ const MessageTheme = () => {
         messageContent: string; 
         role: string;
     }[]>([]);
-    const [ner, setner] = useState('test')
     const [sentiments, setSentiments] = useState<{ message: string; score: number; sentiment: string }[]>([]);
-
+    const [donData, setDonData] = useState<{
+        labels: string[];  // ✅ Change from `string` to `string[]`
+        datasets: {
+          label: string;
+          data: number[];   // ✅ Ensure `data` is number[]
+          backgroundColor: string[];
+          borderColor: string[];
+          borderWidth: number;
+        }[];
+      }>({
+        labels: [],  // ✅ Correct initial state
+        datasets: [],
+      });
         
     
     useEffect(() => {
@@ -68,12 +80,39 @@ const MessageTheme = () => {
             
             const sortedTokens = Object.entries(wordFrequency)
             .sort(([, a], [, b]) => b - a) 
-            .slice(0, 8) 
-            
+            .slice(0, 10) 
+
             // Gets the top 8 nouns
             console.log("Top nouns and verbs:", sortedTokens);
-
-            //setner(doc.tokens().out())
+            let keyArray = []
+            let valArray = []
+            for (const [key,val] of sortedTokens){
+                keyArray.push(key)
+                valArray.push(val)
+            }
+            
+            const donutData = {
+                labels: keyArray,
+                datasets: [
+                  {
+                    label: '# of Queries',
+                    data: valArray,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                    ],
+                    borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                    ],
+                    borderWidth: 1,
+                  },
+                ],
+              };
+            
+            setDonData(donutData)
 
 
 
@@ -86,19 +125,14 @@ const MessageTheme = () => {
         };
       
         fetchData();
+        
+
       }, []);
 
     return (
-        <div>
-            {/* Render your data here */}
-            <p>{ner}</p>
-            {/* {db.map((entry, index) => (
-                <div key={index}>
-                    <p>Message: {entry.messageContent}</p>
-                    <p>User Class: {entry.userClass}</p>
-                </div>
-            ))} */}
-        </div>
+        
+            <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
+        
     );
 };
 
