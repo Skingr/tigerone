@@ -172,11 +172,11 @@ export default function AdminDash() {
    const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
 
   return (
-    <main className="font-crimsonPro min-h-screen bg-cc-gold-faint p-4 ">
+    <main className="font-crimsonPro min-h-screen bg-cc-white p-4 ">
       
       {/* Header */}
       <header className="mb-6 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-double border-cc-gold">Student AI Use Information</h1>
+        <h1 className="text-4xl font-bold text-gray-800 border-b-8  border-cc-gold font-bebas text-cc-gold">Admin Dashboard</h1>
       </header>
 
       {/* Content */}
@@ -186,9 +186,9 @@ export default function AdminDash() {
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
             {/*Graph1*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
+              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
             >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center">{graph1.title}</h2>
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">{graph1.title}</h2>
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
@@ -200,23 +200,23 @@ export default function AdminDash() {
             
             {/*Graph4*/}
             <div
-              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3"/>
+             <Doughnut data={donData} className="mx-auto p-3 w-full h-full min-w-3xs"/>
               </div>
               <div
-              className="border border-4 border-double border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
             >
              
-             <Doughnut data={donData} className="mx-auto p-3"/>
+             <Doughnut data={donData} className="mx-auto p-3 min-w-3xs"/>
               </div>
         </div>
 
         {/* Right Side: Data Box */}
         <div className="w-1/2  mr-10 ml-10 ">
-          <div className="border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
-            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
+          <div className="border border-4 border-cc-gold rounded p-4 shadow-lg min-h-full">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal font-bebas">{queryBox.title}</h2>
             <AdminSearch
                     userInput={userInput} 
                     setUserInput={setUserInput}
