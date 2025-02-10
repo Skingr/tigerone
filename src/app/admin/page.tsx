@@ -81,12 +81,10 @@ export default function AdminDash() {
 
     // gathers data from database when class is selected
     useEffect(() => {
-
       if (selectedCourse){
         fetchData(); 
       }
     }, []) 
-
     // organize data
     useEffect(() => {
       if(db){
