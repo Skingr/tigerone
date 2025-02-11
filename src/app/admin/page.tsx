@@ -196,6 +196,9 @@ export default function AdminDash() {
         <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-cc-gold font-bebas text-cc-gold">
           Admin Dashboard
         </h1>
+        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-cc-gold font-bebas text-cc-gold">
+          Admin Dashboard
+        </h1>
       </header>
       <div className="flex">
         {/* Left Side: Graphs */}
@@ -215,11 +218,30 @@ export default function AdminDash() {
           <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
             <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
           </div>
+          {/* Graph 1 */}
+          <div className="border border-4 border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">
+              {graph1.title}
+            </h2>
+            <LinChart />
+          </div>
+  
+          {/* Graph 4 */}
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+          </div>
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+          </div>
         </div>
+  
   
         {/* Right Side: Data Box */}
         <div className="w-1/2 mr-10 ml-10">
           <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
+              {queryBox.title}
+            </h2>
             <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
               {queryBox.title}
             </h2>
@@ -234,3 +256,4 @@ export default function AdminDash() {
       </div>
     </main>
   )}
+  
