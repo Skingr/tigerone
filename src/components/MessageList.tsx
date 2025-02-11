@@ -16,7 +16,7 @@ export default function MessageList({
         </div>
       ) : (
         messages
-          .filter((m) => m.role !== "system") // optional :::(hides system in the ui)//bg-cc-gold/20
+          .filter((m) => m.role !== "system")
           .slice(1)
           .map((msg, index) => <Message key={index} msg={msg} index={index} />)
       )}

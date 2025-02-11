@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import useUser from "@/hooks/store/useUser";
+//wrap evyerthing in context that checks auth state , if it checks auth and youre not fully auth you gret pushed to start page
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const session = useSession();

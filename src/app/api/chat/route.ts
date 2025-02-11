@@ -43,19 +43,19 @@ const openai = new OpenAI({
       const modelChoices = [
         {
           model: "gpt-4o",
-          max_tokens: 3000,
+          max_tokens: 10000,
         },
         {
           model: "gpt-4o-turbo",
-          max_tokens: 3000,
+          max_tokens: 10000,
         },
         {
           model: "o1-preview",
-          max_completion_tokens: 5000, // very expensive use wisely
+          max_completion_tokens: 10000, // very expensive use wisely
         },
         {
           model: "o1-mini",
-          max_completion_tokens: 5000, // need to test price
+          max_completion_tokens: 10000, // need to test price
         },
       ];
 // make text stream so it doesnt feel like it takes forever
