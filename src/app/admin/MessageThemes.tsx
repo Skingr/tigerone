@@ -42,7 +42,7 @@ const MessageTheme = () => {
             const winkNLP = require( 'wink-nlp' );
             // Load english language model.
             const model = require( 'wink-eng-lite-web-model' );
-            var sentiment = require( 'wink-sentiment' );
+            const sentiment = require( 'wink-sentiment' );
 
             // set sentiment analysis and ner. negation helps accuracy and sbd detects sentences. 
             const nlp = winkNLP( model, [ 'sbd', 'pos', 'negation', 'sentiment', 'ner'] );
@@ -83,8 +83,8 @@ const MessageTheme = () => {
 
             // Gets the top 8 nouns
             console.log("Top nouns and verbs:", sortedTokens);
-            let keyArray = []
-            let valArray = []
+            const keyArray = []
+            const valArray = []
             for (const [key,val] of sortedTokens){
                 keyArray.push(key)
                 valArray.push(val)

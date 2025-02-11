@@ -71,12 +71,12 @@ export default function AdminDash() {
         if (!response.ok){
           throw new Error ('Failed');
         }
-      const db = await response.json  ();
+      const db = await response.json();
       setdb(db)
       //console.log(db)
 
-      const timestamps = db.map((entry: { created_at: string}) => entry.created_at);
-      }catch(err: any) {
+      const timestamps = db.map((entry: { created_at: string }) => entry.created_at);
+    }catch(err: any) {
         console.error(err)
       }
     }
@@ -199,24 +199,7 @@ export default function AdminDash() {
       </header>
       <div className="flex">
         {/* Left Side: Graphs */}
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
-          
-          {/* Graph 1 */}
-          <div className="border border-4 border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center">
-            <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">
-              {graph1.title}
-            </h2>
-            <LinChart />
-          </div>
-  
-          {/* Graph 4 */}
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
-            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
-          </div>
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
-            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
-          </div>
-
+        
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
             {/*Graph1*/}
             <div
@@ -280,5 +263,5 @@ export default function AdminDash() {
         </div>
       </div>
     </main>
-  )}
+  )};
   

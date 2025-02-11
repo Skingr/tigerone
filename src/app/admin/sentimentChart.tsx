@@ -42,7 +42,7 @@ const SentimentChart = () => {
                 const db = await response.json();
                 setdb(db);
                 
-                var sentiment = require( 'wink-sentiment' );
+                const sentiment = require( 'wink-sentiment' );
                 const timeToSentScore: { [key: string]: number } = {};
                 
                 // filter out AI response
@@ -94,7 +94,7 @@ const SentimentChart = () => {
         const timeToTotalScore: {[key: string]: number} = {}; // this has the times of the messages
 
         const timeToTotalResponses: {[key: string]: number} = {}; // this has the times of the messages
-        const timeWindowInt = [3600000]; // multiplier to have 12 hours be the interval, can change // number of millisecs in an hour
+        const timeWindowInt = [86_400_000]; // multiplier to have 12 hours be the interval, can change // number of millisecs in an hour
         const currentTime = new Date();
         const timeWindow = new Date(currentTime.getTime() - 12 * timeWindowInt[0])
         
@@ -134,12 +134,10 @@ const SentimentChart = () => {
       };
 
       function formatDate(date: string){
-        const hour = new Date(date).getHours();
-        const amPm = hour >= 12 ? "PM" : "AM";
-        const formatHour = ((hour %12)||12);
-
+        const day = new Date(date)
+        const day_split = day.toDateString().split(' ')
     
-        return `${formatHour} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
+        return `${day_split[0]}, ${day_split[1]} ${day_split[2]}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
       }
 
    
