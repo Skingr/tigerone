@@ -6,6 +6,9 @@ Execute
 
 ```
 npm install
+npm install wink-nlp
+npm install wink-sentiment
+npm install wink-eng-lite-web-model
 
 ```
 
