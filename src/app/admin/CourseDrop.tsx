@@ -30,7 +30,7 @@ export default function CourseDropdown({
 
     fetchCourses();
   }, []);
-  //console.log( courses)
+  //console.log(courses)
 
   return (
     <div
