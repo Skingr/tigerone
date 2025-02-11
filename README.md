@@ -22,5 +22,7 @@ NEXTAUTH_URL='http://localhost:3000'
 DATABASE_URL=''
 OPENAI_API_KEY=''
 AUTH_SECRET=''
+PROF_WHITELIST='email@,email@,email@'
 ```
-.env in gitignore * 
+
+.env in gitignore \*
