@@ -127,8 +127,6 @@ export default function AdminDash() {
             <br />
             <b>AI Response:</b> {getHighlightedText(msg.aiResponse, userInput)}
             <br />
-            <b>Student Course:</b> {msg.userClass}
-            <br />
             <b>Timestamp:</b> {formatDate(msg.createdAt)}
             <br />
           </div>
