@@ -13,6 +13,8 @@ import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
 import CourseDropdown from '@/components/CourseDrop';
+import MessageTheme from './MessageThemes';
+import SentimentChart from './sentimentChart';
 
 
 Chart.register(CategoryScale);
@@ -201,6 +203,24 @@ export default function AdminDash() {
               {/* <Bar data={data}></Bar> */}
   
               <LinChart />
+            </div>
+            <div
+              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
+            >
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">Most Common Nouns and Verbs</h2>
+              {/* <p className='text-gray-600'>{graph1.content}</p> */}
+              {/* <Bar data={data}></Bar> */}
+  
+              <MessageTheme />
+            </div>
+            <div
+              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
+            >
+              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">Recent Sentiment</h2>
+              {/* <p className='text-gray-600'>{graph1.content}</p> */}
+              {/* <Bar data={data}></Bar> */}
+  
+              <SentimentChart />
             </div>
         
             
