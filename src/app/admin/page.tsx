@@ -12,7 +12,7 @@ import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
-import CourseDropdown from '@/components/CourseDrop';
+import CourseDropdown from './CourseDrop';
 import MessageTheme from './MessageThemes';
 import SentimentChart from './sentimentChart';
 
@@ -63,7 +63,7 @@ export default function AdminDash() {
     // get data from db
 
 
-  const fetchData = async() => {
+  const fetchData = async(selectedCourse: string) => {
       try {
         const response = await fetch('/api/admin', {
           method: 'GET',
@@ -71,7 +71,7 @@ export default function AdminDash() {
         if (!response.ok){
           throw new Error ('Failed');
         }
-      const db = await response.json();
+      const db = await response.json  ();
       setdb(db)
       //console.log(db)
 
@@ -81,10 +81,13 @@ export default function AdminDash() {
       }
     }
 
-    // gathers data from database when page is loaded, so will update on each refresh
+    // gathers data from database when class is selected
     useEffect(() => {
-      fetchData(); 
-    }, []) 
+      if (selectedCourse){
+        fetchData(selectedCourse); 
+        console.log('sl',selectedCourse);
+      }
+    }, [selectedCourse]) 
     // organize data
     useEffect(() => {
       if(db){
@@ -106,7 +109,6 @@ export default function AdminDash() {
     }, [userInput, selectedCourse, organizedDb]);
 
    
-
     function formatDate(date: string){
       const hour = new Date(date).getHours();
       const amPm = hour >= 12 ? "PM" : "AM";
@@ -126,8 +128,6 @@ export default function AdminDash() {
             <b>Student Query:</b> {getHighlightedText(msg.userQuery, userInput)}
             <br />
             <b>AI Response:</b> {getHighlightedText(msg.aiResponse, userInput)}
-            <br />
-            <b>Student Course:</b> {msg.userClass}
             <br />
             <b>Timestamp:</b> {formatDate(msg.createdAt)}
             <br />
@@ -179,19 +179,43 @@ export default function AdminDash() {
    const graph3: Box = {title: 'Graph 3', content: 'graph here?'}
    const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
 
-  return (
-    <main className="font-crimsonPro min-h-screen bg-cc-white p-4 ">
-      
+   return (
+    <main className="font-crimsonPro min-h-screen bg-cc-white p-4 relative">
+     {!selectedCourse && (
+      <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
+        <CourseDropdown
+          selectedCourse={selectedCourse}
+          setSelectedCourse={setSelectedCourse}
+          disabled={false}
+        />
+     </div>
+  )}
+
       {/* Header */}
       <header className="mb-6 text-center">
-        
-        <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse}/>
-        <h1 className="text-4xl font-bold text-gray-800 border-b-8  border-cc-gold font-bebas text-cc-gold">Admin Dashboard</h1>
+        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-cc-gold font-bebas text-cc-gold">
+          Admin Dashboard
+        </h1>
       </header>
-
-      {/* Content */}
       <div className="flex">
         {/* Left Side: Graphs */}
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2">
+          
+          {/* Graph 1 */}
+          <div className="border border-4 border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">
+              {graph1.title}
+            </h2>
+            <LinChart />
+          </div>
+  
+          {/* Graph 4 */}
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+          </div>
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+          </div>
 
         <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
             {/*Graph1*/}
@@ -238,22 +262,23 @@ export default function AdminDash() {
              <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
               </div>
         </div>
-
+  
+  
         {/* Right Side: Data Box */}
-        <div className="w-1/2  mr-10 ml-10 min-w-[42.4vw]">
+        <div className="w-1/2 mr-10 ml-10">
           <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
-            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">{queryBox.title}</h2>
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
+              {queryBox.title}
+            </h2>
             <AdminSearch
-                    userInput={userInput} 
-                    setUserInput={setUserInput}
-                    loading={loading}
-                  />
+              userInput={userInput}
+              setUserInput={setUserInput}
+              loading={loading}
+            />
             <div>{queryBox.content}</div>
           </div>
         </div>
       </div>
     </main>
-  );
-}
-
-
+  )}
+  
