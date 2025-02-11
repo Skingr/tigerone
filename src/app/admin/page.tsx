@@ -12,7 +12,7 @@ import AdminSearch from '@/components/AdminSearch';
 import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
-import CourseDropdown from '@/components/CourseDrop';
+import CourseDropdown from './CourseDrop';
 
 
 Chart.register(CategoryScale);
@@ -61,7 +61,7 @@ export default function AdminDash() {
     // get data from db
 
 
-  const fetchData = async() => {
+  const fetchData = async(selectedCourse: string) => {
       try {
         const response = await fetch('/api/admin', {
           method: 'GET',
@@ -69,7 +69,7 @@ export default function AdminDash() {
         if (!response.ok){
           throw new Error ('Failed');
         }
-      const db = await response.json();
+      const db = await response.json  ();
       setdb(db)
       //console.log(db)
 
@@ -82,9 +82,10 @@ export default function AdminDash() {
     // gathers data from database when class is selected
     useEffect(() => {
       if (selectedCourse){
-        fetchData(); 
+        fetchData(selectedCourse); 
+        console.log('sl',selectedCourse);
       }
-    }, []) 
+    }, [selectedCourse]) 
     // organize data
     useEffect(() => {
       if(db){
@@ -106,7 +107,6 @@ export default function AdminDash() {
     }, [userInput, selectedCourse, organizedDb]);
 
    
-
     function formatDate(date: string){
       const hour = new Date(date).getHours();
       const amPm = hour >= 12 ? "PM" : "AM";
