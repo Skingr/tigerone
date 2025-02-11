@@ -117,19 +117,16 @@ const useMessages = (conversationId: string, model: Model) => {
         },
       ];
 
-      // Store assistant message in the database
       await createMessages(messagesToSave);
 
-      // Invalidate and refetch messages query
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       queryClient.invalidateQueries({ queryKey: ["messages", conversationId] });
 
-      // Update URL after messages are saved and cache is updated
       if (!selectedConversation) {
         const params = new URLSearchParams(searchParams);
         params.set("conversation_id", conversationId);
-        setTimeout(() => {
-          router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-        }, 0);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
       }
     } catch (err: any) {
       console.error(err);
