@@ -25,8 +25,8 @@ const openai = new OpenAI({
     try {
       const body = (await req.json()) as ChatRequest // body is payload of the request, i.e the users input in the req (ourcase)
       const { messages, model } = body // this line pulls messages from "body"
-      console.log("***************************",body)
-      console.log("Selected model:", model)
+      //console.log("***************************",body)
+      //console.log("Selected model:", model)
       if (!messages || !Array.isArray(messages)) {
         return NextResponse.json(
           { error: 'No valid messages array in request body.' },
