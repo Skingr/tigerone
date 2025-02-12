@@ -42,7 +42,6 @@ type GraphBox = {
 export default function AdminDash() {
   const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
   const [userInput, setUserInput] = useState("");
-
   const [organizedDb, setOrganizedDb] = useState<{
     userQuery: string;
     aiResponse: string;
@@ -65,7 +64,7 @@ export default function AdminDash() {
 
   const fetchData = async(selectedCourse: string) => {
       try {
-        const response = await fetch('/api/admin', {
+        const response = await fetch(`/api/admin?selectedClass=${encodeURIComponent(selectedCourse)}`, {
           method: 'GET',
         })
         if (!response.ok){
@@ -85,7 +84,7 @@ export default function AdminDash() {
     useEffect(() => {
       if (selectedCourse){
         fetchData(selectedCourse); 
-        console.log('sl',selectedCourse);
+        //console.log('sl',selectedCourse);
       }
     }, [selectedCourse]) 
     // organize data
@@ -97,16 +96,12 @@ export default function AdminDash() {
 
     useEffect(() => {
       if (!organizedDb) return; 
-      const courseFilteredDb = selectedCourse 
-        ? organizedDb.filter(item => item.userClass == selectedCourse) : organizedDb;
-    
-      const finalFilteredDb = userInput.trim() == "" 
-        ? courseFilteredDb : courseFilteredDb.filter(item => item.userQuery.toLowerCase().includes(userInput.toLowerCase()) ||
-            item.aiResponse.toLowerCase().includes(userInput.toLowerCase())
+      const finalFilteredDb = userInput.trim() == "" ? organizedDb : organizedDb.filter(item => item.userQuery.toLowerCase().includes(userInput.toLowerCase()) 
+      || item.aiResponse.toLowerCase().includes(userInput.toLowerCase())
           );
     
       setFilteredDb(finalFilteredDb);
-    }, [userInput, selectedCourse, organizedDb]);
+    }, [userInput, organizedDb]);
 
    
     function formatDate(date: string){
@@ -190,7 +185,6 @@ export default function AdminDash() {
         />
      </div>
   )}
-
       {/* Header */}
       <header className="mb-6 text-center">
         <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-cc-gold font-bebas text-cc-gold">
@@ -209,7 +203,7 @@ export default function AdminDash() {
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
-              <LinChart />
+              <LinChart data={organizedDb}/>
             </div>
             <div
               className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
@@ -218,7 +212,7 @@ export default function AdminDash() {
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
-              <MessageTheme />
+              <MessageTheme data={organizedDb}/>
             </div>
             <div
               className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
@@ -227,41 +221,35 @@ export default function AdminDash() {
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
-              <SentimentChart />
+              <SentimentChart data={organizedDb}/>
             </div>
-        
-            
-            {/*Graph4*/}
-            <div
-              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
-            >
-             
-             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
-              </div>
-              <div
-              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
-            >
-             
-             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
-              </div>
-        </div>
-  
-  
-        {/* Right Side: Data Box */}
+          </div>
+        {/* Right Side: Data Box and Doughnut Charts */}
         <div className="w-1/2 mr-10 ml-10">
-          <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
-            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
-              {queryBox.title}
-            </h2>
-            <AdminSearch
-              userInput={userInput}
-              setUserInput={setUserInput}
-              loading={loading}
-            />
-            <div>{queryBox.content}</div>
+        {/* Query Box */}
+        <div className="h-[34rem] border border-4 border-double border-cc-gold rounded p-4 shadow-lg mb-6">
+          <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
+            {queryBox.title}
+          </h2>
+          <AdminSearch
+            userInput={userInput}
+            setUserInput={setUserInput}
+            loading={loading}
+          />
+          <div>{queryBox.content}</div>
+        </div>
+        <div className="h-6"></div>
+        {/* Doughnut Charts */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+          </div>
+          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
+            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
           </div>
         </div>
       </div>
-    </main>
-  )};
+    </div>
+  </main>
+)}
   

@@ -16,9 +16,9 @@ export default auth((req) => {
 
   if (isAdminPage) {
     const userEmail = req.auth?.user?.email;
-    console.log("userEmail", userEmail);
+    //console.log("userEmail", userEmail);
     const allowedEmails = process.env.PROF_WHITELIST?.split(",") || [];
-    console.log("allowedEmails", allowedEmails);
+    //console.log("allowedEmails", allowedEmails);
 
     if (!userEmail || !allowedEmails.includes(userEmail)) {
       return NextResponse.redirect(new URL("/", req.nextUrl));
