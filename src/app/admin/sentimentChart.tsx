@@ -4,17 +4,15 @@ import React, {useEffect,useState} from "react";
 import { Line} from"react-chartjs-2";
 
 
-interface SentChartProps {
-  data: {
-    userQuery: string;
-    aiResponse: string;
-    userClass: string;
-    createdAt: string;
-  }[] | undefined;
-} 
-
-const SentimentChart = ({data:organizedDb}:SentChartProps) => {
+const SentimentChart = () => {
     const [sentiments, setSentiments] = useState<{ message: string; score: number; sentiment: string }[]>([]);
+    const [db, setdb] = useState<{ 
+          role: string;
+          messageContent: string; 
+          userClass: string;
+          createdAt: string 
+        }[]>();
+        
     const [linData, setLinData] = useState({
         labels: [] as string[],
         datasets: [
@@ -25,40 +23,70 @@ const SentimentChart = ({data:organizedDb}:SentChartProps) => {
             borderwidth: 2,
             borderColor: 'rgba(85, 0, 170)',
             backgroundColor: 'rgba(85, 0, 170, 0.5)', 
-          },
+        },
+        
         ],
+    
     });
 
+
     useEffect(() =>{
-      if(organizedDb){
-        const sentiment = require( 'wink-sentiment' );
-        const timeToSentScore: { [key: string]: number } = {};
-        organizedDb.forEach((entry: { userQuery: string; aiResponse: string; userClass: string; createdAt: string }) => {
-          const result = sentiment(entry.userQuery);
-          timeToSentScore[entry.createdAt] = result.normalizedScore;
-        });
-        const {labels, data} = groupedData(timeToSentScore);
+        const fetchData = async() => {
+            try {
+                const response = await fetch('/api/admin', {
+                  method: 'GET',
+                })
+                if (!response.ok){
+                  throw new Error ('Failed');
+                }
+                const db = await response.json();
+                setdb(db);
+                
+                const sentiment = require( 'wink-sentiment' );
+                const timeToSentScore: { [key: string]: number } = {};
+                
+                // filter out AI response
+                const dbdata = db  
+                .filter((entry: { role: string }) => entry.role === 'user')
+
+                dbdata.forEach((entry: { role: string; messageContent: string; userClass: string; createdAt: string }) => {
+                    const result = sentiment(entry.messageContent);
+                    timeToSentScore[entry.createdAt] = result.normalizedScore;
+                  });
+                
+                
+            
+                const {labels, data} = groupedData(timeToSentScore);
                 console.log("LABELS: ", labels)
                 console.log("DATA:", data)
                 //console.log(typeof db)
                 //console.log(db) 
                 //console.log(db[0].userquery)
                 
-        setLinData({
-          labels,
-          datasets: [{
-            label: '',
-            data,
-            tension: 0.05,
-            borderwidth: 3,
-            borderColor: 'rgba(85, 0, 170)',
-            backgroundColor: 'rgba(85, 0, 170, 0.5)', 
+                setLinData({
+                    labels,
+                    datasets: [
+                    {
+                        label: '',
+                        data,
+                        tension: 0.05,
+                        borderwidth: 3,
+                        borderColor: 'rgba(85, 0, 170)',
+                         backgroundColor: 'rgba(85, 0, 170, 0.5)', 
             
-          },
-          ],
-        });
-      }  
-    },[organizedDb]);
+                    },
+                    ],
+                });
+
+
+            
+              }catch(err: any) {
+                console.error(err)
+              }
+            }
+            
+              fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+    },[]);
 
     // takes in the messages and their times, returns the 
     const groupedData = (timeToScore: { [key: string]: number }) => {

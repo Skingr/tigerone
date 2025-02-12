@@ -23,8 +23,7 @@ export async function GET(req: Request){
         messageContent: messages.content,
         userClass: users.class_name,
         createdAt: messages.created_at,
-        userYear: users.year,
-        userMajor: users.major,
+        conversationId: messages.conversation_id,
       }).from(messages)
       .innerJoin(users, eq(messages.user_id, users.user_id))
       .where(eq(users.class_name, selectedClass)) 

@@ -46,25 +46,18 @@ export default function AdminDash() {
     userQuery: string;
     aiResponse: string;
     userClass: string;
-    createdAt: string; 
-    userYear: string;
-    userMajor: string; }[]>();
+    createdAt: string; }[]>();
   const [filteredDb, setFilteredDb] = useState<{
     userQuery: string;
     aiResponse: string;
     userClass: string;
-    createdAt: string; 
-    userYear: string;
-    userMajor: string;}[]>();
+    createdAt: string; }[]>();
   const [loading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
     messageContent: string;
     userClass: string;
-    createdAt: string;
-    userYear: string;
-    userMajor: string;
-  }[]>();
+    createdAt: string }[]>();
 
     // get data from db
 
@@ -109,7 +102,7 @@ export default function AdminDash() {
     
       setFilteredDb(finalFilteredDb);
     }, [userInput, organizedDb]);
-    console.log(db)
+
    
     function formatDate(date: string){
       const hour = new Date(date).getHours();
@@ -143,52 +136,20 @@ export default function AdminDash() {
   
  
   const donData = {
-    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userYear))] : [],
+    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userClass))] : [],
     datasets: [
       {
         label: '# of Queries',
-        data:  filteredDb ? [...new Set(filteredDb.map(item => item.userYear))].map(major => filteredDb.filter(item => item.userYear == major).length)
-        : [],
+        data: [] as number[],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-
-        ],
-        borderWidth: 1,
-      },
-    ],
-  };
-  const donData2 = {
-    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userMajor))] : [],
-    datasets: [
-      {
-        label: '# of Queries',
-        data: filteredDb ? [...new Set(filteredDb.map(item => item.userMajor))].map(major => filteredDb.filter(item => item.userMajor == major).length)
-          : [],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
         ],
         borderWidth: 1,
       },
@@ -251,7 +212,7 @@ export default function AdminDash() {
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
-              <MessageTheme data={organizedDb}/>
+              <MessageTheme />
             </div>
             <div
               className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
@@ -260,35 +221,41 @@ export default function AdminDash() {
               {/* <p className='text-gray-600'>{graph1.content}</p> */}
               {/* <Bar data={data}></Bar> */}
   
-              <SentimentChart data={organizedDb}/>
+              <SentimentChart />
             </div>
-          </div>
-        {/* Right Side: Data Box and Doughnut Charts */}
-        <div className="w-1/2 mr-10 ml-10">
-        {/* Query Box */}
-        <div className="h-[34rem] border border-4 border-double border-cc-gold rounded p-4 shadow-lg mb-6">
-          <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
-            {queryBox.title}
-          </h2>
-          <AdminSearch
-            userInput={userInput}
-            setUserInput={setUserInput}
-            loading={loading}
-          />
-          <div>{queryBox.content}</div>
+        
+            
+            {/*Graph4*/}
+            <div
+              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+            >
+             
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
+              </div>
+              <div
+              className="border border-4  border-cc-gold rounded p-0 shadow-lg h-60 ml-10 flex items-center justify-center"
+            >
+             
+             <Doughnut data={donData} style={{width:"100%", height:"100%"}} />
+              </div>
         </div>
-        <div className="h-6"></div>
-        {/* Doughnut Charts */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
-            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
-          </div>
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
-            <Doughnut data={donData2} style={{ width: "100%", height: "100%" }} />
+  
+  
+        {/* Right Side: Data Box */}
+        <div className="w-1/2 mr-10 ml-10">
+          <div className="h-full border border-4 border-double border-cc-gold rounded p-4 shadow-lg min-h-full">
+            <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
+              {queryBox.title}
+            </h2>
+            <AdminSearch
+              userInput={userInput}
+              setUserInput={setUserInput}
+              loading={loading}
+            />
+            <div>{queryBox.content}</div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
-)}
+    </main>
+  )};
   
