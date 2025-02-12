@@ -8,18 +8,13 @@ Chart.register(BarElement);
 Chart.register(LinearScale);
 Chart.register(PointElement);
 Chart.register(LineElement);
-
-
-interface LinChartProps {
-  data: {
-    userQuery: string;
-    aiResponse: string;
-    userClass: string;
-    createdAt: string;
-  }[] | undefined;
-} 
-const  LinChart = ({data:organizedDb}:LinChartProps) => {
-   
+const LinChart = () => {
+    const [db, setdb] = useState<{ 
+          role: string;
+          messageContent: string; 
+          userClass: string;
+          createdAt: string 
+        }[]>();
     const [linData, setLinData] = useState({
         labels: [] as string[],
         datasets: [
@@ -30,33 +25,53 @@ const  LinChart = ({data:organizedDb}:LinChartProps) => {
             borderwidth: 2,
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          },
+        },
         
         ],
+    
     });
 
 
     useEffect(() =>{
-      if(organizedDb){
-        console.log(organizedDb)
-        const timestamps = organizedDb.map((entry: { createdAt: string}) => entry.createdAt);
-        const {labels, data} = groupedData(timestamps);
-        setLinData({
-          labels,
-          datasets: [
-            {
-              label: '',
-              data,
-              tension: 0.05,
-              borderwidth: 3,
-              borderColor: 'rgb(53, 162, 235)',
-              backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    
-            },
-          ],
-        });
-      }     
-    },[organizedDb]);
+        const fetchData = async() => {
+              try {
+                const response = await fetch('/api/admin', {
+                  method: 'GET',
+                })
+                if (!response.ok){
+                  throw new Error ('Failed');
+                }
+              const db = await response.json();
+              setdb(db)
+        
+              const timestamps = db.map((entry: { createdAt: string}) => entry.createdAt);
+        
+              const {labels, data} = groupedData(timestamps);
+              //console.log(typeof db)
+              //console.log(db) 
+              //console.log(db[0].userquery)
+              setLinData({
+                labels,
+                datasets: [
+                  {
+                    label: '',
+                    data,
+                    tension: 0.05,
+                    borderwidth: 3,
+                    borderColor: 'rgb(53, 162, 235)',
+                    backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          
+                  },
+                ],
+              });
+            
+              }catch(err: any) {
+                console.error(err)
+              }
+            }
+            
+              fetchData(); // gathers data from database when page is loaded, so will update on each refresh
+    },[]);
 
     const groupedData = (timestamps: string[]) => {
         const count: {[key: string]: number} = {};
@@ -80,12 +95,14 @@ const  LinChart = ({data:organizedDb}:LinChartProps) => {
 
             labels.push(formattedHour);
         }
+
         return {
           labels,
           data: labels.map((label) => count[label]/2 || 0),
     
         };
       };
+
       function formatDate(date: string){
         const hour = new Date(date).getHours();
         const amPm = hour >= 12 ? "PM" : "AM";
