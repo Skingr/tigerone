@@ -18,7 +18,7 @@ export function organizeData(database: Array<{
         createdAt: string;
     }> = [];
     for (let i = 0; i < database.length - 1; i+=2) {
-        console.log(i)
+        //console.log(i)
         if (database[i].role === "user" && database[i+1].role === "assistant") {
             organizedDb.push({
                 userQuery: database[i].messageContent,

@@ -19,7 +19,6 @@ interface LinChartProps {
   }[] | undefined;
 } 
 const  LinChart = ({data:organizedDb}:LinChartProps) => {
-   
     const [linData, setLinData] = useState({
         labels: [] as string[],
         datasets: [
@@ -31,14 +30,13 @@ const  LinChart = ({data:organizedDb}:LinChartProps) => {
             borderColor: 'rgb(53, 162, 235)',
             backgroundColor: 'rgba(53, 162, 235, 0.5)',
           },
-        
         ],
     });
 
 
     useEffect(() =>{
       if(organizedDb){
-        console.log(organizedDb)
+        //console.log(organizedDb)
         const timestamps = organizedDb.map((entry: { createdAt: string}) => entry.createdAt);
         const {labels, data} = groupedData(timestamps);
         setLinData({
