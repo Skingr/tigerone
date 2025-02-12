@@ -200,7 +200,7 @@ export default function AdminDash() {
       <div className="flex">
         {/* Left Side: Graphs */}
         
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
+        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[46vw]">
             {/*Graph1*/}
             <div
               className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
