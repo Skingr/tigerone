@@ -46,18 +46,25 @@ export default function AdminDash() {
     userQuery: string;
     aiResponse: string;
     userClass: string;
-    createdAt: string; }[]>();
+    createdAt: string; 
+    userYear: string;
+    userMajor: string; }[]>();
   const [filteredDb, setFilteredDb] = useState<{
     userQuery: string;
     aiResponse: string;
     userClass: string;
-    createdAt: string; }[]>();
+    createdAt: string; 
+    userYear: string;
+    userMajor: string;}[]>();
   const [loading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
     messageContent: string;
     userClass: string;
-    createdAt: string }[]>();
+    createdAt: string;
+    userYear: string;
+    userMajor: string;
+  }[]>();
 
     // get data from db
 
@@ -102,7 +109,7 @@ export default function AdminDash() {
     
       setFilteredDb(finalFilteredDb);
     }, [userInput, organizedDb]);
-
+    console.log(db)
    
     function formatDate(date: string){
       const hour = new Date(date).getHours();
@@ -136,20 +143,52 @@ export default function AdminDash() {
   
  
   const donData = {
-    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userClass))] : [],
+    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userYear))] : [],
     datasets: [
       {
         label: '# of Queries',
-        data: [] as number[],
+        data:  filteredDb ? [...new Set(filteredDb.map(item => item.userYear))].map(major => filteredDb.filter(item => item.userYear == major).length)
+        : [],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+
         ],
         borderColor: [
           'rgba(255, 99, 132, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const donData2 = {
+    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userMajor))] : [],
+    datasets: [
+      {
+        label: '# of Queries',
+        data: filteredDb ? [...new Set(filteredDb.map(item => item.userMajor))].map(major => filteredDb.filter(item => item.userMajor == major).length)
+          : [],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
         ],
         borderWidth: 1,
       },
@@ -245,7 +284,7 @@ export default function AdminDash() {
             <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
           </div>
           <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
-            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
+            <Doughnut data={donData2} style={{ width: "100%", height: "100%" }} />
           </div>
         </div>
       </div>
