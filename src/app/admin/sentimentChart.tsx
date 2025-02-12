@@ -30,7 +30,6 @@ const SentimentChart = ({data:organizedDb}:SentChartProps) => {
     });
 
     useEffect(() =>{
-      console.log(organizedDb)
       if(organizedDb){
         const sentiment = require( 'wink-sentiment' );
         const timeToSentScore: { [key: string]: number } = {};
