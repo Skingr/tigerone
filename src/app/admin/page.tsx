@@ -8,13 +8,12 @@ import _ from 'lodash';
 
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
 import { Doughnut } from 'react-chartjs-2';
-import AdminSearch from '@/components/AdminSearch';
-import { getHighlightedText } from '@/components/HighlightText';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
 import CourseDropdown from './CourseDrop';
 import MessageTheme from './MessageThemes';
 import SentimentChart from './sentimentChart';
+import QueryBox from './QueryBox';
 
 
 Chart.register(CategoryScale);
@@ -48,14 +47,18 @@ export default function AdminDash() {
     userClass: string;
     createdAt: string; 
     userYear: string;
-    userMajor: string; }[]>();
+    userMajor: string; 
+    convoID: string;
+  }[]>();
   const [filteredDb, setFilteredDb] = useState<{
     userQuery: string;
     aiResponse: string;
     userClass: string;
     createdAt: string; 
     userYear: string;
-    userMajor: string;}[]>();
+    userMajor: string;
+    convoID: string;
+  }[]>();
   const [loading] = useState(false);
   const [db, setdb] = useState<{ 
     role: string;
@@ -64,6 +67,8 @@ export default function AdminDash() {
     createdAt: string;
     userYear: string;
     userMajor: string;
+    convoID: string;
+
   }[]>();
 
     // get data from db
@@ -109,7 +114,7 @@ export default function AdminDash() {
     
       setFilteredDb(finalFilteredDb);
     }, [userInput, organizedDb]);
-    console.log(db)
+    //console.log(db)
    
     function formatDate(date: string){
       const hour = new Date(date).getHours();
@@ -120,26 +125,6 @@ export default function AdminDash() {
   
       return `${formatHour} ${amPm}` //Old: ${mm}/${dd}/${yy.slice(-2)} at 
     }
-
-  const queryBox = {
-    title: "Query box",
-    content: filteredDb && filteredDb.length > 0 ? (
-      <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-        {filteredDb.map((msg, index) => (
-          <div key={index} className="border-b py-1">
-            <b>Student Query:</b> {getHighlightedText(msg.userQuery, userInput)}
-            <br />
-            <b>AI Response:</b> {getHighlightedText(msg.aiResponse, userInput)}
-            <br />
-            <b>Timestamp:</b> {formatDate(msg.createdAt)}
-            <br />
-          </div>
-        ))}
-      </div>
-    ) : (
-      <p>{filteredDb ? "No results found." : "Loading..."}</p>
-    ),
-  };
   
  
   const donData = {
@@ -150,18 +135,16 @@ export default function AdminDash() {
         data:  filteredDb ? [...new Set(filteredDb.map(item => item.userYear))].map(major => filteredDb.filter(item => item.userYear == major).length)
         : [],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-
+          'rgba(255, 231, 137, 0.5)',
+          'rgba(255, 204, 0, 0.5)',
+          'rgba(168, 135, 0, 0.5)',
+          'rgba(67, 53, 0, 0.5)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-
+          'rgba(255, 231, 137, 0.5)',
+          'rgba(255, 204, 0, 0.5)',
+          'rgba(168, 135, 0, 0.5)',
+          'rgba(67, 53, 0, 0.5)',
         ],
         borderWidth: 1,
       },
@@ -175,20 +158,16 @@ export default function AdminDash() {
         data: filteredDb ? [...new Set(filteredDb.map(item => item.userMajor))].map(major => filteredDb.filter(item => item.userMajor == major).length)
           : [],
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+          'rgba(255, 231, 137, 0.5)',
+          'rgba(255, 204, 0, 0.5)',
+          'rgba(168, 135, 0, 0.5)',
+          'rgba(67, 53, 0, 0.5)',
         ],
         borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
+          'rgba(255, 231, 137, 0.5)',
+          'rgba(255, 204, 0, 0.5)',
+          'rgba(168, 135, 0, 0.5)',
+          'rgba(67, 53, 0, 0.5)',
         ],
         borderWidth: 1,
       },
@@ -214,81 +193,88 @@ export default function AdminDash() {
    const graph4: Box = {title: 'Graph 4', content: 'graph here?'}
 
    return (
-    <main className="font-crimsonPro min-h-screen bg-cc-white p-4 relative">
-     {!selectedCourse && (
-      <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
-        <CourseDropdown
-          selectedCourse={selectedCourse}
-          setSelectedCourse={setSelectedCourse}
-          disabled={false}
-        />
-     </div>
+    <main className="font-crimsonPro min-h-screen bg-white p-4 relative">
+  {!selectedCourse && (
+    <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center">
+      <CourseDropdown
+        selectedCourse={selectedCourse}
+        setSelectedCourse={setSelectedCourse}
+        disabled={false}
+      />
+    </div>
   )}
-      {/* Header */}
-      <header className="mb-6 text-center">
-        <h1 className="text-4xl font-bold text-gray-800 border-b-8 border-cc-gold font-bebas text-cc-gold">
-          Admin Dashboard
-        </h1>
-      </header>
-      <div className="flex">
-        {/* Left Side: Graphs */}
-        
-        <div className="flex-1 grid grid-cols-2 gap-4 content-center grid-rows-2 min-w-[50vw]">
-            {/*Graph1*/}
-            <div
-              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
-            >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">{graph1.title}</h2>
-              {/* <p className='text-gray-600'>{graph1.content}</p> */}
-              {/* <Bar data={data}></Bar> */}
-  
-              <LinChart data={organizedDb}/>
-            </div>
-            <div
-              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
-            >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">Most Common Nouns and Verbs</h2>
-              {/* <p className='text-gray-600'>{graph1.content}</p> */}
-              {/* <Bar data={data}></Bar> */}
-  
-              <MessageTheme data={organizedDb}/>
-            </div>
-            <div
-              className="border border-4  border-cc-gold rounded p-4 shadow-lg h-60 ml-10 mb-10 justify-center col-span-2 flex flex-col items-center "
-            >
-              <h2 className="font-bold text-xl mb-2 text-cc-charcoal text-center font-bebas">Recent Sentiment</h2>
-              {/* <p className='text-gray-600'>{graph1.content}</p> */}
-              {/* <Bar data={data}></Bar> */}
-  
-              <SentimentChart data={organizedDb}/>
-            </div>
-          </div>
-        {/* Right Side: Data Box and Doughnut Charts */}
-        <div className="w-1/2 mr-10 ml-10">
-        {/* Query Box */}
-        <div className="h-[34rem] border border-4 border-double border-cc-gold rounded p-4 shadow-lg mb-6">
-          <h2 className="font-bold text-xl mb-2 text-cc-charcoal">
-            {queryBox.title}
+
+  <header className="mb-6 text-center">
+    <h1 className="text-4xl font-bold text-gray-800 border-gray-200 font-bebas">
+      Admin Dashboard
+    </h1>
+  </header>
+
+  <div className="bg-gray-100 p-6 rounded-lg shadow-lg min-h-[calc(100vh-8rem)] flex flex-col">
+    <div className="flex">
+      <div className="flex-1 grid grid-cols-2 gap-6">
+        <div className="bg-white rounded-lg p-4 shadow-md">
+          <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">
+            User Major Distribution
           </h2>
-          <AdminSearch
+          <div className="w-48 h-48 mx-auto"> 
+            <Doughnut
+              data={donData2}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false, 
+              }}
+            />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg p-4 shadow-md">
+          <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">
+            Usage
+          </h2>
+          <LinChart data={organizedDb} />
+        </div>
+
+        <div className="bg-white rounded-lg p-4 shadow-md">
+          <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">
+            Most Common Nouns and Verbs
+          </h2>
+          <MessageTheme data={organizedDb} />
+        </div>
+        <div className="bg-white rounded-lg p-4 shadow-md">
+          <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">
+            User Year Distribution
+          </h2>
+          <div className="w-48 h-48 mx-auto"> 
+            <Doughnut
+              data={donData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+              }}
+            />
+          </div>
+        </div>
+        <div className="col-span-2 bg-white rounded-lg p-4 shadow-md">
+          <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">
+            Recent Sentiment
+          </h2>
+          <div className="h-64"> 
+          <SentimentChart data={organizedDb} />
+          </div>
+        </div>
+      </div>
+      <div className="w-1/2 ml-6">
+        <div className="bg-white rounded-lg p-4 shadow-md h-[34rem]">
+          <QueryBox
+            data={filteredDb}
             userInput={userInput}
             setUserInput={setUserInput}
             loading={loading}
           />
-          <div>{queryBox.content}</div>
-        </div>
-        <div className="h-6"></div>
-        {/* Doughnut Charts */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
-            <Doughnut data={donData} style={{ width: "100%", height: "100%" }} />
-          </div>
-          <div className="border border-4 border-cc-gold rounded p-0 shadow-lg h-60 flex items-center justify-center">
-            <Doughnut data={donData2} style={{ width: "100%", height: "100%" }} />
-          </div>
         </div>
       </div>
     </div>
-  </main>
-)}
-  
+  </div>
+</main>
+);
+}

@@ -19,11 +19,10 @@ export default function AdminSearch({
               placeholder="Enter Search:"
               value={userInput}
               onChange={(e) => {
-                console.log("Input value:", e.target.value); // Debugging
+                console.log("Input value:", e.target.value); 
                 setUserInput(e.target.value);
               }}
             />
-            {/* Gradient backgrounds */}
             <div
               className="absolute inset-0 rounded-lg bg-gradient-to-r from-cc-gold via-yellow-400 to-cc-gold opacity-0 peer-focus:opacity-60 transition-opacity duration-300 -z-10 blur-[1px] peer-focus:animate-gradient-once"
               style={{ padding: "2px", backgroundSize: "200% 200%" }}

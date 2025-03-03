@@ -5,6 +5,7 @@ export function organizeData(database: Array<{
     createdAt: string;
     userYear: string;
     userMajor: string;
+    convoID: string;
 }> = []): Array<{ 
     userQuery: string;
     aiResponse: string;
@@ -12,6 +13,7 @@ export function organizeData(database: Array<{
     createdAt: string;
     userYear: string;
     userMajor: string;
+    convoID: string;
 }> {
     if (database.length === 0) return []; 
 
@@ -22,6 +24,7 @@ export function organizeData(database: Array<{
         createdAt: string;
         userYear: string;
         userMajor: string;
+        convoID: string;
     }> = [];
     for (let i = 0; i < database.length - 1; i+=2) {
         //console.log(i)
@@ -33,6 +36,7 @@ export function organizeData(database: Array<{
                 createdAt: database[i].createdAt,
                 userYear: database[i].userYear,
                 userMajor: database[i].userMajor,
+                convoID: database[i].convoID,
             });
         } 
         else if (database[i].role === "assistant" && database[i+1].role === "user") {
@@ -43,6 +47,8 @@ export function organizeData(database: Array<{
                 createdAt: database[i+1].createdAt,
                 userYear: database[i].userYear,
                 userMajor: database[i].userMajor,
+                convoID: database[i].convoID,
+
             });
         }
     }

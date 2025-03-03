@@ -36,7 +36,7 @@ export default function CourseDropdown({
     <div
       className={`${
         selectedCourse == null
-          ? "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          ? "fixed inset-0 flex items-center justify-center bg-white bg-opacity-100"
           : "absolute top-4 right-4"
       }`}
     >

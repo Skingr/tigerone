@@ -23,8 +23,8 @@ const SentimentChart = ({data:organizedDb}:SentChartProps) => {
             data: [] as number[],
             tension: 0,
             borderwidth: 2,
-            borderColor: 'rgba(85, 0, 170)',
-            backgroundColor: 'rgba(85, 0, 170, 0.5)', 
+            borderColor: 'rgba(255, 204, 0, 0.5)',
+            backgroundColor: 'rgba(255, 204, 0, 0.5)', 
           },
         ],
     });
@@ -51,8 +51,8 @@ const SentimentChart = ({data:organizedDb}:SentChartProps) => {
             data,
             tension: 0.05,
             borderwidth: 3,
-            borderColor: 'rgba(85, 0, 170)',
-            backgroundColor: 'rgba(85, 0, 170, 0.5)', 
+            borderColor: 'rgba(255, 204, 0, 0.5)',
+            backgroundColor: 'rgba(255, 204, 0, 0.5)', 
             
           },
           ],
