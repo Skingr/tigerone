@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import AdminSearch from './AdminSearch';
-import { JSX } from 'react/jsx-runtime';
 import { getHighlightedText } from './HighlightText';
 
 interface QueryBoxProps {
@@ -9,7 +8,9 @@ interface QueryBoxProps {
     aiResponse: string;
     userClass: string;
     createdAt: string;
-    convoID: string;
+    userYear: string;
+    userMajor: string;
+    convoID: string; 
   }[] | undefined;
   userInput: string;
   setUserInput: (input: string) => void;
@@ -18,16 +19,16 @@ interface QueryBoxProps {
 
 const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, loading }) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null); 
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [filteredConvoID, setFilteredConvoID] = useState<string | null>(null); 
 
-   const handleQueryClick = (query: {
-    userQuery: string;
-    aiResponse: string;
-    createdAt: string;
-    convoID: string;
-  }) => {
-    console.log('Query clicked:', query.convoID);
+  const handleQueryClick = (convoID: string) => {
+    setFilteredConvoID(convoID);
   };
+
+  const filteredData = filteredConvoID
+    ? data?.filter((item) => item.convoID === filteredConvoID)
+    : data;
 
   const toggleExpand = (index: number) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -37,6 +38,7 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
   };
+
 
   const formatDate = (date: string): string => {
     return new Date(date).toLocaleString();
@@ -54,17 +56,17 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
         />
       </div>
 
-      {data && data.length > 0 ? (
+      {filteredData && filteredData.length > 0 ? (
         <div className="overflow-y-auto max-h-96 border rounded-lg p-3">
-          {data.map((msg, index) => (
+          {filteredData.map((msg, index) => (
             <div
               key={index}
               className={`border-b py-1 transition-colors duration-200 ${
-                hoveredIndex === index ? 'bg-gray-100' : 'bg-white'
-              }`}
-              onMouseEnter={() => setHoveredIndex(index)} 
-              onMouseLeave={() => setHoveredIndex(null)} 
-              onClick={() => handleQueryClick(msg)}
+                !filteredConvoID && hoveredIndex === index ? 'bg-gray-100' : 'bg-white'
+              } ${!filteredConvoID ? 'cursor-pointer' : ''}`}  
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => handleQueryClick(msg.convoID)} 
             >
               <div className="flex justify-between items-center">
                 <div>
@@ -78,7 +80,10 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
                   </span>
                   {msg.userQuery.length > 100 && (
                     <button
-                      onClick={() => toggleExpand(index)}
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        toggleExpand(index);
+                      }}
                       className="text-yellow-500 ml-2"
                     >
                       {expandedIndex === index ? 'See less' : 'See more'}
@@ -96,7 +101,10 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
                   </span>
                   {msg.aiResponse.length > 100 && (
                     <button
-                      onClick={() => toggleExpand(index)}
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        toggleExpand(index);
+                      }}
                       className="text-yellow-500 ml-2"
                     >
                       {expandedIndex === index ? 'See less' : 'See more'}
@@ -108,7 +116,7 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
                   <br />
                 </div>
 
-                {hoveredIndex === index && (
+                {!filteredConvoID && hoveredIndex == index && (
                   <div className="text-sm text-gray-500 italic">
                     View Full Conversation
                   </div>
@@ -119,6 +127,15 @@ const QueryBox: React.FC<QueryBoxProps> = ({ data, userInput, setUserInput, load
         </div>
       ) : (
         <p>{data ? "No results found." : "Loading..."}</p>
+      )}
+
+      {filteredConvoID && (
+        <button
+          onClick={() => setFilteredConvoID(null)} 
+          className="mt-4 bg-yellow-500 text-white px-4 py-2 rounded"
+        >
+          Return
+        </button>
       )}
     </div>
   );
