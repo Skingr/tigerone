@@ -10,6 +10,7 @@ import CourseDropdown from './CourseDrop';
 import MessageTheme from './MessageThemes';
 import SentimentChart from './sentimentChart';
 import QueryBox from './QueryBox';
+import MajorYear from './MajorYear';
 
 Chart.register(CategoryScale, BarElement, LinearScale, PointElement, LineElement, ArcElement, Tooltip, Legend);
 
@@ -58,16 +59,9 @@ export default function AdminDash() {
     ));
   }, [userInput, organizedDb]);
 
-  const donData = {
-    labels: filteredDb ? [...new Set(filteredDb.map(item => item.userYear))] : [],
-    datasets: [{
-      label: '# of Queries',
-      data: filteredDb ? [...new Set(filteredDb.map(item => item.userYear))].map(year => filteredDb.filter(item => item.userYear === year).length) : [],
-      backgroundColor: ['rgba(255, 231, 137, 0.5)', 'rgba(255, 204, 0, 0.5)', 'rgba(168, 135, 0, 0.5)', 'rgba(67, 53, 0, 0.5)'],
-      borderColor: ['rgba(255, 231, 137, 0.5)', 'rgba(255, 204, 0, 0.5)', 'rgba(168, 135, 0, 0.5)', 'rgba(67, 53, 0, 0.5)'],
-      borderWidth: 1,
-    }],
-  };
+  const majors = filteredDb.map(item => item.userMajor);
+  const years = filteredDb.map(item => item.userYear);
+  const ids = filteredDb.map(item=>item.userID);
 
   return (
     <main className="font-crimsonPro min-h-screen bg-white p-4 relative">
@@ -76,41 +70,38 @@ export default function AdminDash() {
           <CourseDropdown selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse} disabled={false} />
         </div>
       )}
-
+  
       <header className="mb-6 text-center">
         <h1 className="text-4xl font-bold text-gray-800 border-gray-200 font-bebas">Admin Dashboard</h1>
       </header>
-
+  
       <div className="bg-gray-100 p-6 rounded-lg shadow-lg min-h-[calc(100vh-8rem)] flex flex-col">
         <div className="flex">
           <div className="flex-1 grid grid-cols-2 gap-6 min-h-full">
-            <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
-              <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">User Major Distribution</h2>
-              <div className="w-48 h-48 min-w-[12rem] min-h-[12rem] mx-auto"> 
-                <Doughnut data={donData} options={{ responsive: true, maintainAspectRatio: false }} />
-              </div>
-            </div>
+            {/* Top Row: Usage Chart and Sentiment Chart Side by Side */}
             <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
               <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">Usage</h2>
               <LinChart data={organizedDb} />
             </div>
             <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
-              <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">Most Common Nouns and Verbs</h2>
-              <MessageTheme data={organizedDb} />
-            </div>
-            <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
-              <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">User Year Distribution</h2>
-              <div className="w-48 h-48 min-w-[12rem] min-h-[12rem] mx-auto"> 
-                <Doughnut data={donData} options={{ responsive: true, maintainAspectRatio: false }} />
-              </div>
-            </div>
-            <div className="col-span-2 bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
               <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">Recent Sentiment</h2>
-              <div className="h-64"> 
+              <div className="h-48"> 
                 <SentimentChart data={organizedDb} />
               </div>
             </div>
+  
+            {/* Bottom Row: Donut Charts and Most Common Words Chart in a Single Row */}
+            <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
+              <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">User Major Distribution</h2>
+                <MajorYear userMajor={majors} userYear={years} userID={ids}/>
           </div>
+            <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
+              <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">Most Common Nouns and Verbs</h2>
+              <MessageTheme data={organizedDb} />
+            </div>
+          </div>
+  
+          {/* Query Box */}
           <div className="w-1/2 ml-6">
             <div className="bg-white rounded-lg p-4 shadow-md h-[34rem] min-h-[34rem] min-w-[24rem] flex flex-col">
               <QueryBox data={filteredDb} userInput={userInput} setUserInput={setUserInput} loading={loading} />
@@ -119,5 +110,4 @@ export default function AdminDash() {
         </div>
       </div>
     </main>
-  );
-}
+  );}

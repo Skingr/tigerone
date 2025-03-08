@@ -38,8 +38,8 @@ const SentimentChart = ({data:organizedDb}:SentChartProps) => {
           timeToSentScore[entry.createdAt] = result.normalizedScore;
         });
         const {labels, data} = groupedData(timeToSentScore);
-                console.log("LABELS: ", labels)
-                console.log("DATA:", data)
+                //console.log("LABELS: ", labels)
+                //console.log("DATA:", data)
                 //console.log(typeof db)
                 //console.log(db) 
                 //console.log(db[0].userquery)
