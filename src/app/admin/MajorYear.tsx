@@ -12,7 +12,8 @@ interface StackedBarChartProps {
 }
 
 const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, userID }) => {
-  // Create a map to track unique user IDs for each major and year combination
+  const yearOrder = ['freshman', 'sophomore', 'junior', 'senior'];
+
   const userCountMap = userMajor.reduce((acc, major, index) => {
     const year = userYear[index];
     const id = userID[index];
@@ -23,14 +24,13 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
     if (!acc[major][year]) {
       acc[major][year] = new Set<string>();
     }
-    acc[major][year].add(id);
+    acc[major][year].add(id); 
     return acc;
   }, {} as Record<string, Record<string, Set<string>>>);
 
   console.log('User Count Map:', userCountMap);
 
   const majors = Object.keys(userCountMap);
-  const years = Array.from(new Set(userYear));
 
   const colors = [
     'rgba(255, 231, 137, 0.5)',
@@ -39,9 +39,8 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
     'rgba(67, 53, 0, 0.5)',
   ];
 
-  // Prepare datasets for the chart
-  const datasets = years.map((year, index) => {
-    const data = majors.map((major) => userCountMap[major]?.[year]?.size || 0); // Count unique users
+  const datasets = yearOrder.map((year, index) => {
+    const data = majors.map((major) => userCountMap[major]?.[year]?.size || 0); 
 
     return {
       label: year,
@@ -50,13 +49,11 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
     };
   });
 
-  // Chart data
   const data = {
     labels: majors,
     datasets: datasets,
   };
 
-  // Chart options
   const options = {
     responsive: true,
     plugins: {
@@ -80,7 +77,7 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
         stacked: true,
         title: {
           display: true,
-          text: 'Number of Unique Users',
+          text: 'Number of Users',
         },
         beginAtZero: true,
       },
