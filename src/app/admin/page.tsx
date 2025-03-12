@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, LineElement, PointElement, Tooltip} from "chart.js";
-import { Doughnut } from 'react-chartjs-2';
 import { organizeData } from './organizeData'; 
 import LinChart from './linChart';
 import CourseDropdown from './CourseDrop';
@@ -78,7 +77,6 @@ export default function AdminDash() {
       <div className="bg-gray-100 p-6 rounded-lg shadow-lg min-h-[calc(100vh-8rem)] flex flex-col">
         <div className="flex">
           <div className="flex-1 grid grid-cols-2 gap-6 min-h-full">
-            {/* Top Row: Usage Chart and Sentiment Chart Side by Side */}
             <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
               <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">Usage</h2>
               <LinChart data={organizedDb} />
@@ -90,7 +88,6 @@ export default function AdminDash() {
               </div>
             </div>
   
-            {/* Bottom Row: Donut Charts and Most Common Words Chart in a Single Row */}
             <div className="bg-white rounded-lg p-4 shadow-md h-64 min-h-[16rem] flex flex-col justify-center">
               <h2 className="font-bold text-xl mb-2 text-gray-800 text-center font-bebas">User Major Distribution</h2>
                 <MajorYear userMajor={majors} userYear={years} userID={ids}/>
@@ -100,9 +97,7 @@ export default function AdminDash() {
               <MessageTheme data={organizedDb} />
             </div>
           </div>
-  
-          {/* Query Box */}
-          <div className="w-1/2 ml-6">
+            <div className="w-1/2 ml-6">
             <div className="bg-white rounded-lg p-4 shadow-md h-[34rem] min-h-[34rem] min-w-[24rem] flex flex-col">
               <QueryBox data={filteredDb} userInput={userInput} setUserInput={setUserInput} loading={loading} />
             </div>
