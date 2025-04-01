@@ -72,6 +72,14 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
           display: true,
           text: 'Majors',
         },
+        ticks: {
+          autoSkip: true, 
+          maxRotation: 45, 
+          minRotation: 45, 
+          font: {
+            size: 10, 
+          },
+        },
       },
       y: {
         stacked: true,
