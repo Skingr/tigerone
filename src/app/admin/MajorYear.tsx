@@ -2,17 +2,16 @@ import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from 'chart.js';
 
-// Register Chart.js components
 Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 interface StackedBarChartProps {
+  //get user year and major 
   userMajor: string[];
   userYear: string[];
   userID: string[];
 }
 
 const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, userID }) => {
-  // Create a map to track unique user IDs for each major and year combination
   const userCountMap = userMajor.reduce((acc, major, index) => {
     const year = userYear[index];
     const id = userID[index];
@@ -39,9 +38,8 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
     'rgba(67, 53, 0, 0.5)',
   ];
 
-  // Prepare datasets for the chart
   const datasets = years.map((year, index) => {
-    const data = majors.map((major) => userCountMap[major]?.[year]?.size || 0); // Count unique users
+    const data = majors.map((major) => userCountMap[major]?.[year]?.size || 0); // count unique users
 
     return {
       label: year,
@@ -50,13 +48,12 @@ const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, 
     };
   });
 
-  // Chart data
+  // chart data
   const data = {
     labels: majors,
     datasets: datasets,
   };
 
-  // Chart options
   const options = {
     responsive: true,
     plugins: {
