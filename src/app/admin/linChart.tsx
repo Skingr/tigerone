@@ -80,7 +80,7 @@ const  LinChart = ({data:organizedDb}:LinChartProps) => {
         }
         return {
           labels,
-          data: labels.map((label) => count[label]/2 || 0),
+          data: labels.map((label) => count[label] || 0),
     
         };
       };

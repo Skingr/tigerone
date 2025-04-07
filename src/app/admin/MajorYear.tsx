@@ -13,6 +13,7 @@ interface StackedBarChartProps {
 
 const StackedBarChart: React.FC<StackedBarChartProps> = ({ userMajor, userYear, userID }) => {
   const userCountMap = userMajor.reduce((acc, major, index) => {
+    //console.log(userCountMap)
     const year = userYear[index];
     const id = userID[index];
 

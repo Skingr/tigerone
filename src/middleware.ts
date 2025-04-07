@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
-// Protect all routes except public ones
+// protect all routes except public ones
 export default auth((req) => {
   const isLoggedIn = !!req.auth?.user;
   const isAuthPage = req.nextUrl.pathname.startsWith("/auth");

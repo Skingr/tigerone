@@ -27,7 +27,6 @@ type FormData = {
 const steps = [
   { id: 1, name: "Account" },
   { id: 2, name: "Academic Info" },
-  { id: 3, name: "Personal Info" },
 ];
 
 /**
@@ -150,7 +149,7 @@ export default function Start() {
               <>
                 <div className="space-y-2">
                   <Label className="text-cc-gold" htmlFor="username">
-                    Name
+                    Username
                   </Label>
                   <Input
                     className="text-cc-gold placeholder:text-cc-gold rounded-full h-16 border border-cc-gold"
@@ -159,7 +158,7 @@ export default function Start() {
                     onChange={(e) =>
                       handleInputChange("username", e.target.value)
                     }
-                    placeholder="Enter your name"
+                    placeholder="Enter your username"
                   />
                   <p className="text-sm text-muted-foreground text-cc-gold">
                     Must be at least 3 characters long
@@ -453,55 +452,6 @@ export default function Start() {
               </>
             )}
 
-            {currentStep === 3 && (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="sex">Sex</Label>
-                  <Select
-                    value={formData.sex}
-                    onValueChange={(value: string) =>
-                      handleInputChange("sex", value)
-                    }
-                  >
-                    <SelectTrigger className="bg-white text-black border-gray-200">
-                      <SelectValue placeholder="Select your sex" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-200">
-                      <SelectItem value="male" className="hover:bg-gray-100">
-                        Male
-                      </SelectItem>
-                      <SelectItem value="female" className="hover:bg-gray-100">
-                        Female
-                      </SelectItem>
-                      <SelectItem value="other" className="hover:bg-gray-100">
-                        Other
-                      </SelectItem>
-                      <SelectItem
-                        value="prefer_not_to_say"
-                        className="hover:bg-gray-100"
-                      >
-                        Prefer not to say
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="age">Age</Label>
-                  <Input
-                    id="age"
-                    type="number"
-                    value={formData.age || ""}
-                    onChange={(e) =>
-                      handleInputChange("age", parseInt(e.target.value) || 0)
-                    }
-                    placeholder="Enter your age"
-                    min="0"
-                    max="120"
-                  />
-                </div>
-              </>
-            )}
           </div>
 
           <div className="flex justify-between mt-12">
@@ -518,7 +468,7 @@ export default function Start() {
               disabled={!isStepValid()}
               className="bg-cc-gold text-white hover:bg-cc-gold/90"
             >
-              {currentStep === steps.length ? "Submit" : "Next"}
+              {currentStep === 2 ? "Submit" : "Next"}
             </Button>
           </div>
         </div>

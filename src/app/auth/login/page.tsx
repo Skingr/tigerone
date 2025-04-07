@@ -10,11 +10,11 @@ export default function LoginPage() {
         Welcome to Tiger One
       </h1>
       <p className="text-xl mb-8 text-center max-w-2xl text-opacity{10} text-cc-gold font-geist-mono">
-        Meet Tiger One, your chatbot assistant. Whether you need
-       dating advice, want to research new topics, or just have a
-        friendly chat, Tiger One is here to assist you.
-        {/* None of your private data 
-        will be shared. All data is stored anonomously and all personal data is only used 
+        Meet Tiger One, your chatbot assistant. Whether you need to learn about new topics, 
+        ask clarifying questions,
+        or just have a friendly chat, Tiger One is here to assist you.
+        {/* none of your private data 
+        will be shared. all data is stored anonomously and all personal data is only used 
         for qualitative data.  */}
       </p>
         <div className="font-geist-sans text-cc-gold">
