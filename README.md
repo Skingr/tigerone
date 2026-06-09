@@ -8,7 +8,7 @@
 
 TIGERONE is an AI-powered chatbot assistant designed specifically for Colorado College students. It provides intelligent responses to academic queries, research assistance, and general information using advanced language models.
 
-## 🖼️ Screenshots
+## Screenshots
 
 <div align="center">
   <img src="public/screenshots/onboarding-screens.png" alt="Onboarding Process" width="800"/>
@@ -28,7 +28,7 @@ TIGERONE is an AI-powered chatbot assistant designed specifically for Colorado C
   
 </div>
 
-## ✨ Features
+## Features
 
 - **Multiple AI Models**: Choose between GPT-4o, O1-Preview, and O1-Mini
 - **Secure Authentication**: Colorado College email-based authentication
@@ -37,7 +37,7 @@ TIGERONE is an AI-powered chatbot assistant designed specifically for Colorado C
 - **Admin Dashboard**: Analytics on usage patterns, sentiment analysis, and common topics
 - **User Profiles**: Personalized experience based on academic information
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -117,7 +117,7 @@ The admin dashboard provides insights into:
 - User engagement metrics
 - Course-specific analytics
 
-## 🧠 NLP Capabilities
+## NLP Capabilities
 
 TIGERONE uses advanced NLP techniques to:
 - Analyze sentiment in user messages
@@ -125,15 +125,15 @@ TIGERONE uses advanced NLP techniques to:
 - Extract key entities from conversations
 - Track engagement patterns
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+## License
 
 MIT?
 
-## 🔗 Links
+## Links
 
 - [Colorado College](https://www.coloradocollege.edu/)
 - [Project](www.tiger-1.com)
